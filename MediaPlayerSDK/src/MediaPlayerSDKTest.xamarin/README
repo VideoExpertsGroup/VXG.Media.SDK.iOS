@@ -1,0 +1,15 @@
+Sample builded with VXG.PlayerSDK.iOS.Trial.20170517
+
+1. Place original libMediaPlayerSDK.a at MediaPlayerSDK/origlib/
+2. If it needed create new ApiDefinition.cs and Structs.cs by using sharpie util (https://download.xamarin.com/objective-sharpie/ObjectiveSharpie.pkg)
+    sharpie bind --output=MediaPlayerSDK --namespace=MediaPlayerSDK --sdk=iphoneos10.3 /path/to/lib/headers/*.h
+    
+    2.1. modify every void* to IntPtr, every int*,sbyte*.. etc. to ref int, ref sbyte
+3. Open solution
+4. build MediaPlayerSDK 
+5. build & run VXGMediaPlayerSampleApp
+
+
+KNOWN ISSUES
+1. building Debug/iPhone cause eror due miss -bz2 -iconv at clang command line while building(possible bug of xamarin studio), Release/iPhone builds ok(there are neccesary arguments ar clang-line)
+2. Debug/iPhoneSimulator Release/iPhoneSimulator not stable at multiple connect-disconnect button click

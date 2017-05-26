@@ -1,0 +1,11 @@
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+
+// Launch automatically a video, to accelerate the debug tests.
+//#define DEBUG_AUTOPLAY
+
+#define LoggerStream(level, ...)   NSLog(__VA_ARGS__)
+#define LoggerVideo(level, ...)    NSLog(__VA_ARGS__)
+#define LoggerAudio(level, ...)    NSLog(__VA_ARGS__) 
+#define LoggerApp(level, ...)   NSLog(__VA_ARGS__)
+
