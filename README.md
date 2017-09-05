@@ -1,6 +1,6 @@
 # Media Player SDK for iOS
 
-THIS IS A TRIAL VERSION OF VXG PLAYER SDK FOR IOS. PLAYBACK IS LIMITED TO 2 MINS.
+THIS IS A TRIAL VERSION OF VXG MEDIA SDK FOR IOS. PLAYBACK IS LIMITED TO 2 MINS.
 
 READ MORE ABOUT VXG PLAYER SDK HERE: https://www.videoexpertsgroup.com/player-sdk/
 
@@ -21,6 +21,4 @@ Media Player SDK Features:
    * Adaptation bitrate
    * Optimization and customization for your needs
    
-![RTSP player sample1](http://www.videoexpertsgroup.com/git/ios_sample1.png)
-
-![RTSP player sample2](http://www.videoexpertsgroup.com/git/ios_sample2.png)
+<img src="http://www.videoexpertsgroup.com/git/ios_sample2.png" alt="RTSP Player sample" width="400">
