@@ -1,14 +1,14 @@
-# Media Player SDK for iOS
+# VXG Media SDK for iOS
 
-THIS IS A TRIAL VERSION OF VXG MEDIA SDK FOR IOS. PLAYBACK IS LIMITED TO 2 MINS.
+## Disclaimer
+This is a non-commercial version of VXG Media SDK for Android. Playback is limited to 2 mins.
+Commercial use and access to extra features requires a license. Please learn more at https://www.videoexpertsgroup.com/player-sdk/
 
-READ MORE ABOUT VXG PLAYER SDK HERE: https://www.videoexpertsgroup.com/player-sdk/
-
+## About SDK
 SDK can be used for IPTV, iOS client of surveillance system, IP camera viewer, TV player, OTT clients and other kinds of applications 
 with video playback. Source code of samples can be provided.
 
-Media Player SDK Features:
-
+## Media Player Features
    * Supported Network protocols: HTTP-HLS, RTSP, RTP, UDP (Multicast stream support), RTMP, MMS and others.
    * Supported file formats: AVI, 3GP, M4V, MP4, WMV, FLV, MPEG, MPG, MOV, RM, VOB, ASF, MKV, F4V, TRP, TS, TP and others.
    * Stream playback: Multicast/Unicast UDP, HTTP and HTTPS tunneling for RTSP.
@@ -21,4 +21,5 @@ Media Player SDK Features:
    * Adaptation bitrate
    * Optimization and customization for your needs
    
-<img src="http://www.videoexpertsgroup.com/git/ios_sample2.png" alt="RTSP Player sample" width="400">
+## Demo screenshots
+<img src="http://www.videoexpertsgroup.com/git/iphone_rtsp.png" alt="RTSP Player sample" width="400">
