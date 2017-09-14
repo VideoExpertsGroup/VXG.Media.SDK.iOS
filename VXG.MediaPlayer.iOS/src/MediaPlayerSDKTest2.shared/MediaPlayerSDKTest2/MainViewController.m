@@ -1,18 +1,82 @@
+/*
+ * Copyright (c) 2011-2017 VXG Inc.
+ */
+
 #import "MainViewController.h"
 #import "MovieViewController.h"
 #import <AssetsLibrary/AssetsLibrary.h>
+
+@interface Url : NSObject {
+    NSString* text;
+    UIImage*  image;
+}
+
+-(id)initWithParam: (NSString*)text image:(UIImage*)image;
+
+- (void)setText: (NSString*)text;
+- (NSString*)getText;
+
+- (void)setImage: (UIImage*)image;
+- (UIImage*)getImage;
+
+-(BOOL)isEqual:(id)otherObj;
+
+@end
+
+@implementation Url
+
+- (id) initWithParam: (NSString *)paramText image:(UIImage*)paramImage {
+    
+    self = [super init];
+    if(self) {
+        text = paramText;
+        image = paramImage;
+    }
+    return self;
+}
+
+- (void)setText: (NSString *)newText
+{
+    text = newText;
+}
+- (NSString*)getText
+{
+    return text;
+}
+
+- (void)setImage: (UIImage*)newImage
+{
+    image = newImage;
+}
+- (UIImage*)getImage
+{
+    return image;
+}
+
+-(BOOL)isEqual:(id)otherObj {
+    Url *other = (Url*)otherObj;
+    
+    return [[self getText] isEqualToString: [other getText]];
+}
+
+@end
 
 @interface MainViewController () {
     
     NSMutableArray *_localMovies;
     NSMutableArray *_remoteMovies;
     
+    ALAsset *assetSaved;
     ALAssetsLibrary *assetsLibrary;
+    
     NSString *_current_path;
     int count_local_files;
     int countPlayers;
     MovieViewController *vc;
     NSString *_last_entered_url;
+    
+    UIAlertView * alertCopyToPhotos;
+    
 }
 @property (strong, nonatomic) UITableView *tableView;
 @end
@@ -31,8 +95,10 @@
         countPlayers = 1;
         _localMovies = [NSMutableArray array];
         _remoteMovies = [NSMutableArray array];
-        [_remoteMovies addObject:@"rtsp://184.72.239.149/vod/mp4:BigBuckBunny_115k.mov"];
-        [_remoteMovies addObject:@"rtmp://184.72.239.149/vod/BigBuckBunny_115k.mov"];
+
+        [_remoteMovies addObject:[[Url alloc] initWithParam:@"rtsp://184.72.239.149/vod/mp4:BigBuckBunny_115k.mov" image:nil]];
+        [_remoteMovies addObject:[[Url alloc] initWithParam:@"rtmp://184.72.239.149/vod/BigBuckBunny_115k.mov" image:nil]];
+        [_remoteMovies addObject:[[Url alloc] initWithParam:@"http://devimages.apple.com/iphone/samples/bipbop/gear1/prog_index.m3u8" image:nil]];
     }
     return self;
 }
@@ -177,7 +243,8 @@
                         [ext isEqualToString:@"vob"]) &&
                         ([[path lastPathComponent] caseInsensitiveCompare:@"mic_record_temp.m4a"] != NSOrderedSame)){
                         
-                        [ma addObject:path];
+//                        [ma addObject:path];
+                        [ma addObject:[[Url alloc] initWithParam:path image:nil]];
                         
                         NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:path error:nil];
                         
@@ -192,14 +259,14 @@
     }
 
     // Add all the movies present in the app bundle.
-    NSBundle *bundle = [NSBundle mainBundle];
-    [ma addObjectsFromArray:[bundle pathsForResourcesOfType:@"mp4" inDirectory:@"SampleMovies"]];
-    [ma addObjectsFromArray:[bundle pathsForResourcesOfType:@"m4a" inDirectory:@"SampleMovies"]];
-    [ma addObjectsFromArray:[bundle pathsForResourcesOfType:@"mov" inDirectory:@"SampleMovies"]];
-    [ma addObjectsFromArray:[bundle pathsForResourcesOfType:@"m4v" inDirectory:@"SampleMovies"]];
-    [ma addObjectsFromArray:[bundle pathsForResourcesOfType:@"wav" inDirectory:@"SampleMovies"]];
-
-    [ma sortedArrayUsingSelector:@selector(compare:)];
+//    NSBundle *bundle = [NSBundle mainBundle];
+//    [ma addObjectsFromArray:[bundle pathsForResourcesOfType:@"mp4" inDirectory:@"SampleMovies"]];
+//    [ma addObjectsFromArray:[bundle pathsForResourcesOfType:@"m4a" inDirectory:@"SampleMovies"]];
+//    [ma addObjectsFromArray:[bundle pathsForResourcesOfType:@"mov" inDirectory:@"SampleMovies"]];
+//    [ma addObjectsFromArray:[bundle pathsForResourcesOfType:@"m4v" inDirectory:@"SampleMovies"]];
+//    [ma addObjectsFromArray:[bundle pathsForResourcesOfType:@"wav" inDirectory:@"SampleMovies"]];
+//
+//    [ma sortedArrayUsingSelector:@selector(compare:)];
     
     //_localMovies = [ma copy];
     
@@ -219,6 +286,151 @@ int exists(const char *fname)
 }
 
 -(NSString*) writeVideoFileIntoTemp:(NSString*)fileName andAsset:(ALAsset*)asset
+{
+    NSString * tmpfile = [NSTemporaryDirectory() stringByAppendingPathComponent:fileName];
+    
+    if (exists([tmpfile cStringUsingEncoding:1]))
+        return tmpfile;
+    
+    return tmpfile;
+}
+
+- (void)updateAssetsLibrary
+{
+    if (assetsLibrary == nil)
+    {
+        assetsLibrary = [[ALAssetsLibrary alloc] init];
+//        ALAssetsLibrary *notificationSender = nil;
+//        NSString *minimumSystemVersion = @"4.1";
+//        NSString *systemVersion = [[UIDevice currentDevice] systemVersion];
+//        if ([systemVersion compare:minimumSystemVersion options:NSNumericSearch] != NSOrderedAscending)
+//            notificationSender = assetsLibrary;
+//        
+//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(assetsLibraryDidChange:) name:ALAssetsLibraryChangedNotification
+//             object:notificationSender];
+    }
+    
+    count_local_files = 0;
+    [assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop)
+     {
+         if (group)
+         {
+             [group setAssetsFilter:[ALAssetsFilter allVideos]];
+             [group enumerateAssetsUsingBlock:^(ALAsset *asset, NSUInteger index, BOOL *stop)
+              {
+                  if (asset/* && count_local_files <= 3*/)
+                  {
+                      ALAssetRepresentation *defaultRepresentation = [asset defaultRepresentation];
+                      NSString *moviePath1 = [[defaultRepresentation url] absoluteString];
+                      NSString *fileName = [defaultRepresentation filename];
+                      NSString * fileNameWithDot = [NSString stringWithFormat:@"%@%@", @".", fileName];
+                      
+                      
+                      count_local_files++;
+                      NSLog(@"Video:%@ - %@",fileNameWithDot, moviePath1);
+                      
+                      NSString * tmpfile = [self writeVideoFileIntoTemp:fileName andAsset:asset];
+                      NSLog(@"Saved video:%@ ", tmpfile);
+                      
+                      [_localMovies addObject:[[Url alloc] initWithParam:tmpfile image:nil]];
+                      
+                  }
+              } ];
+         }
+         // group == nil signals we are done iterating.
+         else
+         {
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 //[self updateBrowserItemsAndSignalDelegate:assetItems];
+                 //                loadImgView.hidden = NO;
+                 //                [spinner stopAnimating];
+                 //                [loadImgView removeFromSuperview];
+                 //selectVideoBtn .userInteractionEnabled = YES;
+                 NSArray* tmpDirectory = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:NSTemporaryDirectory() error:NULL];
+                 for (NSString *file in tmpDirectory)
+                 {
+                     NSString * fileName = [NSString stringWithFormat:@"%@/%@", [NSTemporaryDirectory() stringByAppendingPathComponent:@""], file];
+                     NSLog(@"Local file: %@", fileName);
+                     
+                     Url* cur = [[Url alloc] initWithParam:fileName image:nil];
+                     if (![_localMovies containsObject:cur])
+                     {
+                         [_localMovies addObject:cur];
+                     }
+//                     [_localMovies addObject:fileName];
+                 }
+
+                 //NSString *path = [[NSBundle mainBundle] pathForResource:@"test" ofType:@"mp4"];
+                 //[_localMovies addObject:path];
+
+                 [self.tableView reloadData];
+             });
+         }
+     }
+     failureBlock:^(NSError *error)
+     {
+         NSLog(@"error enumerating AssetLibrary groups %@\n", error);
+     }];
+}
+
+- (void)checkIsLocalAndCopyToOwnTemp: (NSString*)path
+{
+    if (path == nil || [path length] <= 0)
+        return;
+    
+    if (assetsLibrary == nil)
+    {
+        assetsLibrary = [[ALAssetsLibrary alloc] init];
+    }
+    
+    assetSaved = NULL;
+    [assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop)
+     {
+         if (group)
+         {
+             [group setAssetsFilter:[ALAssetsFilter allVideos]];
+             [group enumerateAssetsUsingBlock:^(ALAsset *asset, NSUInteger index, BOOL *stop)
+              {
+                  if (asset/* && count_local_files <= 3*/)
+                  {
+                      ALAssetRepresentation *defaultRepresentation = [asset defaultRepresentation];
+                      NSString *moviePath1 = [[defaultRepresentation url] absoluteString];
+                      NSString *fileName = [defaultRepresentation filename];
+                      NSString *fileNameWithDot = [NSString stringWithFormat:@"%@%@", @".", fileName];
+                      
+                      NSLog(@"Video:%@ - %@",fileNameWithDot, moviePath1);
+                      
+                      NSString * tmpfile = [NSTemporaryDirectory() stringByAppendingPathComponent:fileName];
+                      NSLog(@"Video path:%@ - %@, %d, %d",tmpfile, path, [tmpfile isEqualToString: path], exists([tmpfile cStringUsingEncoding:1]));
+                      if (![tmpfile isEqualToString: path] || exists([tmpfile cStringUsingEncoding:1]))
+                          return;
+                      
+                      assetSaved = asset;
+                  }
+              }];
+         }
+         // group == nil signals we are done iterating.
+         else
+         {
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 
+                 if (assetSaved == NULL)
+                     return;
+                 
+                 UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"" message:@"For play video, we need copy movie to app temp directory!\nDo you agree?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes",nil];
+                 
+                 alert.tag = 7890;
+                 [alert show];
+             });
+         }
+     }
+     failureBlock:^(NSError *error)
+     {
+         NSLog(@"error enumerating AssetLibrary groups %@\n", error);
+     }];
+}
+
+-(NSString*) writeVideoFileIntoTempWithCopyContent:(NSString*)fileName andAsset:(ALAsset*)asset
 {
     NSString * tmpfile = [NSTemporaryDirectory() stringByAppendingPathComponent:fileName];
     
@@ -258,83 +470,6 @@ int exists(const char *fname)
     return tmpfile;
 }
 
-//- (void)assetsLibraryDidChange:(NSNotification*)changeNotification
-//{
-//    [self updateAssetsLibrary];
-//}
-
-- (void)updateAssetsLibrary
-{
-    if (assetsLibrary == nil)
-    {
-        assetsLibrary = [[ALAssetsLibrary alloc] init];
-//        ALAssetsLibrary *notificationSender = nil;
-//        NSString *minimumSystemVersion = @"4.1";
-//        NSString *systemVersion = [[UIDevice currentDevice] systemVersion];
-//        if ([systemVersion compare:minimumSystemVersion options:NSNumericSearch] != NSOrderedAscending)
-//            notificationSender = assetsLibrary;
-//        
-//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(assetsLibraryDidChange:) name:ALAssetsLibraryChangedNotification
-//             object:notificationSender];
-    }
-    
-    count_local_files = 0;
-    [assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop)
-     {
-         if (group)
-         {
-             [group setAssetsFilter:[ALAssetsFilter allVideos]];
-             [group enumerateAssetsUsingBlock:^(ALAsset *asset, NSUInteger index, BOOL *stop)
-              {
-                  if (asset && count_local_files <= 3)
-                  {
-                      ALAssetRepresentation *defaultRepresentation = [asset defaultRepresentation];
-                      NSString *moviePath1 = [[defaultRepresentation url] absoluteString];
-                      NSString *fileName = [defaultRepresentation filename];
-                      NSString * fileNameWithDot = [NSString stringWithFormat:@"%@%@", @".", fileName];
-                      
-                      
-                      count_local_files++;
-                      NSLog(@"Video:%@ - %@",fileNameWithDot, moviePath1);
-                      
-                      NSString * tmpfile = [self writeVideoFileIntoTemp:fileName andAsset:asset];
-                      NSLog(@"Saved video:%@ ", tmpfile);
-                      
-                      //[_localMovies addObject:tmpfile];
-                  }
-              } ];
-         }
-         // group == nil signals we are done iterating.
-         else
-         {
-             dispatch_async(dispatch_get_main_queue(), ^{
-                 //[self updateBrowserItemsAndSignalDelegate:assetItems];
-                 //                loadImgView.hidden = NO;
-                 //                [spinner stopAnimating];
-                 //                [loadImgView removeFromSuperview];
-                 //selectVideoBtn .userInteractionEnabled = YES;
-                 NSArray* tmpDirectory = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:NSTemporaryDirectory() error:NULL];
-                 for (NSString *file in tmpDirectory)
-                 {
-                     NSString * fileName = [NSString stringWithFormat:@"%@/%@", [NSTemporaryDirectory() stringByAppendingPathComponent:@""], file];
-                     NSLog(@"Local file: %@", fileName);
-                     
-                     [_localMovies addObject:fileName];
-                 }
-
-                 //NSString *path = [[NSBundle mainBundle] pathForResource:@"test" ofType:@"mp4"];
-                 //[_localMovies addObject:path];
-
-                 [self.tableView reloadData];
-             });
-         }
-     }
-     failureBlock:^(NSError *error)
-     {
-         NSLog(@"error enumerating AssetLibrary groups %@\n", error);
-     }];
-}
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -370,18 +505,123 @@ int exists(const char *fname)
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
-    NSString *path;
+    Url* url = NULL;
+    
+    NSString* path = NULL;
+    UIImage* image = NULL;
     
     if (indexPath.section == 0) {
         
-        path = _remoteMovies[indexPath.row];
+        url = [_remoteMovies objectAtIndex:indexPath.row];
+        path = [url getText];
         cell.textLabel.text = path;//.lastPathComponent;
         
     } else {
         
-        path = _localMovies[indexPath.row];
+        url = [_localMovies objectAtIndex:indexPath.row];
+        path = [url getText];
         cell.textLabel.text = path.lastPathComponent;
     }
+
+    image = [url getImage];
+    
+    CGSize size = CGSizeMake(320, 240);
+    UIGraphicsBeginImageContextWithOptions(size, YES, 0);
+    [[UIColor whiteColor] setFill];
+    UIRectFill(CGRectMake(0, 0, size.width, size.height));
+    
+    if (image == nil)
+    {
+        cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
+    }
+    else
+    {
+        cell.imageView.image = image;
+    }
+    UIGraphicsEndImageContext();
+    
+    if (image != nil)
+    {
+        return cell;
+    }
+    
+    // Fetch using GCD
+    dispatch_queue_t downloadThumbnailQueue = dispatch_queue_create("Get Url Thumbnails", NULL);
+    dispatch_async(downloadThumbnailQueue, ^{
+        
+        //return;
+        
+        Thumbnailer* thumb = [[Thumbnailer alloc] init];
+        ThumbnailerConfig* confThumb = [[ThumbnailerConfig alloc] init];
+        confThumb.connectionUrl = path;
+        confThumb.outWidth = 320;
+        confThumb.outHeight = 240;
+        
+        NSCondition* waitOpen = [thumb Open:confThumb];
+        [waitOpen lock];
+        [waitOpen wait];
+        LoggerStream(1, @"Tumbnailer wait finished.");
+        [waitOpen unlock];
+        
+        if ([thumb getState] != ThumbnailerOpened)
+        {
+            LoggerStream(1, @"failed open thumbnailer %d", 0);
+            return;
+        }
+        
+        int32_t width = 0;
+        int32_t height = 0;
+        int32_t bytes_per_row = 0;
+        
+        int buffer_size = confThumb.outWidth * confThumb.outHeight * 4;
+        uint8_t* buffer = malloc(buffer_size);
+        
+        int rc = [thumb getFrame:buffer buffer_size:buffer_size width:&width height:&height bytes_per_row:&bytes_per_row];
+        LoggerStream(1, @"Thumbnailer getFrame: rc: %d, width: %d, height: %d bytes_per_row: %d", rc, width, height, bytes_per_row);
+        [thumb Close];
+
+        if (rc <= 0)
+        {
+            LoggerStream(1, @"failed get thumbnailer %d", rc);
+            free(buffer);
+            return;
+        }
+        
+        
+        CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+        // Create a bitmap graphics context with the sample buffer data.
+        CGContextRef context= CGBitmapContextCreate(buffer, width, height, 8, bytes_per_row, colorSpace,  kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
+        
+        CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
+        
+        // Create a Quartz image from the pixel data in the bitmap graphics context
+        CGImageRef quartzImage = CGBitmapContextCreateImage(context);
+        UIImage* myImage = [[UIImage alloc] initWithCGImage:quartzImage];
+        
+        // Free up the context and color space
+        CFRelease(quartzImage);
+        CGContextRelease(context);
+        CGColorSpaceRelease(colorSpace);
+        
+        free(buffer);
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UITableViewCell *cellToUpdate = [self.tableView cellForRowAtIndexPath:indexPath]; // create a copy of the cell to avoid keeping a strong pointer to "cell" since that one may have been reused by the time the block is ready to update it.
+            if (cellToUpdate != nil)
+            {
+                Url* url = NULL;
+                if (indexPath.section == 0) {
+                    url = [_remoteMovies objectAtIndex:indexPath.row];
+                } else {
+                    url = [_localMovies objectAtIndex:indexPath.row];
+                }
+                
+                [url setImage:myImage];
+                [cellToUpdate.imageView setImage:myImage];
+                [cellToUpdate setNeedsLayout];
+            }
+        });
+    });
 
     return cell;
 }
@@ -390,26 +630,24 @@ int exists(const char *fname)
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    Url* url = NULL;
     if (indexPath.section == 0) {
-        
         if (indexPath.row >= _remoteMovies.count) return;
-        _current_path = _remoteMovies[indexPath.row];
-        
+        url = [_remoteMovies objectAtIndex:indexPath.row];
+        _current_path = [url getText];
     } else {
-
         if (indexPath.row >= _localMovies.count) return;
-        _current_path = _localMovies[indexPath.row];
+        url = [_localMovies objectAtIndex:indexPath.row];
+        _current_path = [url getText];
+        [self checkIsLocalAndCopyToOwnTemp:_current_path];
     }
-
-//    MovieViewController *vc = [MovieViewController movieViewControllerWithContentPath:_current_path hw:1];
-//    [self presentViewController:vc animated:YES completion:nil];
 
     countPlayers = 1;
     UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Select the number of players"
                                                    message: nil
                                                   delegate: self
-                                         cancelButtonTitle:@"Select"
-                                         otherButtonTitles: nil];
+                                         cancelButtonTitle:@"Cancel"
+                                         otherButtonTitles:@"Select", @"Copy To Photos", nil];
     
 //    [alert addButtonWithTitle:[NSString stringWithFormat:@"1"]];
 //    [alert addButtonWithTitle:[NSString stringWithFormat:@"2"]];
@@ -455,6 +693,16 @@ int exists(const char *fname)
     countPlayers = row + 1;
 }
 
+
+- (void)video:(NSString *) videoPath didFinishSavingWithError: (NSError *) error contextInfo: (void *) contextInfo
+{
+    NSLog(@"didFinishSavingWithError: %@", error);
+    [alertCopyToPhotos dismissWithClickedButtonIndex:-1 animated:YES];
+    alertCopyToPhotos = nil;
+//    if(error)
+//        NSLog(@"didFinishSavingWithError: %@", error);
+}
+              
 -(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if (alertView.tag == 3456 && buttonIndex == 1)
@@ -465,14 +713,15 @@ int exists(const char *fname)
             return;
         
         _last_entered_url = newUrl.text;
-        [_remoteMovies addObject:newUrl.text];
+        [_remoteMovies addObject:[[Url alloc] initWithParam:newUrl.text image:nil]];
+        
 //        [self.tableView reloadData];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
         });
     }
 
-    if (alertView.tag == 111 && buttonIndex == 0)
+    if (alertView.tag == 111 && buttonIndex == 1)
     {
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Select decoder type"
                                                        message: nil
@@ -487,6 +736,22 @@ int exists(const char *fname)
         [alert show];
     }
 
+    if (alertView.tag == 111 && buttonIndex == 2)
+    {
+        alertCopyToPhotos = [[UIAlertView alloc] initWithTitle:@"" message:@"Movie copying to photos, wait..." delegate:nil cancelButtonTitle:nil otherButtonTitles:nil];
+        [alertCopyToPhotos show];
+        
+//        NSString *documentDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES) objectAtIndex:0];
+//        LoggerStream(1, @"Copy dir doc : %@", documentDirectory);
+        LoggerStream(1, @"Copy dir path: %@", _current_path);
+        
+//        NSString *videoFile = [documentDirectory stringByAppendingPathComponent:@"video.mp4"];
+        UISaveVideoAtPathToSavedPhotosAlbum(_current_path, self, @selector(video:didFinishSavingWithError:contextInfo:), nil);
+        
+        
+        
+    }
+    
     if (alertView.tag == 888 && buttonIndex != 0)
     {
         LoggerStream(1, @"Stream selected: %d", buttonIndex);
@@ -498,6 +763,31 @@ int exists(const char *fname)
         vc = [MovieViewController movieViewControllerWithContentPath:_current_path hw:(buttonIndex-1) countInstances:countPlayers];
         [self presentViewController:vc animated:YES completion:nil];
         LoggerStream(1, @"Stream opened: %d", buttonIndex);
+    }
+    
+    if (alertView.tag == 7890 && buttonIndex != 0)
+    {
+        UIAlertView *alertCopyFile = [[UIAlertView alloc] initWithTitle:@"" message:@"Movie copying, wait..." delegate:nil cancelButtonTitle:nil otherButtonTitles:nil];
+        [alertCopyFile show];
+        
+        dispatch_queue_t copyQueue = dispatch_queue_create("Copy file", NULL);
+        dispatch_async(copyQueue, ^{
+            
+            ALAssetRepresentation *defaultRepresentation = [assetSaved defaultRepresentation];
+            NSString *moviePath1 = [[defaultRepresentation url] absoluteString];
+            NSString *fileName = [defaultRepresentation filename];
+            NSString *fileNameWithDot = [NSString stringWithFormat:@"%@%@", @".", fileName];
+            
+            NSLog(@"Video:%@ - %@",fileNameWithDot, moviePath1);
+            
+            NSString * tmpfile = [self writeVideoFileIntoTempWithCopyContent:fileName andAsset:assetSaved];
+            NSLog(@"Saved video:%@ ", tmpfile);
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [alertCopyFile dismissWithClickedButtonIndex:0 animated:YES];
+            });
+        });
+        
     }
 }
 

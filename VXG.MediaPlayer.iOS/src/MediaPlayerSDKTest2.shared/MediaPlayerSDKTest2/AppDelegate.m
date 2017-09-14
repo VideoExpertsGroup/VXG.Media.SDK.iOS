@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2011-2017 VXG Inc.
+ */
+
 #import "AppDelegate.h"
 #import "MainViewController.h"
 

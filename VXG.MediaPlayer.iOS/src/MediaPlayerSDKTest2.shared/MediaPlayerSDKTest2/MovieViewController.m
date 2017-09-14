@@ -1,7 +1,13 @@
+/*
+ * Copyright (c) 2011-2017 VXG Inc.
+ */
 
 #import "MovieViewController.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import <QuartzCore/QuartzCore.h>
+#import <AssetsLibrary/AssetsLibrary.h>
+
+#import "InternalBuffersScheduler.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 static NSString * formatTimeInterval(CGFloat seconds, BOOL isLeft)
@@ -69,6 +75,7 @@ static NSMutableDictionary * gHistory;
 
     UIButton            *_doneButton;
     UIButton            *_shotButton;
+    UIButton            *_videoCallbackButton;
     UILabel             *_progressLabel;
     UILabel             *_leftLabel;
     UIButton            *_infoButton;
@@ -104,6 +111,17 @@ static NSMutableDictionary * gHistory;
     CGPoint             touchMoveLast;
     
     AVAudioRecorder*    recorder;
+    
+    BOOL                _showVideoCallbackAlertView;
+    UIAlertView*        shotAlertView;
+    UIAlertView*        videoCallbackAlertView;
+    
+    ALAssetsLibrary*    assetsLibrary;
+    
+    BOOL                _isStarting;
+
+    InternalBuffersScheduler*  buffersScheduler;
+    
 }
 
 @end
@@ -165,6 +183,11 @@ static NSMutableDictionary * gHistory;
         shot_buffer = malloc(shot_buffer_size);
         
         _isRecord = NO;
+        _isStarting = NO;
+
+        buffersScheduler = nil;
+
+        //buffersScheduler = [[InternalBuffersScheduler alloc] initWithParams:
         
     }
     return self;
@@ -301,12 +324,12 @@ static NSMutableDictionary * gHistory;
     _progressLabel.text = @"";
     _progressLabel.font = [UIFont systemFontOfSize:12];
     
-    _progressSlider = [[UISlider alloc] initWithFrame:CGRectMake(100, 2, width-197, topH)];
+    _progressSlider = [[UISlider alloc] initWithFrame:CGRectMake(100, 2, width-227, topH)];
     _progressSlider.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     _progressSlider.continuous = NO;
     _progressSlider.value = 0;
 
-    _leftLabel = [[UILabel alloc] initWithFrame:CGRectMake(width-92, 1, 60, topH)];
+    _leftLabel = [[UILabel alloc] initWithFrame:CGRectMake(width-122, 1, 60, topH)];
     _leftLabel.backgroundColor = [UIColor clearColor];
     _leftLabel.opaque = NO;
     _leftLabel.adjustsFontSizeToFitWidth = NO;
@@ -318,7 +341,7 @@ static NSMutableDictionary * gHistory;
     
    // _infoButton = [UIButton buttonWithType:UIButtonTypeInfoDark];
     _infoButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _infoButton.frame = CGRectMake(width-62, (topH-20)/2+1, 20, 20);
+    _infoButton.frame = CGRectMake(width-92, (topH-20)/2+1, 20, 20);
     [_infoButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [_infoButton setTitle:NSLocalizedString(@"R", nil) forState:UIControlStateNormal];
     _infoButton.titleLabel.font = [UIFont systemFontOfSize:18];
@@ -327,17 +350,25 @@ static NSMutableDictionary * gHistory;
     [_infoButton addTarget:self action:@selector(infoDidTouch:) forControlEvents:UIControlEventTouchUpInside];
     
     _shotButton = [UIButton buttonWithType:UIButtonTypeContactAdd];
-    _shotButton.frame = CGRectMake(width-31, (topH-20)/2+1, 20, 20);
+    _shotButton.frame = CGRectMake(width-61, (topH-20)/2+1, 20, 20);
     _shotButton.showsTouchWhenHighlighted = YES;
     _shotButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
     [_shotButton addTarget:self action:@selector(shotDidTouch:) forControlEvents:UIControlEventTouchUpInside];
     
+    _videoCallbackButton = [UIButton buttonWithType:UIButtonTypeContactAdd];
+    _videoCallbackButton.frame = CGRectMake(width-31, (topH-20)/2+1, 20, 20);
+    _videoCallbackButton.showsTouchWhenHighlighted = YES;
+    _videoCallbackButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+    [_videoCallbackButton addTarget:self action:@selector(videoCallbackDidTouch:) forControlEvents:UIControlEventTouchUpInside];
+    
+
     [_topHUD addSubview:_doneButton];
     [_topHUD addSubview:_progressLabel];
     [_topHUD addSubview:_progressSlider];
     [_topHUD addSubview:_leftLabel];
     [_topHUD addSubview:_infoButton];
     [_topHUD addSubview:_shotButton];
+    [_topHUD addSubview:_videoCallbackButton];
 
     // bottom hud
 
@@ -531,6 +562,19 @@ static NSMutableDictionary * gHistory;
     
     [UIApplication sharedApplication].idleTimerDisabled = YES;
     
+    shotAlertView = [[UIAlertView alloc] initWithTitle:@"Test video shot"
+                                               message:nil
+                                              delegate:nil
+                                     cancelButtonTitle:@"Close"
+                                     otherButtonTitles:nil];
+    
+    _showVideoCallbackAlertView = NO;
+    videoCallbackAlertView = [[UIAlertView alloc] initWithTitle:@"Test video frame callback"
+                                               message:nil
+                                              delegate:nil
+                                     cancelButtonTitle:@"Close"
+                                     otherButtonTitles:nil];
+    videoCallbackAlertView.tag = 1234;
 }
 
 - (void)didReceiveMemoryWarning
@@ -545,6 +589,7 @@ static NSMutableDictionary * gHistory;
     if (self.presentingViewController)
         [self fullscreenMode:YES];
     
+    _isStarting = NO;
    
     _savedIdleTimer = [[UIApplication sharedApplication] isIdleTimerDisabled];
     
@@ -558,12 +603,24 @@ static NSMutableDictionary * gHistory;
                                                object:[UIApplication sharedApplication]];
     config.connectionUrl = _path;
     config.decodingType = hardware_decoder; // HW
+    config.connectionNetworkProtocol = -1;//-1;//
     config.numberOfCPUCores = 2;
-    //config.connectionNetworkProtocol = 0;
     config.synchroEnable = 1;
-//    config.connectionBufferingTime = 10;
-//    config.connectionDetectionTime = 100;
+    config.connectionBufferingTime = 3000;
+    config.connectionDetectionTime = 2500;
+    config.startPreroll = 0;
+    config.aspectRatioMode = 1;
     
+
+    //config.useNotchFilter = 1;
+
+    //config.decoderLatency = 1;
+    //config.dataReceiveTimeout = 5 * 1000;
+    //config.playbackSendPlayPauseToServer = 0;
+    
+    
+    //config.enableInternalGestureRecognizers = 3;
+    //config.stateWillResignActive = 2;
     //[player Open:config callback:self];
     
     
@@ -648,6 +705,13 @@ static NSMutableDictionary * gHistory;
             [players[i] Open:config callback:self]; usleep(500000);
         }
     }
+    
+    if (alertView.tag == 1234 && buttonIndex == 0)
+    {
+        _showVideoCallbackAlertView = NO;
+        [alertView dismissWithClickedButtonIndex:0 animated:YES];
+    }
+    
 }
 
 - (void) viewWillDisappear:(BOOL)animated
@@ -668,6 +732,7 @@ static NSMutableDictionary * gHistory;
     
     [_activityIndicatorView stopAnimating];
     _interrupted = YES;
+    _showVideoCallbackAlertView = NO;
     for (int i = 0; i < actualPlayerCount; i++)
     {
         [players[i] Close];
@@ -752,20 +817,16 @@ static NSMutableDictionary * gHistory;
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    NSSet *allTouches = [event allTouches];
-    LoggerStream(1, @"touchesBegan: contactCount %i", allTouches.count);
+//    NSSet *allTouches = [event allTouches];
+//    LoggerStream(1, @"touchesBegan: contactCount %i", allTouches.count);
+//    
+//    UITouch *touch = [[allTouches allObjects] objectAtIndex:0];
+//    LoggerStream(1, @"touchesBegan: touchesCount %i", touch.tapCount);
+//    
+//    touchMoveLast = [touch locationInView:self.view];
+//    LoggerStream(1, @"touchesBegan: touchesBeganX %.0f", touchMoveLast.x);
+//    LoggerStream(1, @"touchesBegan: touchesBeganY %.0f", touchMoveLast.y);
     
-    UITouch *touch = [[allTouches allObjects] objectAtIndex:0];
-    LoggerStream(1, @"touchesBegan: touchesCount %i", touch.tapCount);
-    
-    touchMoveLast = [touch locationInView:self.view];
-    LoggerStream(1, @"touchesBegan: touchesBeganX %.0f", touchMoveLast.x);
-    LoggerStream(1, @"touchesBegan: touchesBeganY %.0f", touchMoveLast.y);
-    
-//    if (touch.view == square)
-//    {
-//        square.center = touchLocation;
-//    }
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -782,6 +843,7 @@ static NSMutableDictionary * gHistory;
 
     int directions = [players[0] getAvailableDirectionsForAspectRatioMoveMode];
     LoggerStream(1, @"touchesMoved: getAvailableDirectionsForAspectRatioMoveMode %i", directions);
+    
     MediaPlayerConfig* cfg = [players[0] getConfig];
     if (cfg.aspectRatioMode == 5)
     {
@@ -804,12 +866,12 @@ static NSMutableDictionary * gHistory;
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    NSSet *allTouches = [event allTouches];
-    UITouch *touch = [[allTouches allObjects] objectAtIndex:0];
-    CGPoint touchLocation = [touch locationInView:self.view];
-    
-    LoggerStream(1, @"touchesEnded: touchesEndedX %.0f", touchLocation.x);
-    LoggerStream(1, @"touchesEnded: touchesEndedY %.0f", touchLocation.y);
+//    NSSet *allTouches = [event allTouches];
+//    UITouch *touch = [[allTouches allObjects] objectAtIndex:0];
+//    CGPoint touchLocation = [touch locationInView:self.view];
+//    
+//    LoggerStream(1, @"touchesEnded: touchesEndedX %.0f", touchLocation.x);
+//    LoggerStream(1, @"touchesEnded: touchesEndedY %.0f", touchLocation.y);
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
@@ -862,8 +924,43 @@ static NSMutableDictionary * gHistory;
     if (rc < 0)
         return;
     
+    NSString* info = [players[0] getStreamInfo];
+    LoggerStream(1, @"getStreamInfo: = %@", info);
+
+    // info from thumnailer
+//    Thumbnailer* thumb = [[Thumbnailer alloc] init];
+//    ThumbnailerConfig* confThumb = [[ThumbnailerConfig alloc] init];
+//    confThumb.connectionUrl = config.connectionUrl;
+//    confThumb.outWidth = 328;
+//    confThumb.outHeight = 240;
+//    
+//    dispatch_semaphore_t waitOpen = [thumb Open:confThumb];
+//    dispatch_semaphore_wait(waitOpen, DISPATCH_TIME_FOREVER);
+//
+//    if ([thumb getState] != ThumbnailerOpened)
+//    {
+//        LoggerStream(1, @"failed open thumbnailer %d", 0);
+//        return;
+//    }
+//
+//
+//    int rc = [thumb getFrame:shot_buffer buffer_size:shot_buffer_size width:&desired_width height:&desired_height bytes_per_row:&bytes_per_row];
+//    LoggerStream(1, @"Thumbnailer getFrame: rc: %d, width: %d, height: %d bytes_per_row: %d", rc, desired_width, desired_height, bytes_per_row);
+//
+//    [thumb Close];
+    
     [self showShotView:shot_buffer buffer_size:shot_buffer_size width:desired_width height:desired_height bytes_per_row:bytes_per_row];
 }
+
+- (void) videoCallbackDidTouch: (id) sender
+{
+    if (players[0] == nil)
+        return;
+    
+    [videoCallbackAlertView show];
+    _showVideoCallbackAlertView = YES;
+}
+
 
 - (void) infoDidTouch: (id) sender
 {
@@ -885,7 +982,7 @@ static NSMutableDictionary * gHistory;
     else
     {
         NSString * tmpfile = [NSTemporaryDirectory() stringByAppendingPathComponent:@""];
-        [players[0] recordSetup: tmpfile flags: RECORD_AUTO_START splitTime:0 splitSize:0 prefix:@"TestRecord"];
+        [players[0] recordSetup: tmpfile flags: (RECORD_AUTO_START | RECORD_PTS_CORRECTION) splitTime:0 splitSize:0 prefix:@"TestRecord"];
         [players[0] recordStart];
         _isRecord = YES;
         [_infoButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
@@ -961,25 +1058,28 @@ static NSMutableDictionary * gHistory;
             [_aspectInternalBtn setTitle:@"Original size" forState:UIControlStateNormal];
             break;
         case 4:
-            [_aspectInternalBtn setTitle:@"Zoom" forState:UIControlStateNormal];
+            [_aspectInternalBtn setTitle:@"Zoom/Move" forState:UIControlStateNormal];
+            break;
+        case 5:
+            [_aspectInternalBtn setTitle:@"Zoom/Move" forState:UIControlStateNormal];
             break;
             
-        case 5:
-        {
-            MediaPlayerConfig* cfg = [players[0] getConfig];
-            if (cfg.aspectRatioMode == 5)
-            {
-                cfg.aspectRatioMoveModeX = 50;
-                cfg.aspectRatioMoveModeY = 50;
-                for (int i = 0; i < actualPlayerCount; i++)
-                {
-                    [players[i] updateView];
-                }
-            }
-            [scrollView setUserInteractionEnabled:NO];
-            [_aspectInternalBtn setTitle:@"Move" forState:UIControlStateNormal];
-            break;
-        }
+//        case 5:
+//        {
+//            MediaPlayerConfig* cfg = [players[0] getConfig];
+//            if (cfg.aspectRatioMode == 5)
+//            {
+//                cfg.aspectRatioMoveModeX = 50;
+//                cfg.aspectRatioMoveModeY = 50;
+//                for (int i = 0; i < actualPlayerCount; i++)
+//                {
+//                    [players[i] updateView];
+//                }
+//            }
+////            [scrollView setUserInteractionEnabled:NO];
+//            [_aspectInternalBtn setTitle:@"Zoom/Move" forState:UIControlStateNormal];
+//            break;
+//        }
     }
     
     for (int i = 0; i < actualPlayerCount; i++)
@@ -1061,16 +1161,16 @@ static NSMutableDictionary * gHistory;
 //    UIView *frameView = [self frameView];
 //    frameView.frame = CGRectMake( 0, 0, 500, 500 );
     
-    MediaPlayerConfig* cfg = [players[0] getConfig];
-    if (cfg.aspectRatioMode == 4)
-    {
-        cfg.aspectRatioZoomModePercent--;
-        for (int i = 0; i < actualPlayerCount; i++)
-        {
-            [players[i] updateView];
-        }
-        return;
-    }
+//    MediaPlayerConfig* cfg = [players[0] getConfig];
+//    if (cfg.aspectRatioMode == 4)
+//    {
+//        cfg.aspectRatioZoomModePercent--;
+//        for (int i = 0; i < actualPlayerCount; i++)
+//        {
+//            [players[i] updateView];
+//        }
+//        return;
+//    }
     
     ff_rate = 400;
     for (int i = 0; i < actualPlayerCount; i++)
@@ -1084,16 +1184,16 @@ static NSMutableDictionary * gHistory;
 //    UIView *frameView = [self frameView];
 //    frameView.frame = self.view.bounds;
 
-    MediaPlayerConfig* cfg = [players[0] getConfig];
-    if (cfg.aspectRatioMode == 4)
-    {
-        cfg.aspectRatioZoomModePercent++;
-        for (int i = 0; i < actualPlayerCount; i++)
-        {
-            [players[i] updateView];
-        }
-        return;
-    }
+//    MediaPlayerConfig* cfg = [players[0] getConfig];
+//    if (cfg.aspectRatioMode == 4)
+//    {
+//        cfg.aspectRatioZoomModePercent++;
+//        for (int i = 0; i < actualPlayerCount; i++)
+//        {
+//            [players[i] updateView];
+//        }
+//        return;
+//    }
     
     ff_rate = 3000;
     for (int i = 0; i < actualPlayerCount; i++)
@@ -1208,7 +1308,7 @@ static NSMutableDictionary * gHistory;
  
     if ((_tickCounter % 200) == 0)
     {
-        LoggerStream(1, @"getStatFPS: %d", [players[0] getStatFPS]);
+        LoggerStream(1, @"getStatFPS: %f, isHrdware %d", [players[0] getStatFPS], [players[0] isHardwareDecoding]);
     }
  
     if ((_tickCounter++ % 3) == 0)
@@ -1370,6 +1470,15 @@ static NSMutableDictionary * gHistory;
     NSLog(@"Status called: arg code is %d for instance %@", arg, player1);
     switch(arg)
     {
+        case CP_ERROR_NODATA_TIMEOUT:
+        {
+            dispatch_async(dispatch_get_main_queue(), ^
+            {
+                //[player1 Close];
+                [player1 Stop];
+            });
+            break;
+        }
         case PLP_BUILD_STARTING:
         {
             dispatch_async(dispatch_get_main_queue(), ^
@@ -1379,8 +1488,31 @@ static NSMutableDictionary * gHistory;
             });
             break;
         }
+        case PLP_PLAY_STARTING:
+        {
+            _isStarting = YES;
+            break;
+        }
         case PLP_PLAY_SUCCESSFUL:
         {
+//            if (buffersScheduler == nil)
+//            {
+//                buffersScheduler = [[InternalBuffersScheduler alloc] initWithParams:players[0]
+//                                                                             maxVal:(int)40000
+//                                                                             minVal:(int)10000
+//                                                                         over_speed:(int)1050
+//                                                                          low_speed:(int)950
+//                                                                           interval:(int)100];
+//            }
+//
+//            [buffersScheduler start];
+        }
+        case PLP_PLAY_PAUSE:
+        {
+            if (!_isStarting)
+                break;
+            
+            _isStarting = NO;
             dispatch_async(dispatch_get_main_queue(), ^
             {
                 [_activityIndicatorView stopAnimating];
@@ -1403,6 +1535,11 @@ static NSMutableDictionary * gHistory;
 
         case PLP_CLOSE_STARTING:
         {
+//            if (buffersScheduler != nil)
+//                [buffersScheduler stop];
+//
+//            buffersScheduler = nil;
+
  //           dispatch_async(dispatch_get_main_queue(), ^
  //                          {
                                NSLog(@"Status called: arg code is %d for instance %@ invoke close", arg, player1);
@@ -1410,8 +1547,6 @@ static NSMutableDictionary * gHistory;
  //                          });
            break;
         }
-            
-
     }
     return 0;
 }
@@ -1434,6 +1569,80 @@ static NSMutableDictionary * gHistory;
     NSLog(@"OnReceiveSubtitleString called: %@, %llu", data, duration);
     return 0;
 }
+
+void ReleaseCVPixelBufferForCVPixelBufferCreateWithBytes(void *releaseRefCon, const void *baseAddr)
+{
+    CFDataRef bufferData = (CFDataRef)releaseRefCon;
+    CFRelease(bufferData);
+}
+
+//- (int) OnVideoSourceFrameAvailable: (MediaPlayer*)player
+//                             buffer: (void*)buffer
+//                               size: (int)  size
+//                                pts: (long) pts
+//                                dts: (long) dts
+//                       stream_index: (int)  stream_index
+//                             format: (int)  format
+//{
+//    NSLog(@"OnVideoSourceFrameAvailable called: buffer:%p, size:%d, pts:%ld, dts:%ld, stream_index:%d, format:%d",
+//          buffer, size, pts, dts, stream_index, format);
+//    return 0;
+//}
+
+//- (int) OnAudioSourceFrameAvailable: (MediaPlayer*)player
+//                             buffer: (void*)buffer
+//                               size: (int)  size
+//                                pts: (long) pts
+//                                dts: (long) dts
+//                       stream_index: (int)  stream_index
+//                             format: (int)  format
+//{
+//    NSLog(@"OnAudioSourceFrameAvailable called: buffer:%p, size:%d, pts:%ld, dts:%ld, stream_index:%d, format:%d",
+//          buffer, size, pts, dts, stream_index, format);
+//    return 0;
+//}
+//
+//- (int) OnVideoRendererFrameAvailable: (MediaPlayer*)player
+//                               buffer: (void*)buffer
+//                                 size: (int)  size
+//                        format_fourcc: (char*)format_fourcc
+//                                width: (int)  width
+//                               height: (int)  height
+//                        bytes_per_row: (int)  bytes_per_row
+//                                  pts: (long) pts
+//                            will_show: (int)  will_show
+//{
+//    
+//    NSLog(@"OnVideoRendererFrameAvailable called: buffer:%p, size:%d, format_fourcc:%s, width:%d, height:%d, bytes_per_row:%d, pts:%llu, will_show:%d", buffer, size, format_fourcc, width, height, bytes_per_row, pts, will_show);
+//
+//    NSString* fourccString = [NSString stringWithFormat:@"%s" , format_fourcc];
+//    if ([fourccString caseInsensitiveCompare:@"BGRA"] == NSOrderedSame)
+//    {
+///*        CVPixelBufferRef pixelBuffer;
+//        CFDataRef bufferData = CFDataCreate(NULL, buffer, height * bytes_per_row);
+//        
+//        CVPixelBufferCreateWithBytes(kCFAllocatorSystemDefault,
+//                                     width,
+//                                     height,
+//                                     kCVPixelFormatType_32ARGB,
+//                                     (void*)CFDataGetBytePtr(bufferData),
+//                                     bytes_per_row,
+//                                     ReleaseCVPixelBufferForCVPixelBufferCreateWithBytes,
+//                                     (void*)bufferData,
+//                                     NULL,
+//                                     &pixelBuffer);
+//        
+//        CFRelease(pixelBuffer);*/
+//        
+//        dispatch_async(dispatch_get_main_queue(), ^
+//        {
+//            [self showVideoCallbackView:buffer buffer_size:size width:width height:height bytes_per_row:bytes_per_row];
+//        });
+//    }
+//    
+//    return 0;
+//}
+
 
 - (void) showInfoView: (BOOL) showInfo animated: (BOOL)animated
 {
@@ -1499,12 +1708,6 @@ static NSMutableDictionary * gHistory;
         bytes_per_row:(int32_t)bytes_per_row
 
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Test video shot"
-                                                    message:nil
-                                                   delegate:nil
-                                          cancelButtonTitle:@"Close"
-                                          otherButtonTitles:nil];
-    
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(180, 10, 85, 50)];
     
     CGDataProviderRef provider = CGDataProviderCreateWithData(NULL,
@@ -1531,14 +1734,59 @@ static NSMutableDictionary * gHistory;
     
     //check if os version is 7 or above
     if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1) {
-        [alertView setValue:imageView forKey:@"accessoryView"];
+        [shotAlertView setValue:imageView forKey:@"accessoryView"];
     }else{
-        [alertView addSubview:imageView];
+        [shotAlertView addSubview:imageView];
     }
 
     UIImageWriteToSavedPhotosAlbum(newImage, nil, nil, nil);
     
-    [alertView show];
+    [shotAlertView show];
+}
+
+- (void) showVideoCallbackView:(uint8_t*)buffer
+          buffer_size:(int32_t)buffer_size
+                width:(int32_t)width
+               height:(int32_t)height
+        bytes_per_row:(int32_t)bytes_per_row
+{
+    if (!_showVideoCallbackAlertView)
+        return;
+    
+//    [videoCallbackAlertView dismissWithClickedButtonIndex:0 animated:YES];
+    
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(180, 10, 85, 50)];
+    
+    CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, buffer, buffer_size, NULL);
+    
+    int bitsPerComponent = 8;
+    int bitsPerPixel = 32;
+    int bytesPerRow = bytes_per_row;
+    CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceRGB();
+    CGBitmapInfo bitmapInfo = kCGBitmapByteOrder32Little | kCGImageAlphaNoneSkipFirst;
+    CGColorRenderingIntent renderingIntent = kCGRenderingIntentDefault;
+    CGImageRef imageRef = CGImageCreate(width,
+                                        height,
+                                        8,
+                                        32,
+                                        bytes_per_row,colorSpaceRef,
+                                        bitmapInfo,
+                                        provider,NULL,NO,renderingIntent);
+    
+    UIImage *newImage = [UIImage imageWithCGImage:imageRef];
+    [imageView setImage:newImage];
+    
+    //check if os version is 7 or above
+    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1) {
+        [videoCallbackAlertView setValue:imageView forKey:@"accessoryView"];
+    }else{
+        [videoCallbackAlertView addSubview:imageView];
+    }
+    
+    UIImageWriteToSavedPhotosAlbum(newImage, nil, nil, nil);
+    
+    //[videoCallbackAlertView show];
 }
 
 - (void) createTableView
@@ -1599,6 +1847,7 @@ static NSMutableDictionary * gHistory;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 }
+
 
 @end
 
