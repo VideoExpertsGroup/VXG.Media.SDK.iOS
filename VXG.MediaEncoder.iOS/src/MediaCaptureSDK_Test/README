@@ -1,0 +1,9 @@
+1. prepare MediaCaptureSDK lib, build should be at 
+    $(SRCROOT)/../builds/library/lib/static/MediaCaptureSDK
+    
+2. add to project
+    libiconv.tbd, libz.tbd, libbz2.tbd
+    AVFoundation.framework, AudioToolbox.framebox, CoreMedia.framework, VideoToolbox.framework
+    libMediaCaptureSDK.a
+    
+3. after build enter valid rtmp-url, press "Start pipeline" to build pipeline, "Start stream" for streaming.
