@@ -1,6 +1,6 @@
 // WARNING
 //
-// This file has been generated automatically by Xamarin Studio from the outlets and
+// This file has been generated automatically by Visual Studio from the outlets and
 // actions declared in your storyboard file.
 // Manual changes to this file will not be maintained.
 //
@@ -20,6 +20,10 @@ namespace VXGMediaPlayerSampleApp
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UILabel DebugLbl { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIButton RecordBtn { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
@@ -45,6 +49,10 @@ namespace VXGMediaPlayerSampleApp
         [GeneratedCode ("iOS Designer", "1.0")]
         partial void ConnectBtn_down (UIKit.UIButton sender);
 
+        [Action ("RecordButton_down:")]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        partial void RecordButton_down (UIKit.UIButton sender);
+
         [Action ("ScreenButton_down:")]
         [GeneratedCode ("iOS Designer", "1.0")]
         partial void ScreenButton_down (UIKit.UIButton sender);
@@ -59,6 +67,11 @@ namespace VXGMediaPlayerSampleApp
             if (DebugLbl != null) {
                 DebugLbl.Dispose ();
                 DebugLbl = null;
+            }
+
+            if (RecordBtn != null) {
+                RecordBtn.Dispose ();
+                RecordBtn = null;
             }
 
             if (ScreenBtn != null) {

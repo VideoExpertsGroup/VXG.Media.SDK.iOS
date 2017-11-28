@@ -1,15 +1,19 @@
 ﻿
 
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using UIKit;
 using CoreGraphics;
 using MediaPlayerSDK;
 
+
 namespace VXGMediaPlayerSampleApp
 {
 	public partial class ViewController : UIViewController
 	{
+
+
 
 		Boolean isScreen = false;
 
@@ -19,21 +23,51 @@ namespace VXGMediaPlayerSampleApp
 
 			public override int Status(MediaPlayerSDK.MediaPlayer player, int arg)
 			{
-				System.Console.WriteLine(String.Format("<binary> status: {0} ", arg));
+				System.Console.WriteLine(String.Format("<binary> status: {0} \n ", arg));
 
 				if (_delegate != null) {
 					BeginInvokeOnMainThread( () => {  _delegate.DebugLbl.Text  +=  String.Format(" {0}", arg); });
-					if (arg == (int)MediaPlayerSDK.MediaPlayerNotifyCodes.PlpCloseSuccessful){
-                 	   	BeginInvokeOnMainThread(() => {
-							_delegate.ConnectBtn.SetTitle("Connect", UIControlState.Normal);
-							_delegate.ConnectBtn.Tag = 0;
-						} );
-					}
-				}
-				if (arg == (int)MediaPlayerSDK.MediaPlayerNotifyCodes.PlpBuildSuccessful ) {
-					System.Console.WriteLine( player.StreamInfo );
-				}
+                    if (arg == (int)MediaPlayerSDK.MediaPlayerNotifyCodes.PlpCloseSuccessful)
+                    {
+                        BeginInvokeOnMainThread(() =>
+                        {
+                            _delegate.ConnectBtn.SetTitle("Connect", UIControlState.Normal);
+                            _delegate.ConnectBtn.Tag = 0;
 
+                            _delegate.RecordBtn.Enabled = false;
+                        });
+                    }
+                    if (arg == (int)MediaPlayerSDK.MediaPlayerNotifyCodes.PlpBuildSuccessful)
+                    {
+                        System.Console.WriteLine(player.StreamInfo);
+                        BeginInvokeOnMainThread(() => {
+                            _delegate.RecordBtn.SetTitle("Record", UIControlState.Normal);
+                            _delegate.RecordBtn.Tag = 0;
+                            _delegate.RecordBtn.Enabled = true;
+                        });
+                    }
+                    if (arg == (int)MediaPlayerSDK.MediaPlayerNotifyCodes.CpRecordStopped) {
+                        string recfile = player.RecordGetFileName(0);
+                        System.Console.Write(String.Format("STOPPED (arg {0} ): file recorded {1} \n", arg, recfile) );
+                    }
+                    if (arg == (int) MediaPlayerSDK.MediaPlayerNotifyCodes.CpRecordClosed) {
+                        string recfile = player.RecordGetFileName(0);
+                        System.Console.Write(String.Format("CLOSED: file recorded: {0} \n", recfile));
+
+                        BeginInvokeOnMainThread( () => {
+                            if(UIKit.UIVideo.IsCompatibleWithSavedPhotosAlbum(recfile)) {
+                                System.Console.Write(String.Format("PHOTOS: Can save \n"));
+
+                                UIKit.UIVideo.SaveToPhotosAlbum(recfile, (path, error) => {
+                                    System.Console.Write(String.Format("PHOTOS: Saved succesfully \n"));
+                                });
+                            } else {
+                                System.Console.Write(String.Format("PHOTOS: Can't save \n"));
+                            }
+                        });
+
+                    }
+				}
 				return 0;
 			}
 
@@ -59,6 +93,9 @@ namespace VXGMediaPlayerSampleApp
 		}
 
 		private MediaPlayerSDK.MediaPlayer _mediaPlayer;
+        private string filepath;
+        private string latestfile;
+
 
 		partial void ScreenButton_down(UIButton sender)
 		{
@@ -133,25 +170,63 @@ namespace VXGMediaPlayerSampleApp
 				int rc = _mediaPlayer.UpdateView;
 
 			} else {
+                
 				sender.SetTitle("Connect", UIControlState.Normal);
 				sender.Tag = 0;
+
+                if (RecordBtn.Tag == 1)
+                {
+                    _mediaPlayer?.RecordStop();
+
+                    RecordBtn.Enabled = false;
+                    RecordBtn.SetTitle("Record", UIControlState.Normal);
+                    RecordBtn.Tag = 0;
+
+                }
 
 				_mediaPlayer?.Close();
 			}
 			//throw new NotImplementedException();
 		}
 
+        partial void RecordButton_down(UIButton sender)
+        {
+            if (sender.Tag == 0) {
+                sender.Tag = 1;
+                sender.SetTitle("Recording", UIControlState.Normal);
+
+                _mediaPlayer.RecordSetup(filepath, 
+                                         MediaPlayerRecordFlags.FastStart | MediaPlayerRecordFlags.PtsCorrection | MediaPlayerRecordFlags.FragKeyframe, 0 , 0, "rec"
+                                        );
+                
+                _mediaPlayer.RecordStart();
+            } else {
+                sender.Tag = 0;
+                sender.SetTitle("Record", UIControlState.Normal);
+
+                _mediaPlayer.RecordStop();
+
+            }
+        }
+
 
 		protected ViewController(IntPtr handle) : base(handle) {
 	// Note: this .ctor should not contain any initialization logic.
 		}
 
-		public override void ViewDidLoad()
+
+
+        public override void ViewDidLoad()
 		{
 			base.ViewDidLoad();
 
+
 			_mediaPlayer = new MediaPlayerSDK.MediaPlayer(VideoContentView.Bounds);
 			VideoContentView.AddSubview(_mediaPlayer?.ContentView);
+
+            var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            filepath = Path.Combine(documents, "..", "tmp");
+
 
 		}
 

@@ -27,7 +27,7 @@
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
     <MtouchTlsProvider>Default</MtouchTlsProvider>
     <DeviceSpecificBuild>false</DeviceSpecificBuild>
-    <MtouchExtraArgs>-gcc_flags '-lbz2' --registrar:static</MtouchExtraArgs>
+    <MtouchExtraArgs>-gcc_flags="-lbz2 -lstdc++" --registrar:static</MtouchExtraArgs>
 <MtouchFloat32>true</MtouchFloat32>
 <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
   </PropertyGroup>
@@ -46,7 +46,7 @@
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
     <MtouchTlsProvider>Default</MtouchTlsProvider>
 <RunCodeAnalysis>false</RunCodeAnalysis>  <MtouchFastDev>false</MtouchFastDev>
-<MtouchExtraArgs>--gcc_flags="-lbz2 -liconv"</MtouchExtraArgs>
+<MtouchExtraArgs>--gcc_flags="-lbz2 -liconv -lstdc++"</MtouchExtraArgs>
 <DeviceSpecificBuild>true</DeviceSpecificBuild>
 <MtouchUseLlvm>true</MtouchUseLlvm>
 </PropertyGroup>
@@ -63,7 +63,7 @@
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
     <MtouchTlsProvider>Default</MtouchTlsProvider>
     <MtouchFastDev>false</MtouchFastDev>
-    <MtouchExtraArgs>-gcc_flags -lbz2</MtouchExtraArgs>
+    <MtouchExtraArgs>-gcc_flags="-lbz2 -lstdc++" --registrar:static</MtouchExtraArgs>
     <MtouchFloat32>true</MtouchFloat32>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
@@ -86,6 +86,7 @@
     <MtouchTlsProvider>Default</MtouchTlsProvider>
 <RunCodeAnalysis>false</RunCodeAnalysis><MtouchExtraArgs>--gcc_flags="-lbz2 -liconv -lstdc++"</MtouchExtraArgs>
 <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
+<CodesignProvision></CodesignProvision>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
