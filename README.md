@@ -12,6 +12,9 @@ SDK consists of two modules:
 SDK can be used for IPTV, iOS client of surveillance system, IP camera viewer, TV player, OTT clients and other kinds of applications 
 with video playback. Source code of samples can be provided.
 
+## Documentation 
+The full SDK documentation can be found here - https://dashboard.videoexpertsgroup.com/docs3/.
+
 ## Media Player
    Main features:
    * **Low latency for network streams** – Special API controls playback latency and buffering in every module.
