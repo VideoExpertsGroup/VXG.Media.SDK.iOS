@@ -13,7 +13,7 @@ SDK can be used for IPTV, iOS client of surveillance system, IP camera viewer, T
 with video playback. Source code of samples can be provided.
 
 ## Documentation 
-The full SDK documentation can be found here - https://dashboard.videoexpertsgroup.com/docs3/.
+The full SDK documentation can be found here - https://dashboard.videoexpertsgroup.com/docs/.
 
 ## Media Player
    Main features:
