@@ -13,8 +13,13 @@
 
 @interface MediaPlayerConfig : NSObject
 
+@property (nonatomic) int       contentProviderLibrary;     // 0 - ffmpeg source, 1 - RTSTM source
+
 @property (nonatomic) NSString* connectionUrl;
+@property (nonatomic) NSMutableArray* connectionSegments;
+
 @property (nonatomic) int       connectionNetworkProtocol;  // 0 - udp, 1 - tcp, 2 - http, 3 - https, -1 - AUTO
+@property (nonatomic) int       connectionNetworkMode;      // 0 - no changes, 1 - rtsp listen
 @property (nonatomic) int       connectionDetectionTime;    // in milliseconds
 @property (nonatomic) int       connectionBufferingType;    // 0 - first time only, 1 - continues
 @property (nonatomic) int       connectionBufferingTime;    // in milliseconds
@@ -26,6 +31,8 @@
 @property (nonatomic) int       extraDataFilter;  			// Enable extra data filter in case RTSP
 
 @property (nonatomic) int       decodingType;               // 0 - soft, 1 - hardware
+@property (nonatomic) int       decodingAudioType;          // 0 - soft, 1 - hardware
+
 @property (nonatomic) int       extraDataOnStart;           // 0 - no, 1 - add extradata before frame
 @property (nonatomic) int       decoderLatency;             // This setting is for s/w decoder, 1 - Low latency, frames are not buffered on decoder , 0 - frames are buffered in video decoder  by default
 @property (nonatomic) int       rendererType;               // 0 - egl,  1 - by hardware decoder
@@ -34,6 +41,7 @@
 @property (nonatomic) int       synchroNeedDropFramesOnFF ; // drop video frames if Fast playback(Key frame only)
 @property (nonatomic) int       videoRotate;                // 0 - default, 45, 90 ,135, 180, 225, 270 correct values
 
+@property (nonatomic) int       subRawData;                 // 1 - binary package, 0 - text data after decoder , text data by default
 
 @property (nonatomic) int       enableColorVideo;           // grayscale or color
 
@@ -41,6 +49,10 @@
 @property (nonatomic) int       aspectRatioZoomModePercent; // value in percents
 @property (nonatomic) int       aspectRatioMoveModeX;       // -1 - center, range:0-100, 0 - left side, 100 - right side
 @property (nonatomic) int       aspectRatioMoveModeY;       // -1 - center, range:0-100, 0 - top side, 100 - bottom side
+
+@property (nonatomic) float     aspectRatioZoomModePercentAsFloat; // value in percents
+@property (nonatomic) float     aspectRatioMoveModeXAsFloat;       // -1.0 - center, range:0.0-100.0, 0.0 - left side, 100.0 - right side
+@property (nonatomic) float     aspectRatioMoveModeYAsFloat;       // -1.0 - center, range:0.0-100.0, 0.0 - top side,  100.0 - bottom side
 
 @property (nonatomic) int       enableAudio;                // aspect or not
 @property (nonatomic) int       colorBackground;
@@ -50,10 +62,11 @@
 @property (nonatomic) NSString* sslKey;
 @property (nonatomic) int       extStream;                  // Index of stream
 
-@property (nonatomic) uint64_t  startOffest;                // AV_NOPTS_VALUE
+@property (nonatomic) uint64_t  startOffest;                // MEDIA_NOPTS_VALUE
 @property (nonatomic) int       startPreroll;               // 0 - start immediatly, 1 - start - play 1 frame - pause
 @property (nonatomic) NSString* startPath;
 @property (nonatomic) NSString* startCookies;
+@property (nonatomic) NSString* startHTTPHeaders;
 
 @property (nonatomic) int       ffRate;                     // 1000
 
@@ -66,12 +79,13 @@
 
 //record parameters
 @property (nonatomic) NSString*                 recordPath;
-@property (nonatomic) MediaPlayerRecordFlags    recordFlags;        // 0: stopped. 1: autostart rec. see PlayerRecordFlags
-@property (nonatomic) int                       recordSplitTime;    // seconds. in case PP_RECORD_SPLIT_BY_TIME
-@property (nonatomic) int                       recordSplitSize;    // MB.   in case PP_RECORD_SPLIT_BY_SIZE
+@property (nonatomic) MediaPlayerRecordFlags    recordFlags;         // 0: stopped. 1: autostart rec. see PlayerRecordFlags
+@property (nonatomic) int                       recordFrameDuration; // duration in ms , workaround for some server that provide wrong PTS
+@property (nonatomic) int                       recordSplitTime;     // seconds. in case PP_RECORD_SPLIT_BY_TIME
+@property (nonatomic) int                       recordSplitSize;     // MB.   in case PP_RECORD_SPLIT_BY_SIZE
 @property (nonatomic) NSString*                 recordPrefix;
-@property (nonatomic) int64_t                   recordTrimPosStart; // in ms. (-1) not set, all duration.
-@property (nonatomic) int64_t                   recordTrimPosEnd;   // in ms. (-1) not set, all duration.
+@property (nonatomic) int64_t                   recordTrimPosStart;  // in ms. (-1) not set, all duration.
+@property (nonatomic) int64_t                   recordTrimPosEnd;    // in ms. (-1) not set, all duration.
 
 //audio and subtitle default selection
 @property (nonatomic) int               selectAudio;        // audio select
@@ -81,11 +95,48 @@
 @property (nonatomic) MediaPlayerModes  playerMode;
 
 // adaptive bitrate mode
-@property (nonatomic) int       enableABR;                  // adaptive bitrate
+@property (nonatomic) int       enableABR;                      // adaptive bitrate
 
-@property (nonatomic) int       playbackSendPlayPauseToServer;	// default 0 - off, 1 - on: will send av_read_play/pause
+@property (nonatomic) int       playbackSendPlayPauseToServer;	// default 0 - off, 1 - on: will send media_read_play/pause
 
 @property (nonatomic) int       useNotchFilter;                 // Notch Filter enabling
+
+@property (nonatomic) int       fastDetect;                     // Fast Detect
+@property (nonatomic) int       skipUntilKeyFrame;              // Skip frames until key frame comes on start streaming
+
+@property (nonatomic) int       sendKeepAlive;                  // 0, 1, default: 1 - send "keep-alive" in http header
+
+// license
+@property (nonatomic) NSString* licenseKey;
+
+// log level
++ (void)setLogLevel:(MediaPlayerLogLevel)newValue;
+
++ (void)setLogLevelForObjcPart:(MediaPlayerLogLevel)newValue;
++ (MediaPlayerLogLevel)getLogLevelForObjcPart;
+
++ (void)setLogLevelForNativePart:(MediaPlayerLogLevel)newValue;
++ (MediaPlayerLogLevel)getLogLevelForNativePart;
+
++ (void)setLogLevelForMediaPart:(MediaPlayerLogLevel)newValue;
++ (MediaPlayerLogLevel)getLogLevelForMediaPart;
+
+// latency control
+// Default preset is latency about 0.5 seconds (15 frames ~0.5 second in case 30 fps)
+@property (nonatomic) MediaPlayerLatencyPreset latencyPreset;   // Correct values 0-3 , -1 is custom options are applyed
+
+// Custom setting if latencyPreset is not set
+@property (nonatomic) int       latencySpeedOver;               //  RATE if we need to reduce latency , Correct values: 1000-2000
+@property (nonatomic) int       latencySpeedOver1;              //  RATE if buffer size in 2-3 time more when MAX expected buffer size , Correct values: 1000-2000
+@property (nonatomic) int       latencySpeedDown;               //  RATE if we need to accumulate buffer . Correct values: 500-1000;
+
+@property (nonatomic) int       latencyUpperMaxFrames;          // Upper border when Rate is applyed to LatencySpeedOver,    Correct values: 1-LatencyUpperMaxFrames1;
+@property (nonatomic) int       latencyUpperMaxFrames1;         // Upper border when Rate is applyed to LatencySpeedOver1,  Correct values" 1-1000;
+
+@property (nonatomic) int       latencyUpperNormalFrames;       // Normal state of buffer, Correct values: 0 - LatencyUpperMaxFrames1
+
+@property (nonatomic) int       latencyLowerMinFrames;          // Lowest border when RATE is changed from Normal to SpeedDown
+@property (nonatomic) int       latencyLowerNormalFrames;       // Normal state when RATE is changed from SpeedDown to Normal
 
 // iOS specific
 @property (nonatomic) int       enableInternalGestureRecognizers;	// 0 - off, 1 - pinch(zoom), 2 - pan(move), 4 - single & double tap. Default: (1 | 2 | 4)

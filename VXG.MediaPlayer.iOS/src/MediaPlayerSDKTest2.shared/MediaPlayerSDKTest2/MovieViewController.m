@@ -1644,6 +1644,21 @@ void ReleaseCVPixelBufferForCVPixelBufferCreateWithBytes(void *releaseRefCon, co
 //}
 
 
+- (int) OnVideoRendererFrameAvailable: (MediaPlayer*)player
+                               buffer: (void*)buffer
+                                 size: (int)  size
+                        format_fourcc: (char*)format_fourcc
+                                width: (int)  width
+                               height: (int)  height
+                        bytes_per_row: (int)  bytes_per_row
+                                  pts: (long) pts
+                            will_show: (int)  will_show
+{
+
+    NSLog(@"OnVideoRendererFrameAvailable called: buffer:%p, size:%d, format_fourcc:%s, width:%d, height:%d, bytes_per_row:%d, pts:%llu, will_show:%d", buffer, size, format_fourcc, width, height, bytes_per_row, pts, will_show);
+    return 0;
+}
+
 - (void) showInfoView: (BOOL) showInfo animated: (BOOL)animated
 {
     if (!_tableView)

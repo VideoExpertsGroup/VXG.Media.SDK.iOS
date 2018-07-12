@@ -42,11 +42,10 @@
     <ObjcBindingCoreSource Include="Structs.cs" />
   </ItemGroup>
   <ItemGroup>
-    <NativeReference Include="..\..\..\lib\shared.ffmpeg\libMediaPlayerSDK.a">
+    <NativeReference Include="..\..\..\..\..\VXG.Media.SDK.iOS\VXG.MediaPlayer.iOS\lib\shared.ffmpeg\libMediaPlayerSDK.a">
       <Kind>Static</Kind>
-      <SmartLink>False</SmartLink>
     </NativeReference>
-    <NativeReference Include="..\..\..\..\Frameworks\ffmpeg\applestore\ffmpeg.framework">
+    <NativeReference Include="..\..\..\..\..\VXG.Media.SDK.iOS\Frameworks\ffmpeg\universal\ffmpeg.framework">
       <Kind>Framework</Kind>
       <SmartLink>False</SmartLink>
     </NativeReference>

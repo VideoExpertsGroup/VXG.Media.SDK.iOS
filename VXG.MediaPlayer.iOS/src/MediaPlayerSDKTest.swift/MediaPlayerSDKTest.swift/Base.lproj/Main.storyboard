@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -45,16 +45,23 @@
                                     <action selector="ConnectBtn_click:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qUN-0J-hNS"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="rtsp://184.72.239.149/vod/mp4:BigBuckBunny_115k.mov" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="nXt-gw-M9J">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="http://devimages.apple.com/iphone/samples/bipbop/bipbopall.m3u8" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="nXt-gw-M9J">
                                 <rect key="frame" x="16" y="40" width="245" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
                             </textField>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0De-ok-ar5">
                                 <rect key="frame" x="16" y="116" width="343" height="531"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                             </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pFL-DI-sbr">
+                                <rect key="frame" x="24" y="116" width="120" height="90"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="90" id="48f-Yu-fX0"/>
+                                    <constraint firstAttribute="width" constant="120" id="py1-wM-vKn"/>
+                                </constraints>
+                            </imageView>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8DQ-nx-uk9">
                                 <rect key="frame" x="16" y="116" width="343" height="531"/>
                                 <subviews>
@@ -72,6 +79,7 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="pFL-DI-sbr" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="8" id="0KL-x1-hcB"/>
                             <constraint firstItem="Dom-zk-Bk2" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="9JH-XO-PFn"/>
                             <constraint firstItem="nXt-gw-M9J" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="AMG-Ut-C6R"/>
                             <constraint firstItem="Dom-zk-Bk2" firstAttribute="leading" secondItem="nXt-gw-M9J" secondAttribute="trailing" constant="8" id="Cg1-2F-N1U"/>
@@ -92,6 +100,7 @@
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="0De-ok-ar5" secondAttribute="bottom" constant="20" id="fMt-Iv-YV4"/>
                             <constraint firstItem="Dom-zk-Bk2" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="fOL-Ib-2tW"/>
                             <constraint firstAttribute="trailingMargin" secondItem="nJs-QO-rIc" secondAttribute="trailing" id="fSI-X1-UVT"/>
+                            <constraint firstItem="pFL-DI-sbr" firstAttribute="top" secondItem="flS-nj-OcB" secondAttribute="bottom" constant="8" id="fcS-oY-GyL"/>
                             <constraint firstItem="0De-ok-ar5" firstAttribute="top" secondItem="flS-nj-OcB" secondAttribute="bottom" constant="8" id="iuK-Ur-P6j"/>
                             <constraint firstItem="nJs-QO-rIc" firstAttribute="leading" secondItem="flS-nj-OcB" secondAttribute="trailing" constant="8" id="msg-ML-aDC"/>
                             <constraint firstItem="flS-nj-OcB" firstAttribute="top" secondItem="nXt-gw-M9J" secondAttribute="bottom" constant="8" id="oVt-zP-6dR"/>
@@ -108,6 +117,7 @@
                         <outlet property="ScrenshotBtn" destination="nJs-QO-rIc" id="kCB-xV-4YH"/>
                         <outlet property="StatusLine" destination="flS-nj-OcB" id="IB3-Bd-Nuv"/>
                         <outlet property="VideoContentView" destination="0De-ok-ar5" id="llZ-5Z-S7n"/>
+                        <outlet property="thumbnail" destination="pFL-DI-sbr" id="3Hg-VK-3UH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

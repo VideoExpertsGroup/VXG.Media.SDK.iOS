@@ -1612,7 +1612,7 @@ void ReleaseCVPixelBufferForCVPixelBufferCreateWithBytes(void *releaseRefCon, co
 //                                  pts: (long) pts
 //                            will_show: (int)  will_show
 //{
-//    
+//
 //    NSLog(@"OnVideoRendererFrameAvailable called: buffer:%p, size:%d, format_fourcc:%s, width:%d, height:%d, bytes_per_row:%d, pts:%llu, will_show:%d", buffer, size, format_fourcc, width, height, bytes_per_row, pts, will_show);
 //
 //    NSString* fourccString = [NSString stringWithFormat:@"%s" , format_fourcc];
@@ -1639,8 +1639,8 @@ void ReleaseCVPixelBufferForCVPixelBufferCreateWithBytes(void *releaseRefCon, co
 //            [self showVideoCallbackView:buffer buffer_size:size width:width height:height bytes_per_row:bytes_per_row];
 //        });
 //    }
-//    
-//    return 0;
+//
+//   return 0;
 //}
 
 

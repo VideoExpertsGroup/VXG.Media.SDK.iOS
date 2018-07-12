@@ -8,26 +8,26 @@
 #import <UIKit/UIKit.h>
 
 
-
-enum StreamType {
+typedef NS_ENUM(int, StreamType){
     STREAM_TYPE_UNKNOWN = 0,
     STREAM_TYPE_RTMP_PUBLISH = 1,
     STREAM_TYPE_RTSP_SERVER = 2,
     STREAM_TYPE_AMOUNT = 3
 };
 
-enum VideoFormat {
+typedef NS_ENUM(int, VideoFormat){
     VIDEO_FORMAT_H264 = 0,
     VIDEO_FORMAT_NONE = 1
 };
 
-enum AudioFormat {
+typedef NS_ENUM(int, AudioFormat){
     AUDIO_FORMAT_AAC = 0,
     AUDIO_FORMAT_ULAW = 1,
-    AUDIO_FORMAT_NONE = 2
+    AUDIO_FORMAT_ALAW = 2,
+    AUDIO_FORMAT_NONE = 3
 };
 
-enum CaptureNotifyCodes {
+typedef NS_ENUM(int, CaptureNotifyCodes){
     CAPTURE_VIDEO_OPENED    = 0,
     CAPTURE_VIDEO_STARTED   = 1,
     CAPTURE_VIDEO_STOPED    = 2,
@@ -63,7 +63,7 @@ enum CaptureNotifyCodes {
     FULL_CLOSE              = 32
 };
 
-enum LogLevels {
+typedef NS_ENUM(int, LogLevels){
     LL_QUIET    = -1,
     LL_PANIC    = 0,
     LL_FATAL    = 1,
@@ -76,7 +76,17 @@ enum LogLevels {
     LL_ALL      = 8
 };
 
-extern int LogLevel;
+typedef NS_ENUM(int, CaptureDevicePosition){
+    Back,
+    Front
+};
+
+typedef NS_ENUM(int, CaptureDeviceOrientation){
+    Landscape,
+    Portrait
+};
+
+extern int VXG_CaptureSDK_LogLevel;
 void LogElement(int loglevel, NSString *format, ... );
 
 @protocol MediaCaptureCallback;
@@ -84,16 +94,18 @@ void LogElement(int loglevel, NSString *format, ... );
 @interface MediaCaptureConfig : NSObject
 -(void) setPreview: (UIView*) previewView;
 -(UIView*) getPreview;
--(int) setVideoConfig: (int) width : (int) height : (int) framerate : (int) bitrate;
+-(int) setVideoConfig: (int) width : (int) height : (int) framerate : (long long) bitrate;
 -(int) getInputWidth;
 -(int) getInputHeight;
 -(int) getInputFramerate;
--(int) getBitrate;
--(int) setSecVideoConfig: (int) width : (int) height : (int) framerate : (int) bitrate;
+-(long long) getBitrate;
+-(int) setSecVideoConfig: (int) width : (int) height : (int) framerate : (long long) bitrate;
 -(int) getSecWidth;
 -(int) getSecHeight;
 -(int) getSecFramerate;
--(int) getSecBitrate;
+-(long long) getSecBitrate;
+-(void) setBitrateLimit:(Boolean) isLimited;
+-(Boolean) isBitrateLimit;
 
 -(int) setRTMPurl: (NSString*) url;
 -(NSString*) getRTMPurl;
@@ -113,6 +125,13 @@ void LogElement(int loglevel, NSString *format, ... );
 - (enum AudioFormat) getAudioFormat;
 - (int) setAudioFormat: (enum AudioFormat) format;
 
+-(void) setLicenseKey: (NSString*) license_key;
+
+-(enum CaptureDevicePosition) getDevicePosition;
+-(void) setDevicePosition: (enum CaptureDevicePosition) devornt;
+
+-(enum CaptureDeviceOrientation) getDeviceOrientation;
+- (void) setDeviceOrientation:(enum CaptureDeviceOrientation)devornt;
 @end
 
 @protocol MediaCaptureCallback <NSObject>
@@ -132,7 +151,12 @@ void LogElement(int loglevel, NSString *format, ... );
 - (long) GetDuration;
 - (long) GetVideoPackets;
 - (long) GetAudioPackets;
+- (UIImage*) getVideoShot;
 
+-(void) changeCapturePosition;
+-(void) changeCaptureOrientation;
+
++ (NSArray<NSDictionary*>*) getFormats;
 @end
 
-
+typedef MediaRecorder MediaCapture;

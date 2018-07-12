@@ -11,8 +11,6 @@
 		50077C431C0F210A001E76FE /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 50077C421C0F210A001E76FE /* Launch Screen.storyboard */; };
 		50077C4A1C0F2CCF001E76FE /* Default-568h.png in Resources */ = {isa = PBXBuildFile; fileRef = 50077C481C0F2CCF001E76FE /* Default-568h.png */; };
 		50077C4B1C0F2CCF001E76FE /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 50077C491C0F2CCF001E76FE /* Default-568h@2x.png */; };
-		5055517C1F6A44A000C648BD /* ffmpeg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5055517B1F6A44A000C648BD /* ffmpeg.framework */; };
-		5055517D1F6A44AD00C648BD /* ffmpeg.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5055517B1F6A44A000C648BD /* ffmpeg.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		507A46331D6D78E500DDFBD6 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 507A46321D6D78E500DDFBD6 /* libc++.tbd */; };
 		507A46351D6D78F000DDFBD6 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 507A46341D6D78F000DDFBD6 /* libz.tbd */; };
 		50AD2F351F42E54D001FB3B5 /* InternalBuffersScheduler.m in Sources */ = {isa = PBXBuildFile; fileRef = 50AD2F341F42E54D001FB3B5 /* InternalBuffersScheduler.m */; };
@@ -54,6 +52,8 @@
 		50D6CFBF1A2C804500CB771F /* libbz2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 50D6CFBE1A2C804500CB771F /* libbz2.dylib */; };
 		50DF2BF41D478A20009C6F10 /* libMediaPlayerSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 50DF2BF31D478A20009C6F10 /* libMediaPlayerSDK.a */; };
 		50EC35E51AAF0E4A00323015 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50EC35E41AAF0E4A00323015 /* AssetsLibrary.framework */; };
+		CE27E09120A19848004D988D /* ffmpeg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE27E09020A19847004D988D /* ffmpeg.framework */; };
+		CE27E09220A1987C004D988D /* ffmpeg.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CE27E09020A19847004D988D /* ffmpeg.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -72,7 +72,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				5055517D1F6A44AD00C648BD /* ffmpeg.framework in Embed Frameworks */,
+				CE27E09220A1987C004D988D /* ffmpeg.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -84,7 +84,6 @@
 		50077C421C0F210A001E76FE /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = "Launch Screen.storyboard"; path = "../Launch Screen.storyboard"; sourceTree = "<group>"; };
 		50077C481C0F2CCF001E76FE /* Default-568h.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h.png"; path = "MediaPlayerSDKTest2/Default-568h.png"; sourceTree = "<group>"; };
 		50077C491C0F2CCF001E76FE /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "MediaPlayerSDKTest2/Default-568h@2x.png"; sourceTree = "<group>"; };
-		5055517B1F6A44A000C648BD /* ffmpeg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ffmpeg.framework; path = ../../../../builds/framework/universal/ffmpeg.framework; sourceTree = "<group>"; };
 		507A46321D6D78E500DDFBD6 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/usr/lib/libc++.tbd"; sourceTree = DEVELOPER_DIR; };
 		507A46341D6D78F000DDFBD6 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
 		50AD2F331F42E54D001FB3B5 /* InternalBuffersScheduler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InternalBuffersScheduler.h; sourceTree = "<group>"; };
@@ -133,6 +132,7 @@
 		50DF2BF31D478A20009C6F10 /* libMediaPlayerSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMediaPlayerSDK.a; path = ../../../../builds/library/lib/libMediaPlayerSDK.a; sourceTree = "<group>"; };
 		50EC35E41AAF0E4A00323015 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.2.sdk/System/Library/Frameworks/AssetsLibrary.framework; sourceTree = DEVELOPER_DIR; };
 		87E793F816390F6D000A0848 /* MediaPlayerSDKTest2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MediaPlayerSDKTest2.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE27E09020A19847004D988D /* ffmpeg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ffmpeg.framework; path = ../../../Frameworks/ffmpeg/universal/ffmpeg.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,7 +140,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5055517C1F6A44A000C648BD /* ffmpeg.framework in Frameworks */,
+				CE27E09120A19848004D988D /* ffmpeg.framework in Frameworks */,
 				507A46351D6D78F000DDFBD6 /* libz.tbd in Frameworks */,
 				507A46331D6D78E500DDFBD6 /* libc++.tbd in Frameworks */,
 				50DF2BF41D478A20009C6F10 /* libMediaPlayerSDK.a in Frameworks */,
@@ -176,6 +176,7 @@
 				87E7940216390F6D000A0848 /* MediaPlayerSDKTest2 */,
 				87E793FB16390F6D000A0848 /* Frameworks */,
 				87E793F916390F6D000A0848 /* Products */,
+				CE27E08F20A1968D004D988D /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -190,7 +191,7 @@
 		87E793FB16390F6D000A0848 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				5055517B1F6A44A000C648BD /* ffmpeg.framework */,
+				CE27E09020A19847004D988D /* ffmpeg.framework */,
 				507A46341D6D78F000DDFBD6 /* libz.tbd */,
 				507A46321D6D78E500DDFBD6 /* libc++.tbd */,
 				50DF2BF31D478A20009C6F10 /* libMediaPlayerSDK.a */,
@@ -239,6 +240,29 @@
 				50D6AD891AADA43600C6E754 /* MediaPlayerSDKTest2-Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		CE27E08F20A1968D004D988D /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				50D295CD1ACBF860004EBFC9 /* CoreMedia.framework */,
+				50D295C91ACBF83E004EBFC9 /* CoreVideo.framework */,
+				50D295CA1ACBF83E004EBFC9 /* VideoToolbox.framework */,
+				50EC35E41AAF0E4A00323015 /* AssetsLibrary.framework */,
+				50D6AD961AADAFE600C6E754 /* CoreGraphics.framework */,
+				50D6AD921AADACEC00C6E754 /* UIKit.framework */,
+				50D6AD901AADAC2300C6E754 /* AVFoundation.framework */,
+				50D6CFBE1A2C804500CB771F /* libbz2.dylib */,
+				50D6CFAE1A2C7E5C00CB771F /* libiconv.dylib */,
+				50D6CFAC1A2C7E5200CB771F /* libz.dylib */,
+				50D6CFAA1A2C7E3F00CB771F /* OpenGLES.framework */,
+				50D6CFA81A2C7E2B00CB771F /* QuartzCore.framework */,
+				50D6CFA61A2C7E2400CB771F /* MediaPlayer.framework */,
+				50D6CFA41A2C7E1300CB771F /* CoreAudio.framework */,
+				50D6CFA21A2C7E0800CB771F /* Accelerate.framework */,
+				50D6CFA01A2C7DFF00CB771F /* AudioToolbox.framework */,
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

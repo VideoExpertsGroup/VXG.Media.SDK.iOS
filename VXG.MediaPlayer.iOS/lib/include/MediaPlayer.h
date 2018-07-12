@@ -49,7 +49,8 @@ typedef NS_ENUM(int, MediaPlayerNotifyCodes)
 	CP_START_BUFFERING              = 115,
 	CP_STOP_BUFFERING               = 116,
     CP_DISCONNECT_SUCCESSFUL        = 117,
-	  	
+	CP_COOKIE_IS_CHANGED            = 118,
+
 	VDP_STOPPED                     = 201,
 	VDP_INIT_FAILED                 = 202,
 	VDP_CRASH                       = 206,
@@ -62,6 +63,7 @@ typedef NS_ENUM(int, MediaPlayerNotifyCodes)
     VRP_FFRAME_APAUSE               = 308,
     VRP_SURFACE_ACQUIRE             = 309,
     VRP_SURFACE_LOST                = 310,
+    VRP_SYNCPOINT                   = 311,
 
 	ADP_STOPPED                     = 400,
 	ADP_INIT_FAILED                 = 401,
@@ -105,15 +107,17 @@ typedef NS_ENUM(int, MediaPlayerModes)
 
 typedef NS_ENUM(int, MediaPlayerRecordFlags)
 {
-    RECORD_NO_START          = 0x00000000,
-    RECORD_AUTO_START        = 0x00000001,
-    RECORD_SPLIT_BY_TIME     = 0x00000002,
-    RECORD_SPLIT_BY_SIZE     = 0x00000004,
-    RECORD_DISABLE_VIDEO     = 0x00000008,
-    RECORD_DISABLE_AUDIO     = 0x00000010,
-    RECORD_PTS_CORRECTION    = 0x00000020,
-    RECORD_FAST_START        = 0x00000040,
-    RECORD_FRAG_KEYFRAME     = 0x00000080
+    RECORD_NO_START           = 0x00000000,
+    RECORD_AUTO_START         = 0x00000001,
+    RECORD_SPLIT_BY_TIME      = 0x00000002,
+    RECORD_SPLIT_BY_SIZE      = 0x00000004,
+    RECORD_DISABLE_VIDEO      = 0x00000008,
+    RECORD_DISABLE_AUDIO      = 0x00000010,
+    RECORD_PTS_CORRECTION     = 0x00000020,
+    RECORD_FAST_START         = 0x00000040,
+    RECORD_FRAG_KEYFRAME      = 0x00000080,
+    RECORD_SYSTEM_TIME_TO_PTS = 0x00000100,
+    RECORD_DEFINED_DURATION   = 0x00000200
 
 };
 
@@ -135,9 +139,40 @@ typedef NS_ENUM(int, MediaPlayerProperties)
 	PROPERTY_PLP_LAST_ERROR        = 3,
 	PROPERTY_PLP_RESPONSE_TEXT     = 4,
 	PROPERTY_PLP_RESPONSE_CODE     = 5,
+    PROPERTY_PLP_COOKIE            = 6,
+    PROPERTY_PLP_PTS_IN_FIRST_RTP  = 7,
+    PROPERTY_PLP_PTS_IN_RANGE      = 8,
+    PROPERTY_PLP_RTCP_PACKAGE      = 9,
+    PROPERTY_PLP_RTCP_SR           = 10,
+    PROPERTY_PLP_RTCP_RR           = 11,
 	PROPERTY_AUDIO_NOTCH_FILTER    = 101
 };
 
+typedef NS_ENUM(int, MediaPlayerLatencyPreset)
+{
+    LATENCY_PRESET_NO_PRESET     = -2,
+    LATENCY_PRESET_CUSTOM_PRESET = -1,
+    LATENCY_PRESET_HIGHEST       = 0,
+    LATENCY_PRESET_HIGH          = 1,
+    LATENCY_PRESET_MIDDLE        = 2,
+    LATENCY_PRESET_LOWEST        = 3
+};
+
+/**
+ *  Log levels now supported by MediaPlayer SDK
+ */
+typedef NS_ENUM(int, MediaPlayerLogLevel)
+{
+    LOG_LEVEL_COMPILED  = -1,
+    LOG_LEVEL_NONE      = 0,
+    LOG_LEVEL_ERROR     = 1,
+    LOG_LEVEL_INFO      = 3,
+    LOG_LEVEL_DEBUG     = 4,
+    LOG_LEVEL_LOG       = 5,
+    LOG_LEVEL_TRACE     = 7
+};
+
+#import "MediaPlayerPlaySegment.h"
 #import "MediaPlayerConfig.h"
 
 // callback
@@ -186,7 +221,6 @@ typedef NS_ENUM(int, MediaPlayerProperties)
 
 @end
 
-
 // main functionailty
 @interface MediaPlayer : NSObject
 
@@ -205,7 +239,10 @@ typedef NS_ENUM(int, MediaPlayerProperties)
 - (MediaPlayerState) getState;
 
 - (int) getPropInt: (MediaPlayerProperties)prop;
+- (int64_t) getPropInt64: (MediaPlayerProperties)prop;
 - (NSString*) getPropString: (MediaPlayerProperties)prop;
+- (char*) getPropBinary: (MediaPlayerProperties)prop
+            buffer_size: (int32_t*)buffer_size;
 
 - (int) updateView;
 
@@ -330,6 +367,9 @@ videodecoder_videorenderer_num_frms:(int*)videodecoder_videorenderer_num_frms
     audiodecoder_audiorenderer_size:(int*)audiodecoder_audiorenderer_size
                       video_latency:(int*)video_latency
                       audio_latency:(int*)audio_latency;
+
+- (void) addPlaySegment:(MediaPlayerPlaySegment*) segment;
+- (void) removePlaySegment:(MediaPlayerPlaySegment*) segment;
 
 @end
 

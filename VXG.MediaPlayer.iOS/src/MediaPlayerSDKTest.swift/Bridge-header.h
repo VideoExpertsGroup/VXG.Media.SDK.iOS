@@ -12,5 +12,8 @@
 #import "M3U8.h"
 #import "MediaPlayer.h"
 #import "MediaPlayerConfig.h"
+#import "MediaPlayerPlaySegment.h"
+#import "Thumbnailer.h"
+#import "ThumbnailerConfig.h"
 
 #endif /* Bridge_header_h */
