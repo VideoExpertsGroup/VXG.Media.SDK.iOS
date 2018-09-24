@@ -3,6 +3,13 @@
 
 @class MediaPlayer;
 
+typedef NS_ENUM(int, MediaPlayerContentProviderLibraryType)
+{
+    CONTENT_PROVIDER_LIBMEDIA  = 0x00000000,
+    CONTENT_PROVIDER_LIBRTSP   = 0x00000001,
+    CONTENT_PROVIDER_LIBWEBRTC = 0x00000002,
+};
+
 typedef NS_ENUM(int, MediaPlayerNotifyCodes)
 {
     PLP_TRIAL_VERSION               = -999,
@@ -145,6 +152,7 @@ typedef NS_ENUM(int, MediaPlayerProperties)
     PROPERTY_PLP_RTCP_PACKAGE      = 9,
     PROPERTY_PLP_RTCP_SR           = 10,
     PROPERTY_PLP_RTCP_RR           = 11,
+    PROPERTY_BACKWARD_AUDIO_FORMAT = 12,
 	PROPERTY_AUDIO_NOTCH_FILTER    = 101
 };
 
@@ -187,11 +195,14 @@ typedef NS_ENUM(int, MediaPlayerLogLevel)
                 size: (int)  size
                  pts: (long) pts;
 
+// subtitle data
 @optional
 - (int) OnReceiveSubtitleString: (MediaPlayer*)player
                            data: (NSString*)data
                        duration: (uint64_t)duration;
 
+// data from various parts of media pipeline
+@optional
 - (int) OnVideoSourceFrameAvailable: (MediaPlayer*)player
                              buffer: (void*)buffer
                                size: (int)  size
@@ -218,6 +229,14 @@ typedef NS_ENUM(int, MediaPlayerLogLevel)
                         bytes_per_row: (int)  bytes_per_row
                                   pts: (long) pts
                             will_show: (int)  will_show;
+
+// webrtc callbacks
+@optional
+- (int) OnWebRTCOfferAvailable: (MediaPlayer*)player
+                      offerSDP: (NSString*)offer;
+- (int) OnWebRTCIceCandidateAvailable: (MediaPlayer*)player
+                         iceCandidate: (NSString*)candidate
+                        sdpMLineIndex: (int)index;
 
 @end
 
@@ -371,6 +390,13 @@ videodecoder_videorenderer_num_frms:(int*)videodecoder_videorenderer_num_frms
 - (void) addPlaySegment:(MediaPlayerPlaySegment*) segment;
 - (void) removePlaySegment:(MediaPlayerPlaySegment*) segment;
 
+- (int) sendBackwardAudioBuffer: (uint8_t*)buffer
+                       withSize: (int32_t)size
+                         andPts: (int64_t)pts;
+
+- (int) webrtcSetAnswer:(NSString*) answer;
+- (int) webrtcSetICECandidate: (NSString*)candidate
+            withSDPMLineIndex: (int)index;
 @end
 
 

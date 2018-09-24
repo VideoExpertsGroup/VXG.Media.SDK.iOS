@@ -13,12 +13,12 @@
 
 @interface MediaPlayerConfig : NSObject
 
-@property (nonatomic) int       contentProviderLibrary;     // 0 - ffmpeg source, 1 - RTSTM source
+@property (nonatomic) int       contentProviderLibrary;     // 0 - ffmpeg source, 1 - RTSTM source, 2 - WEBRTC source
 
 @property (nonatomic) NSString* connectionUrl;
 @property (nonatomic) NSMutableArray* connectionSegments;
 
-@property (nonatomic) int       connectionNetworkProtocol;  // 0 - udp, 1 - tcp, 2 - http, 3 - https, -1 - AUTO
+@property (nonatomic) int       connectionNetworkProtocol;  // 0 - udp, 1 - tcp, 2 - http, 3 - https, -1 - AUTO (TCP,HTTP), -2 - AUTO2 (UDP,TCP,HTTP)
 @property (nonatomic) int       connectionNetworkMode;      // 0 - no changes, 1 - rtsp listen
 @property (nonatomic) int       connectionDetectionTime;    // in milliseconds
 @property (nonatomic) int       connectionBufferingType;    // 0 - first time only, 1 - continues
@@ -109,18 +109,6 @@
 // license
 @property (nonatomic) NSString* licenseKey;
 
-// log level
-+ (void)setLogLevel:(MediaPlayerLogLevel)newValue;
-
-+ (void)setLogLevelForObjcPart:(MediaPlayerLogLevel)newValue;
-+ (MediaPlayerLogLevel)getLogLevelForObjcPart;
-
-+ (void)setLogLevelForNativePart:(MediaPlayerLogLevel)newValue;
-+ (MediaPlayerLogLevel)getLogLevelForNativePart;
-
-+ (void)setLogLevelForMediaPart:(MediaPlayerLogLevel)newValue;
-+ (MediaPlayerLogLevel)getLogLevelForMediaPart;
-
 // latency control
 // Default preset is latency about 0.5 seconds (15 frames ~0.5 second in case 30 fps)
 @property (nonatomic) MediaPlayerLatencyPreset latencyPreset;   // Correct values 0-3 , -1 is custom options are applyed
@@ -138,10 +126,37 @@
 @property (nonatomic) int       latencyLowerMinFrames;          // Lowest border when RATE is changed from Normal to SpeedDown
 @property (nonatomic) int       latencyLowerNormalFrames;       // Normal state when RATE is changed from SpeedDown to Normal
 
+// webrtc
+// setup ICE servers
+@property (nonatomic) NSMutableArray* webrtcIceServers;
+
+// setup transcievers for our offer
+@property (nonatomic) NSMutableArray* webrtcTransceiverCaps;    // for example:
+                                                                // add video - "application/x-rtp,payload=96,encoding-name=H264,media=video,clock-rate=90000"
+                                                                // add audio - "application/x-rtp,payload=8,encoding-name=PCMA,media=audio,clock-rate=8000"
+
+// Backward audio
+@property (nonatomic) int       backwardAudio;                  //0: off; 1: on.
+
 // iOS specific
 @property (nonatomic) int       enableInternalGestureRecognizers;	// 0 - off, 1 - pinch(zoom), 2 - pan(move), 4 - single & double tap. Default: (1 | 2 | 4)
 @property (nonatomic) int       stateWillResignActive;              // 0 - close(not implemneted) 1 - pause, 2 - pause and flush. Default: 1
 @property (nonatomic) int       runDisplayLinkInMainQueue;
+
+// log level
++ (void)setLogLevel:(MediaPlayerLogLevel)newValue;
+
++ (void)setLogLevelForObjcPart:(MediaPlayerLogLevel)newValue;
++ (MediaPlayerLogLevel)getLogLevelForObjcPart;
+
++ (void)setLogLevelForNativePart:(MediaPlayerLogLevel)newValue;
++ (MediaPlayerLogLevel)getLogLevelForNativePart;
+
++ (void)setLogLevelForMediaPart:(MediaPlayerLogLevel)newValue;
++ (MediaPlayerLogLevel)getLogLevelForMediaPart;
+
+// copy
++ (MediaPlayerConfig*) makeCopy:(MediaPlayerConfig*) src;
 
 @end
 
