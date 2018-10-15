@@ -125,6 +125,7 @@ void LogElement(int loglevel, NSString *format, ... );
 - (enum AudioFormat) getAudioFormat;
 - (int) setAudioFormat: (enum AudioFormat) format;
 
+
 -(void) setLicenseKey: (NSString*) license_key;
 
 -(enum CaptureDevicePosition) getDevicePosition;
@@ -132,10 +133,18 @@ void LogElement(int loglevel, NSString *format, ... );
 
 -(enum CaptureDeviceOrientation) getDeviceOrientation;
 - (void) setDeviceOrientation:(enum CaptureDeviceOrientation)devornt;
+
+-(void) setRecordPath: (NSString*) path; //path in document directory
+-(NSString*) getRecordPath;
+
+-(void) setRecordFileLength: (int) seconds; //0 - unlimiited, >0 - seconds
+-(int) getRecordFileLength;
 @end
 
 @protocol MediaCaptureCallback <NSObject>
 - (int) Status: (NSString*) who : (int) arg;
+@optional
+-(int) fileCreated:(NSString*) filename fullpath: (NSString*) fullpath type: (NSString*) filetype;
 @end
 
 @interface MediaRecorder : NSObject<MediaCaptureCallback>
@@ -157,6 +166,7 @@ void LogElement(int loglevel, NSString *format, ... );
 -(void) changeCaptureOrientation;
 
 + (NSArray<NSDictionary*>*) getFormats;
+-(int) changeEncoderBitrate: (int) bitPerSec;
 @end
 
 typedef MediaRecorder MediaCapture;

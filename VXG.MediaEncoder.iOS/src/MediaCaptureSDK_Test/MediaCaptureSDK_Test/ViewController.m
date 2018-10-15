@@ -23,6 +23,8 @@
     __weak IBOutlet UIButton *fullstop;
     __weak IBOutlet UIButton *openbtn;
     __weak IBOutlet UIButton *closebtn;
+    __weak IBOutlet UIButton *backfrontbtn;
+    __weak IBOutlet UIButton *portraitlandscapebtn;
     
     Boolean vCaptPlay;
     Boolean aCaptPlay;
@@ -36,6 +38,12 @@
 
 - (int)Status:(NSString *)who :(int)arg {
     switch (arg) {
+        case MUXREC_OPENED: {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                recon.enabled       = true;
+                recoff.enabled      = false;
+            } );
+        } break;
         case MUXREC_STARTED: { //record started
             dispatch_async(dispatch_get_main_queue(), ^{
                 recon.enabled       = false;
@@ -153,6 +161,9 @@
                     recon.enabled = true;
                 
                     fullstart.enabled = true;
+                    
+                    portraitlandscapebtn.enabled = true;
+                    backfrontbtn.enabled = true;
                 });
             }
         } break;
@@ -166,6 +177,10 @@
                 
                     fullstart.enabled = false;
                     fullstop.enabled  = false;
+
+                    portraitlandscapebtn.enabled = false;
+                    backfrontbtn.enabled = false;
+
                 });
             }
         } break;
@@ -179,7 +194,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    LogLevel = LL_ERROR;
+    VXG_CaptureSDK_LogLevel = LL_ERROR;
     
     vCaptPlay = NO;
     aCaptPlay = NO;
@@ -193,8 +208,8 @@
     closebtn.enabled = false;
     openbtn.enabled = true;
     
-    
-    
+    streamurl.delegate = self;
+       
     isStarted = NO;
     // Do any additional setup after loading the view, typically from a nib.
 }
@@ -203,15 +218,33 @@
     if (!isStarted) {
         test_conf = [[MediaCaptureConfig alloc] init];
         [test_conf setPreview: preview];
-        //[test_conf setRTMPurl: streamurl.text];
-    
-        [test_conf setAudioFormat:AUDIO_FORMAT_NONE];
+        [test_conf setAudioFormat:AUDIO_FORMAT_AAC];
         [test_conf setVideoFormat:VIDEO_FORMAT_H264];
         //[test_conf setStreamType:STREAM_TYPE_RTSP_SERVER];
+
         [test_conf setStreamType:STREAM_TYPE_RTMP_PUBLISH];
-        [test_conf setRTSPport:5540];
-    
+        if ([test_conf getStreamType] == STREAM_TYPE_RTSP_SERVER) {
+            int port = [streamurl.text intValue];
+            if (port > 0) {
+                [test_conf setRTSPport: port];
+            } else {
+                [test_conf setRTSPport:5540];
+            }
+        } else if ([test_conf getStreamType] == STREAM_TYPE_RTMP_PUBLISH) {
+            if ([streamurl.text length] > 0) {
+                [test_conf setRTMPurl: streamurl.text];
+            }
+        }
+        
+        [test_conf setLicenseKey:@"set license key here otherwise streams are limited by 2 minutes"];
+
         [test_conf setVideoConfig: 480 : 360 :30: 256*1024 ];
+
+        [test_conf setDeviceOrientation: Portrait];
+        [portraitlandscapebtn setTitle: @"Portrait" forState: UIControlStateNormal];
+        
+        [test_conf setDevicePosition: Back];
+        [backfrontbtn setTitle:@"Back" forState: UIControlStateNormal];
     
         test = [[MediaRecorder alloc] init];
         [test Open: test_conf callback:self];
@@ -253,6 +286,22 @@
 - (IBAction)full_stop_btn_click:(id)sender {
     [test Stop];
 }
+- (IBAction)BackFrontBtn_click:(UIButton *)sender {
+    if ([test_conf getDevicePosition] == Back){
+        [sender setTitle: @"Front" forState: UIControlStateNormal];
+    } else {
+        [sender setTitle: @"Back" forState: UIControlStateNormal];
+    }
+    [test changeCapturePosition];
+}
+- (IBAction)PortraitLandscapeBtn_click:(UIButton *)sender {
+    if ([test_conf getDeviceOrientation] == Portrait) {
+        [sender setTitle: @"Landscape" forState: UIControlStateNormal];
+    } else {
+        [sender setTitle: @"Portrait" forState: UIControlStateNormal];
+    }
+    [test changeCaptureOrientation];
+}
 
 
 - (void)didReceiveMemoryWarning {
@@ -260,5 +309,9 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(BOOL) textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return YES;
+}
 
 @end
