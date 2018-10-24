@@ -21,6 +21,7 @@
 		CE4B56B91EE6E0060063AAD9 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CE4B56B81EE6E0060063AAD9 /* libbz2.tbd */; };
 		CE4B56BB1EE6E0120063AAD9 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CE4B56BA1EE6E0120063AAD9 /* libz.tbd */; };
 		CE4B56BD1EE6E0220063AAD9 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CE4B56BC1EE6E0220063AAD9 /* libiconv.tbd */; };
+		CE7664962180600000288301 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CE7664952180600000288301 /* libc++.tbd */; };
 		CE7677281F603296008BC3CC /* ffmpeg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE7677271F603296008BC3CC /* ffmpeg.framework */; };
 		CE7677291F6032D9008BC3CC /* ffmpeg.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CE7677271F603296008BC3CC /* ffmpeg.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CE76772B1F613DF7008BC3CC /* libMediaCaptureSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE76772A1F613DF7008BC3CC /* libMediaCaptureSDK.a */; };
@@ -59,6 +60,7 @@
 		CE4B56B81EE6E0060063AAD9 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
 		CE4B56BA1EE6E0120063AAD9 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		CE4B56BC1EE6E0220063AAD9 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
+		CE7664952180600000288301 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		CE7677271F603296008BC3CC /* ffmpeg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ffmpeg.framework; path = ../../../Frameworks/ffmpeg/applestore/ffmpeg.framework; sourceTree = "<group>"; };
 		CE76772A1F613DF7008BC3CC /* libMediaCaptureSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMediaCaptureSDK.a; path = ../../lib/shared/libMediaCaptureSDK.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -68,6 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE7664962180600000288301 /* libc++.tbd in Frameworks */,
 				CE76772B1F613DF7008BC3CC /* libMediaCaptureSDK.a in Frameworks */,
 				CE7677281F603296008BC3CC /* ffmpeg.framework in Frameworks */,
 				CE4B56BD1EE6E0220063AAD9 /* libiconv.tbd in Frameworks */,
@@ -128,6 +131,7 @@
 		CE4B56861EE6CCBA0063AAD9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CE7664952180600000288301 /* libc++.tbd */,
 				CE7677271F603296008BC3CC /* ffmpeg.framework */,
 				CE76772A1F613DF7008BC3CC /* libMediaCaptureSDK.a */,
 				CE4B56BC1EE6E0220063AAD9 /* libiconv.tbd */,

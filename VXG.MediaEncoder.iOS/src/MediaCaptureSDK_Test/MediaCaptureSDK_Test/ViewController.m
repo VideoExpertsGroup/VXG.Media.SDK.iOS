@@ -12,6 +12,8 @@
 
 @implementation ViewController {
     MediaRecorder* test;
+    RtspTransfer* rtsprtmp;
+    
     MediaCaptureConfig *test_conf;
     __weak IBOutlet UIView *preview;
     __weak IBOutlet UITextField *streamurl;
@@ -212,6 +214,10 @@
        
     isStarted = NO;
     // Do any additional setup after loading the view, typically from a nib.
+    
+    rtsprtmp = [[RtspTransfer alloc] init];
+    [rtsprtmp setQueueLength: 30];
+    
 }
 
 - (IBAction)start_btn_click:(id)sender {
@@ -302,6 +308,22 @@
     }
     [test changeCaptureOrientation];
 }
+
+#pragma mark RTSP->RTMP
+
+- (IBAction)transfer_rtsp_openBtn_click:(UIButton *)sender {
+       [rtsprtmp OpenRtsp: @"rtsp://10.20.16.80:554" toRtmp:@"rtmp://media.auth2.cloud-svcp.com:1935/live/u17m167545c167132_rtmppublish?ticket=cam.eyJjIjogMTY3MTMyLCAic3J2IjogIm1lZGlhLmF1dGgyLmNsb3VkLXN2Y3AuY29tIn0.5bc46d25t12cff780.h31Y0G6NNr6wC2B9KI7astanIkw"];
+}
+- (IBAction)transfer_rtsp_closeBtn_clock:(UIButton *)sender {
+     [rtsprtmp Close];
+}
+- (IBAction)transfer_rtsp_startBtn_click:(UIButton *)sender {
+    [rtsprtmp Start];
+}
+- (IBAction)transfer_rtsp_stopBtn_click:(UIButton *)sender {
+    [rtsprtmp Stop];
+}
+
 
 
 - (void)didReceiveMemoryWarning {
