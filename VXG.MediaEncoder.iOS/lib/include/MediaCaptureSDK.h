@@ -87,6 +87,8 @@ typedef NS_ENUM(int, CaptureDeviceOrientation){
 };
 
 extern int VXG_CaptureSDK_LogLevel;
+extern int VXG_CaptureSDK_ffmpeg_inited;
+
 void LogElement(int loglevel, NSString *format, ... );
 
 @protocol MediaCaptureCallback;
@@ -170,3 +172,14 @@ void LogElement(int loglevel, NSString *format, ... );
 @end
 
 typedef MediaRecorder MediaCapture;
+
+@interface RtspTransfer : NSObject
+-(id) init;
+-(int) OpenRtsp: (NSString*) rtsp_url toRtmp: (NSString*) rtmp_url;
+-(int) Close;
+-(int) Start;
+-(int) Stop;
+-(bool) isStarted;
+-(int) setQueueLength:(unsigned int) length;
+-(unsigned int) getQueueLength;
+@end
