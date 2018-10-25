@@ -180,6 +180,12 @@ typedef NS_ENUM(int, MediaPlayerLogLevel)
     LOG_LEVEL_TRACE     = 7
 };
 
+typedef NS_ENUM(int, MediaPlayerGraphicLayer)
+{
+    GRAPHIC_OPENGL = 0,
+    GRAPHIC_METAL  = 1
+};
+
 #import "MediaPlayerPlaySegment.h"
 #import "MediaPlayerConfig.h"
 
@@ -245,6 +251,8 @@ typedef NS_ENUM(int, MediaPlayerLogLevel)
 
 // initializer
 - (id) init:(CGRect) bounds;
+- (id) initWithBounds: (CGRect)bounds
+      andGraphicLayer: (MediaPlayerGraphicLayer)layer;
 
 // VideoView
 - (UIView *) contentView;

@@ -35,7 +35,7 @@
 
 @property (nonatomic) int       extraDataOnStart;           // 0 - no, 1 - add extradata before frame
 @property (nonatomic) int       decoderLatency;             // This setting is for s/w decoder, 1 - Low latency, frames are not buffered on decoder , 0 - frames are buffered in video decoder  by default
-@property (nonatomic) int       rendererType;               // 0 - egl,  1 - by hardware decoder
+@property (nonatomic) int       rendererType;               // 0 - own,  1 - by hardware decoder
 @property (nonatomic) int       synchroEnable;              // enable audio video synchro
 @property (nonatomic) int       synchroNeedDropVideoFrames; // drop video frames if it late
 @property (nonatomic) int       synchroNeedDropFramesOnFF ; // drop video frames if Fast playback(Key frame only)
