@@ -1,5 +1,12 @@
 namespace MediaPlayerSDK
 {
+	public enum MediaPlayerContentProviderLibraryType
+	{
+		Media = 0,
+		Rtsp = 1,
+		Webrtc = 2
+	}
+
 	public enum MediaPlayerNotifyCodes
 	{
 		PlpTrialVersion = -999,
@@ -118,6 +125,7 @@ namespace MediaPlayerSDK
 		PlpRtcpPackage = 9,
 		PlpRtcpSr = 10,
 		PlpRtcpRr = 11,
+		BackwardAudioFormat = 12,
 		AudioNotchFilter = 101
 	}
 
@@ -140,6 +148,12 @@ namespace MediaPlayerSDK
 		Debug = 4,
 		Log = 5,
 		Trace = 7
+	}
+
+	public enum MediaPlayerGraphicLayer
+	{
+		Opengl = 0,
+		Metal = 1
 	}
 
 	public enum ThumbnailerState : uint
