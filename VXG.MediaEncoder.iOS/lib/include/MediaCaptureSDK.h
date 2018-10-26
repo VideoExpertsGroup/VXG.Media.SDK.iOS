@@ -173,6 +173,13 @@ void LogElement(int loglevel, NSString *format, ... );
 
 typedef MediaRecorder MediaCapture;
 
+typedef NS_ENUM(int, RtspConnectionType){
+    RTSP_CONN_AUTO,
+    RTSP_CONN_TCP,
+    RTSP_CONN_UDP,
+    RTSP_CONN_HTTP
+};
+
 @interface RtspTransfer : NSObject
 -(id) init;
 -(int) OpenRtsp: (NSString*) rtsp_url toRtmp: (NSString*) rtmp_url;
@@ -182,4 +189,5 @@ typedef MediaRecorder MediaCapture;
 -(bool) isStarted;
 -(int) setQueueLength:(unsigned int) length;
 -(unsigned int) getQueueLength;
+-(void) setRtspConnectionType: (RtspConnectionType) type;
 @end
