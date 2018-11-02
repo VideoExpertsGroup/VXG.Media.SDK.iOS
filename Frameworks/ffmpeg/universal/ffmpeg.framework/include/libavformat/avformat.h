@@ -1594,6 +1594,11 @@ typedef struct AVFormatContext {
      */
     AVIOInterruptCB interrupt_callback;
 
+	AVziobwCB	ziobw_cb;
+
+	AVdecryptCB	decrypt_cb;
+	int			encrypted;
+
     /**
      * Flags to enable debugging.
      */
@@ -1917,6 +1922,11 @@ typedef struct AVFormatContext {
      * - decoding: set by user
      */
     int max_streams;
+
+	/*
+		break format detection in avformat_find_stream_info when at least one frame for each stream was received.
+		*/
+	int fastdetect;
 } AVFormatContext;
 
 /**

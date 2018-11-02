@@ -169,6 +169,8 @@ void LogElement(int loglevel, NSString *format, ... );
 
 + (NSArray<NSDictionary*>*) getFormats;
 -(int) changeEncoderBitrate: (int) bitPerSec;
+
+-(void) MuteMicrophone: (Boolean) isMute;
 @end
 
 typedef MediaRecorder MediaCapture;
@@ -180,9 +182,28 @@ typedef NS_ENUM(int, RtspConnectionType){
     RTSP_CONN_HTTP
 };
 
+typedef NS_ENUM(int, RtspTransferCallbackCodes) {
+    RT_SOURCE_OPENING,
+    RT_SOURCE_OPENED,
+    RT_SOURCE_CLOSING,
+    RT_SOURCE_CLOSED,
+    RT_SOURCE_ERROR,
+    RT_DEST_OPENING,
+    RT_DEST_OPENED,
+    RT_DEST_CLOSING,
+    RT_DEST_CLOSED,
+    RT_DEST_ERROR
+};
+
+@class RtspTransfer;
+
+@protocol RtspTransferCallback <NSObject>
+- (int) RtspTransferStatus: (RtspTransfer*) who Code: (int) arg;
+@end
+
 @interface RtspTransfer : NSObject
 -(id) init;
--(int) OpenRtsp: (NSString*) rtsp_url toRtmp: (NSString*) rtmp_url;
+-(int) OpenRtsp: (NSString*) rtsp_url toRtmp: (NSString*) rtmp_url callback: (id<RtspTransferCallback>) cbk;
 -(int) Close;
 -(int) Start;
 -(int) Stop;
@@ -190,4 +211,5 @@ typedef NS_ENUM(int, RtspConnectionType){
 -(int) setQueueLength:(unsigned int) length;
 -(unsigned int) getQueueLength;
 -(void) setRtspConnectionType: (RtspConnectionType) type;
+-(NSString*) getLastError;
 @end

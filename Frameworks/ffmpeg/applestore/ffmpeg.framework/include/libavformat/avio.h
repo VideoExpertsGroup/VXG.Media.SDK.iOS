@@ -104,6 +104,29 @@ typedef struct AVIODirContext {
     struct URLContext *url_context;
 } AVIODirContext;
 
+
+typedef struct AVziobwCB {
+	int(*callback)(void* opaque, char* buf, int size);
+	void *opaque;
+} AVziobwCB;
+
+typedef struct AVZioStatData {
+	uint32_t	errors_count;
+	uint64_t	bytes_processed;
+	uint32_t	bitrate;
+	uint32_t	framerate;
+	uint32_t	frames_recv;
+	uint32_t	frames_sent;
+	uint32_t	run_time_ms;
+	uint32_t	current_frame_num;
+}AVZioStatData;
+
+
+typedef struct AVdecryptCB {
+	int(*callback)(void* opaque, int payload, uint32_t flags, uint8_t* buf, int size);
+	void *opaque;
+} AVdecryptCB;
+
 /**
  * Different data types that can be returned via the AVIO
  * write_data_type callback.

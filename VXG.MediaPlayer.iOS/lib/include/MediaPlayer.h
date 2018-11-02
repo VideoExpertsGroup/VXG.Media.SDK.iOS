@@ -189,6 +189,7 @@ typedef NS_ENUM(int, MediaPlayerGraphicLayer)
 #import "MediaPlayerPlaySegment.h"
 #import "MediaPlayerConfig.h"
 
+
 // callback
 @protocol MediaPlayerCallback<NSObject>
 
@@ -405,6 +406,9 @@ videodecoder_videorenderer_num_frms:(int*)videodecoder_videorenderer_num_frms
 - (int) webrtcSetAnswer:(NSString*) answer;
 - (int) webrtcSetICECandidate: (NSString*)candidate
             withSDPMLineIndex: (int)index;
+
++ (int) isMediaLibraryInited;
++ (void) setMediaLibraryInited: (Boolean) val;
 @end
 
 
