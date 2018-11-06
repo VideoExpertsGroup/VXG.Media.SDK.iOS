@@ -7,7 +7,7 @@
 #import <UIKit/UIKit.h>
 #import "MediaCaptureSDK.h"
 
-@interface ViewController : UIViewController<MediaCaptureCallback, UITextFieldDelegate>
+@interface ViewController : UIViewController<MediaCaptureCallback, UITextFieldDelegate, RtspTransferCallback>
 
 
 @end
