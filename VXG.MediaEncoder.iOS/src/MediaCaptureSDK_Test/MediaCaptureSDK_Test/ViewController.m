@@ -309,10 +309,32 @@
     [test changeCaptureOrientation];
 }
 
+- (IBAction)micOnBtn_click:(UIButton *)sender {
+    if (sender.tag == 1) {
+        sender.tag = 0;
+        [sender setTitle: @"MicON" forState: UIControlStateNormal];
+        [test MuteMicrophone: NO];
+    } else {
+        sender.tag = 1;
+        [sender setTitle: @"MicOFF" forState: UIControlStateNormal];
+        [test MuteMicrophone: YES];
+    }
+}
+
 #pragma mark RTSP->RTMP
 
+- (int) RtspTransferStatus: (RtspTransfer*) who Code: (int) arg; {
+    if (who == rtsprtmp) {
+        NSLog(@"trsf: says %d", arg);
+        if ((arg == RT_SOURCE_ERROR)||(arg==RT_DEST_ERROR)) {
+            NSLog(@"trsf error %@", [rtsprtmp getLastError]);
+        }
+    }
+    return 0;
+}
+
 - (IBAction)transfer_rtsp_openBtn_click:(UIButton *)sender {
-       [rtsprtmp OpenRtsp: @"rtsp://10.20.16.80:554" toRtmp:@"rtmp://media.auth2.cloud-svcp.com:1935/live/u17m167545c167132_rtmppublish?ticket=cam.eyJjIjogMTY3MTMyLCAic3J2IjogIm1lZGlhLmF1dGgyLmNsb3VkLXN2Y3AuY29tIn0.5bc46d25t12cff780.h31Y0G6NNr6wC2B9KI7astanIkw"];
+       [rtsprtmp OpenRtsp: @"rtsp://10.20.16.80:554" toRtmp:@"rtmp://media.auth2.cloud-svcp.com:1935/live/u17m167545c167132_rtmppublish?ticket=cam.eyJjIjogMTY3MTMyLCAic3J2IjogIm1lZGlhLmF1dGgyLmNsb3VkLXN2Y3AuY29tIn0.5bc46d25t12cff780.h31Y0G6NNr6wC2B9KI7astanIkw" callback: self];
 }
 - (IBAction)transfer_rtsp_closeBtn_clock:(UIButton *)sender {
      [rtsprtmp Close];
@@ -335,5 +357,7 @@
     [textField resignFirstResponder];
     return YES;
 }
+
+
 
 @end

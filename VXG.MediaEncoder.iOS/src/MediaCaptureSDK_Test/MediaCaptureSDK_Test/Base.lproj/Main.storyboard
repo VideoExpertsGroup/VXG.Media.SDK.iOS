@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -144,6 +144,13 @@
                                     <action selector="BackFrontBtn_click:" destination="BYZ-38-t0r" eventType="touchUpInside" id="XLY-ro-pZR"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gIl-Cb-mTx">
+                                <rect key="frame" x="164" y="621" width="47" height="30"/>
+                                <state key="normal" title="MicON"/>
+                                <connections>
+                                    <action selector="micOnBtn_click:" destination="BYZ-38-t0r" eventType="touchUpInside" id="G3c-d5-lLq"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vJk-2g-q7M">
                                 <rect key="frame" x="291" y="621" width="52" height="30"/>
                                 <state key="normal" title="Portrait"/>
@@ -173,6 +180,7 @@
                             <constraint firstItem="mhf-GK-VZz" firstAttribute="top" secondItem="jX4-Cl-SO1" secondAttribute="bottom" constant="8" id="AVU-OR-Wl0"/>
                             <constraint firstItem="kWh-ks-omG" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="16" id="AjP-HC-TcT"/>
                             <constraint firstItem="yPS-ev-n07" firstAttribute="height" secondItem="mSB-5F-dsp" secondAttribute="height" id="BBZ-UJ-gaM"/>
+                            <constraint firstItem="gIl-Cb-mTx" firstAttribute="centerY" secondItem="aGU-rw-ESY" secondAttribute="centerY" id="C44-F3-12f"/>
                             <constraint firstItem="kOd-vO-PVm" firstAttribute="width" secondItem="v7X-j9-fjC" secondAttribute="width" id="CAg-f5-31C"/>
                             <constraint firstItem="v7X-j9-fjC" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="CFO-HN-wmX"/>
                             <constraint firstItem="vzc-HI-B9F" firstAttribute="leading" secondItem="mhf-GK-VZz" secondAttribute="trailing" constant="8" id="CTa-s6-OFk"/>
@@ -203,6 +211,7 @@
                             <constraint firstItem="jX4-Cl-SO1" firstAttribute="top" secondItem="yPS-ev-n07" secondAttribute="bottom" constant="8" id="bv2-rI-KAW"/>
                             <constraint firstAttribute="trailingMargin" secondItem="vJk-2g-q7M" secondAttribute="trailing" constant="16" id="cYL-WO-rik"/>
                             <constraint firstAttribute="trailingMargin" secondItem="AWV-ao-wWo" secondAttribute="trailing" id="dkY-1L-aME"/>
+                            <constraint firstItem="gIl-Cb-mTx" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="eCY-Pp-Gxe"/>
                             <constraint firstItem="kOd-vO-PVm" firstAttribute="height" secondItem="v7X-j9-fjC" secondAttribute="height" id="eWB-rW-LEf"/>
                             <constraint firstItem="mhf-GK-VZz" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="fuL-6c-IpQ"/>
                             <constraint firstItem="cWc-rq-a7i" firstAttribute="height" secondItem="tRi-0O-NOy" secondAttribute="height" id="goi-CE-obW"/>
