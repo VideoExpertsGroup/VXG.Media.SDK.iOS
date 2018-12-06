@@ -218,6 +218,8 @@
     
     rtsprtmp = [[RtspTransfer alloc] init];
     [rtsprtmp setQueueLength: 30];
+    [rtsprtmp setRtspAnalyzeDurationMsec: 3000];
+    
     isRtspTrnsferOpened = NO;
 }
 
@@ -331,7 +333,7 @@
             NSLog(@"trsf error %@", [rtsprtmp getLastError]);
             if (isRtspTrnsferOpened) {
                 [rtsprtmp Close];
-                [rtsprtmp OpenRtsp: @"rtsp://10.20.16.80:554" toRtmp:@"rtmp://u1m10c10:123@10.20.16.128:1935/push/u1m10c10_rtmppublish" callback: self];
+                [rtsprtmp OpenRtsp: @"rtsp://test:test@10.20.16.76/onvif-media/media.amp" toRtmp:@"rtmp://u1m10c10:123@10.20.16.128:1935/push/u1m10c10_rtmppublish" callback: self];
                 [rtsprtmp Start];
             }
         }
@@ -340,7 +342,7 @@
 }
 
 - (IBAction)transfer_rtsp_openBtn_click:(UIButton *)sender {
-       [rtsprtmp OpenRtsp: @"rtsp://10.20.16.80:554" toRtmp:@"rtmp://u1m10c10:123@10.20.16.128:1935/push/u1m10c10_rtmppublish" callback: self];
+       [rtsprtmp OpenRtsp: @"rtsp://test:test@10.20.16.76/onvif-media/media.amp" toRtmp:@"rtmp://u1m10c10:123@10.20.16.128:1935/push/u1m10c10_rtmppublish" callback: self];
     isRtspTrnsferOpened = YES;
 }
 - (IBAction)transfer_rtsp_closeBtn_clock:(UIButton *)sender {

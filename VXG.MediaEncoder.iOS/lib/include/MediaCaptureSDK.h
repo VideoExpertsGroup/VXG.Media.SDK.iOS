@@ -211,5 +211,7 @@ typedef NS_ENUM(int, RtspTransferCallbackCodes) {
 -(int) setQueueLength:(unsigned int) length;
 -(unsigned int) getQueueLength;
 -(void) setRtspConnectionType: (RtspConnectionType) type;
+-(void) setRtspAnalyzeDurationMsec: (long long) msec;
 -(NSString*) getLastError;
+
 @end
