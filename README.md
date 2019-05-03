@@ -1,6 +1,6 @@
 # VXG Media SDK for iOS
 
-## Disclaimer
+## Disclaimer 1
 This is a non-commercial version of VXG Media SDK for iOS. Playback is limited to 2 mins.
 Commercial use and access to extra features requires a license. Please learn more at https://www.videoexpertsgroup.com/player-sdk/
 
