@@ -1,0 +1,411 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CE54D8F22018BDEA00299032 /* ffmpeg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE54D8F12018BDEA00299032 /* ffmpeg.framework */; };
+		CE54D8F42018BE0000299032 /* libMediaCaptureSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE54D8F32018BE0000299032 /* libMediaCaptureSDK.a */; };
+		CE54D8F52018BE3400299032 /* ffmpeg.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CE54D8F12018BDEA00299032 /* ffmpeg.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CEDFCF2D22450FEB00418C5F /* cloudsdkplayerview.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEDFCF2A22450FEB00418C5F /* cloudsdkplayerview.framework */; };
+		CEDFCF2E22450FEB00418C5F /* cloudsdkcalendarview.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEDFCF2B22450FEB00418C5F /* cloudsdkcalendarview.framework */; };
+		CEDFCF2F22450FEB00418C5F /* cloudsdktimelineview.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEDFCF2C22450FEB00418C5F /* cloudsdktimelineview.framework */; };
+		CEDFCF3022450FF000418C5F /* cloudsdkcalendarview.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CEDFCF2B22450FEB00418C5F /* cloudsdkcalendarview.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CEDFCF3122450FF000418C5F /* cloudsdkplayerview.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CEDFCF2A22450FEB00418C5F /* cloudsdkplayerview.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CEDFCF3222450FF000418C5F /* cloudsdktimelineview.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CEDFCF2C22450FEB00418C5F /* cloudsdktimelineview.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CEE0A26220121A61005D433B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE0A26120121A61005D433B /* AppDelegate.m */; };
+		CEE0A26520121A61005D433B /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE0A26420121A61005D433B /* ViewController.m */; };
+		CEE0A26820121A61005D433B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEE0A26620121A61005D433B /* Main.storyboard */; };
+		CEE0A26A20121A61005D433B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEE0A26920121A61005D433B /* Assets.xcassets */; };
+		CEE0A26D20121A61005D433B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEE0A26B20121A61005D433B /* LaunchScreen.storyboard */; };
+		CEE0A27020121A61005D433B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE0A26F20121A61005D433B /* main.m */; };
+		CEE0A28220121B2E005D433B /* libcloudsdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CEE0A28120121B2E005D433B /* libcloudsdk.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		CEE0A27C20121AC2005D433B /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				CEDFCF3022450FF000418C5F /* cloudsdkcalendarview.framework in Embed Frameworks */,
+				CEDFCF3122450FF000418C5F /* cloudsdkplayerview.framework in Embed Frameworks */,
+				CEDFCF3222450FF000418C5F /* cloudsdktimelineview.framework in Embed Frameworks */,
+				CE54D8F52018BE3400299032 /* ffmpeg.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		CE54D8F12018BDEA00299032 /* ffmpeg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ffmpeg.framework; path = ../../../VXG.Media.SDK.iOS/Frameworks/ffmpeg/universal/ffmpeg.framework; sourceTree = "<group>"; };
+		CE54D8F32018BE0000299032 /* libMediaCaptureSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMediaCaptureSDK.a; path = ../../../VXG.Media.SDK.iOS/VXG.MediaEncoder.iOS/lib/shared/libMediaCaptureSDK.a; sourceTree = "<group>"; };
+		CEDFCF2A22450FEB00418C5F /* cloudsdkplayerview.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = cloudsdkplayerview.framework; path = ../../lib/universal/cloudsdkplayerview.framework; sourceTree = "<group>"; };
+		CEDFCF2B22450FEB00418C5F /* cloudsdkcalendarview.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = cloudsdkcalendarview.framework; path = ../../lib/universal/cloudsdkcalendarview.framework; sourceTree = "<group>"; };
+		CEDFCF2C22450FEB00418C5F /* cloudsdktimelineview.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = cloudsdktimelineview.framework; path = ../../lib/universal/cloudsdktimelineview.framework; sourceTree = "<group>"; };
+		CEE0A25D20121A60005D433B /* streamland-streamer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "streamland-streamer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CEE0A26020121A61005D433B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		CEE0A26120121A61005D433B /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		CEE0A26320121A61005D433B /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		CEE0A26420121A61005D433B /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		CEE0A26720121A61005D433B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		CEE0A26920121A61005D433B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CEE0A26C20121A61005D433B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		CEE0A26E20121A61005D433B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CEE0A26F20121A61005D433B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		CEE0A28120121B2E005D433B /* libcloudsdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcloudsdk.a; path = ../../lib/libcloudsdk.a; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CEE0A25A20121A60005D433B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CEDFCF2D22450FEB00418C5F /* cloudsdkplayerview.framework in Frameworks */,
+				CEDFCF2E22450FEB00418C5F /* cloudsdkcalendarview.framework in Frameworks */,
+				CEDFCF2F22450FEB00418C5F /* cloudsdktimelineview.framework in Frameworks */,
+				CE54D8F42018BE0000299032 /* libMediaCaptureSDK.a in Frameworks */,
+				CE54D8F22018BDEA00299032 /* ffmpeg.framework in Frameworks */,
+				CEE0A28220121B2E005D433B /* libcloudsdk.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CEE0A25420121A60005D433B = {
+			isa = PBXGroup;
+			children = (
+				CEE0A25F20121A60005D433B /* streamland-streamer */,
+				CEE0A25E20121A60005D433B /* Products */,
+				CEE0A27620121AAA005D433B /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		CEE0A25E20121A60005D433B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CEE0A25D20121A60005D433B /* streamland-streamer.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CEE0A25F20121A60005D433B /* streamland-streamer */ = {
+			isa = PBXGroup;
+			children = (
+				CEE0A26020121A61005D433B /* AppDelegate.h */,
+				CEE0A26120121A61005D433B /* AppDelegate.m */,
+				CEE0A26320121A61005D433B /* ViewController.h */,
+				CEE0A26420121A61005D433B /* ViewController.m */,
+				CEE0A26620121A61005D433B /* Main.storyboard */,
+				CEE0A26920121A61005D433B /* Assets.xcassets */,
+				CEE0A26B20121A61005D433B /* LaunchScreen.storyboard */,
+				CEE0A26E20121A61005D433B /* Info.plist */,
+				CEE0A26F20121A61005D433B /* main.m */,
+			);
+			path = "streamland-streamer";
+			sourceTree = "<group>";
+		};
+		CEE0A27620121AAA005D433B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CEDFCF2B22450FEB00418C5F /* cloudsdkcalendarview.framework */,
+				CEDFCF2A22450FEB00418C5F /* cloudsdkplayerview.framework */,
+				CEDFCF2C22450FEB00418C5F /* cloudsdktimelineview.framework */,
+				CE54D8F32018BE0000299032 /* libMediaCaptureSDK.a */,
+				CE54D8F12018BDEA00299032 /* ffmpeg.framework */,
+				CEE0A28120121B2E005D433B /* libcloudsdk.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CEE0A25C20121A60005D433B /* streamland-streamer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CEE0A27320121A61005D433B /* Build configuration list for PBXNativeTarget "streamland-streamer" */;
+			buildPhases = (
+				CEE0A25920121A60005D433B /* Sources */,
+				CEE0A25A20121A60005D433B /* Frameworks */,
+				CEE0A25B20121A60005D433B /* Resources */,
+				CEE0A27C20121AC2005D433B /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "streamland-streamer";
+			productName = "streamland-streamer";
+			productReference = CEE0A25D20121A60005D433B /* streamland-streamer.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CEE0A25520121A60005D433B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0920;
+				ORGANIZATIONNAME = "VXG Inc.";
+				TargetAttributes = {
+					CEE0A25C20121A60005D433B = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = CEE0A25820121A60005D433B /* Build configuration list for PBXProject "streamland-streamer" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CEE0A25420121A60005D433B;
+			productRefGroup = CEE0A25E20121A60005D433B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CEE0A25C20121A60005D433B /* streamland-streamer */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CEE0A25B20121A60005D433B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CEE0A26D20121A61005D433B /* LaunchScreen.storyboard in Resources */,
+				CEE0A26A20121A61005D433B /* Assets.xcassets in Resources */,
+				CEE0A26820121A61005D433B /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CEE0A25920121A60005D433B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CEE0A26520121A61005D433B /* ViewController.m in Sources */,
+				CEE0A27020121A61005D433B /* main.m in Sources */,
+				CEE0A26220121A61005D433B /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		CEE0A26620121A61005D433B /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CEE0A26720121A61005D433B /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		CEE0A26B20121A61005D433B /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CEE0A26C20121A61005D433B /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		CEE0A27120121A61005D433B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		CEE0A27220121A61005D433B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CEE0A27420121A61005D433B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 37TMES8PKP;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../../../VXG.Media.SDK.iOS/Frameworks/ffmpeg/universal",
+					"$(PROJECT_DIR)/../../lib/universal/",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../../../VXG.Media.SDK.iOS/VXG.MediaEncoder.iOS/lib/include",
+					"$(PROJECT_DIR)/../../include",
+				);
+				INFOPLIST_FILE = "streamland-streamer/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../../lib/",
+					"$(PROJECT_DIR)/../../../VXG.Media.SDK.iOS/VXG.MediaEncoder.iOS/lib/shared",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.vxg.streamland-streamer";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CEE0A27520121A61005D433B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 37TMES8PKP;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../../../VXG.Media.SDK.iOS/Frameworks/ffmpeg/universal",
+					"$(PROJECT_DIR)/../../lib/universal/",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../../../VXG.Media.SDK.iOS/VXG.MediaEncoder.iOS/lib/include",
+					"$(PROJECT_DIR)/../../include",
+				);
+				INFOPLIST_FILE = "streamland-streamer/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../../lib/",
+					"$(PROJECT_DIR)/../../../VXG.Media.SDK.iOS/VXG.MediaEncoder.iOS/lib/shared",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.vxg.streamland-streamer";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CEE0A25820121A60005D433B /* Build configuration list for PBXProject "streamland-streamer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CEE0A27120121A61005D433B /* Debug */,
+				CEE0A27220121A61005D433B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CEE0A27320121A61005D433B /* Build configuration list for PBXNativeTarget "streamland-streamer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CEE0A27420121A61005D433B /* Debug */,
+				CEE0A27520121A61005D433B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CEE0A25520121A60005D433B /* Project object */;
+}
