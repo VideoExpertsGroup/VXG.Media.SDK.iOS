@@ -47,7 +47,7 @@
                                     <action selector="ConnectBtn_click:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qUN-0J-hNS"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="http://devimages.apple.com/iphone/samples/bipbop/bipbopall.m3u8" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="nXt-gw-M9J">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="http://devimages.apple.com/iphone/samples/bipbop/bipbopall.m3u8" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="nXt-gw-M9J">
                                 <rect key="frame" x="16" y="40" width="245" height="45"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -55,7 +55,7 @@
                             </textField>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0De-ok-ar5">
                                 <rect key="frame" x="16" y="146" width="343" height="501"/>
-                                <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pFL-DI-sbr" userLabel="ThumbnailerImageView">
                                 <rect key="frame" x="16" y="146" width="120" height="90"/>

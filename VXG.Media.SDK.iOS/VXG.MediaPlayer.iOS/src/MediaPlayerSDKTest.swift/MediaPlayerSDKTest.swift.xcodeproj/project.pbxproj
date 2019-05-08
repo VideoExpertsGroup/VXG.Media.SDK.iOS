@@ -27,6 +27,7 @@
 		CEBDF37122806B5E00F2E15D /* ffmpeg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEBDF37022806B5E00F2E15D /* ffmpeg.framework */; };
 		CEBDF37222806B6400F2E15D /* ffmpeg.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CEBDF37022806B5E00F2E15D /* ffmpeg.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CEBDF37422806B8700F2E15D /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CEBDF37322806B8600F2E15D /* libc++.tbd */; };
+		CEBDF3762281968F00F2E15D /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEBDF3752281968F00F2E15D /* Accelerate.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -71,6 +72,7 @@
 		CEBDF36D22806AD900F2E15D /* libc.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libc.tbd; path = usr/lib/libc.tbd; sourceTree = SDKROOT; };
 		CEBDF37022806B5E00F2E15D /* ffmpeg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ffmpeg.framework; path = ../../../Frameworks/ffmpeg/applestore/ffmpeg.framework; sourceTree = "<group>"; };
 		CEBDF37322806B8600F2E15D /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		CEBDF3752281968F00F2E15D /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEBDF3762281968F00F2E15D /* Accelerate.framework in Frameworks */,
 				CEBDF37122806B5E00F2E15D /* ffmpeg.framework in Frameworks */,
 				CE7677741F616706008BC3CC /* AVFoundation.framework in Frameworks */,
 				CE7677721F6166F3008BC3CC /* AudioToolbox.framework in Frameworks */,
@@ -133,6 +136,7 @@
 		CE7677531F615CEF008BC3CC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CEBDF3752281968F00F2E15D /* Accelerate.framework */,
 				CEBDF37322806B8600F2E15D /* libc++.tbd */,
 				CEBDF37022806B5E00F2E15D /* ffmpeg.framework */,
 				CEBDF36D22806AD900F2E15D /* libc.tbd */,

@@ -10,7 +10,7 @@ import UIKit
 import AVFoundation
 import Foundation
 import MediaPlayer
-
+import Accelerate
 
 class ViewController: UIViewController, MediaPlayerCallback, UITextFieldDelegate {
     
@@ -90,16 +90,26 @@ class ViewController: UIViewController, MediaPlayerCallback, UITextFieldDelegate
     
     @objc func onVideoRendererFrameAvailable(_ player: MediaPlayer!, buffer: UnsafeMutableRawPointer!, size: Int32, format_fourcc: UnsafeMutablePointer<Int8>!, width: Int32, height: Int32, bytes_per_row: Int32, pts: Int, will_show: Int32) -> Int32 {
 
+        let str = String(cString: format_fourcc)
+        
         let bufcopy: UnsafeMutableRawPointer = UnsafeMutableRawPointer.allocate(byteCount: Int(size), alignment: 0);
         bufcopy.copyMemory(from: buffer, byteCount: Int(size));
         
         OperationQueue.main.addOperation {
-            let image = self.makeImage(buffer: bufcopy, width: width, height: height, bytesPerRow: bytes_per_row);
-            if (image != nil) {
-                self.callbackIV.image = image;
+            if ( str == "I420" ) {
+                let image = self.makeImage_I420(buffer: bufcopy, bufsize: size, width: width, height: height, bytesPerRow: bytes_per_row)
+                if (image != nil) {
+                    self.callbackIV.image = image
+                }
+            } else {
+                let image = self.makeImage(buffer: bufcopy, bufsize: size, width: width, height: height, bytesPerRow: bytes_per_row)
+                if (image != nil) {
+                    self.callbackIV.image = image
+                }
             }
             bufcopy.deallocate();
         }
+
         return 0;
     }
  
@@ -124,8 +134,47 @@ class ViewController: UIViewController, MediaPlayerCallback, UITextFieldDelegate
             print("could not init player");
         }
     }
+
+    func makeImage_I420(buffer: UnsafeMutableRawPointer!, bufsize: Int32, width: Int32, height: Int32, bytesPerRow: Int32) -> UIImage?{
+        var pixelRange = vImage_YpCbCrPixelRange(Yp_bias: 1, CbCr_bias: 128, YpRangeMax: 255, CbCrRangeMax: 240, YpMax: 255, YpMin: 1, CbCrMax: 240, CbCrMin: 16)
+        var infoYpCbCrToARGB = vImage_YpCbCrToARGB()
+        var error: vImage_Error;
+        
+        error = vImageConvert_YpCbCrToARGB_GenerateConversion(kvImage_YpCbCrToARGBMatrix_ITU_R_709_2, &pixelRange, &infoYpCbCrToARGB, kvImage420Yp8_Cb8_Cr8, kvImageARGB8888, vImage_Flags(kvImagePrintDiagnosticsToConsole))
+        
+        let frame_size = width * height;
+        let half_height = height / 2;
+        let half_width = width / 2;
+        
+        var srcYp   = vImage_Buffer.init(data: buffer, height: vImagePixelCount(height), width: vImagePixelCount(width), rowBytes: Int(width))
+        var srcCb   = vImage_Buffer.init(data: buffer.advanced(by: Int(frame_size)) , height: vImagePixelCount(half_height), width: vImagePixelCount(half_width), rowBytes: Int(half_width))
+        var srcCr   = vImage_Buffer.init(data: buffer.advanced(by: Int(frame_size  + half_height * half_width)), height: vImagePixelCount(half_height), width: vImagePixelCount(half_width), rowBytes: Int(half_width))
+        
+        let tmp_buf = UnsafeMutableRawPointer.allocate(byteCount: Int(width * height * 4 + 8), alignment: 0)
+        var destBuf = vImage_Buffer.init(data: tmp_buf, height: vImagePixelCount(height), width: vImagePixelCount(width), rowBytes: Int(width * 4))
+        
+        var pixelmap = [UInt8(3), UInt8(2), UInt8(1), UInt8(0)] //BGRA
+        error = vImageConvert_420Yp8_Cb8_Cr8ToARGB8888(&srcYp, &srcCr, &srcCb, &destBuf, &infoYpCbCrToARGB, &pixelmap, 0, vImage_Flags(kvImageNoFlags))
+        
+        let bitmapinfo : CGBitmapInfo = CGBitmapInfo(rawValue: CGBitmapInfo.byteOrder32Little.rawValue | CGImageAlphaInfo.noneSkipFirst.rawValue)
+        let colorSpace : CGColorSpace = CGColorSpaceCreateDeviceRGB()
+        
+
+        var format = vImage_CGImageFormat.init(bitsPerComponent: UInt32(8), bitsPerPixel: UInt32(32), colorSpace: Unmanaged.passUnretained(colorSpace), bitmapInfo: bitmapinfo, version: 0, decode: nil, renderingIntent: CGColorRenderingIntent(rawValue: 0)!)
+        
+        let cgimageref = vImageCreateCGImageFromBuffer(&destBuf, &format, nil, nil, vImage_Flags(kvImageNoFlags), &error)
     
-    func makeImage (buffer: UnsafeMutableRawPointer!, width: Int32, height: Int32, bytesPerRow: Int32 ) -> UIImage? {
+        let ret_val = UIImage.init(cgImage: (cgimageref?.takeUnretainedValue())!)
+        
+        cgimageref?.release()
+        tmp_buf.deallocate()
+        
+        return ret_val;
+    }
+    
+    
+    func makeImage (buffer: UnsafeMutableRawPointer!, bufsize: Int32, width: Int32, height: Int32, bytesPerRow: Int32 ) -> UIImage? {
+        
         
         let colorSpace: CGColorSpace = CGColorSpaceCreateDeviceRGB()
         // Create a bitmap graphics context with the sample buffer data.
@@ -142,7 +191,7 @@ class ViewController: UIViewController, MediaPlayerCallback, UITextFieldDelegate
         // Create a Quartz image from the pixel data in the bitmap graphics context
         let quartzImage: CGImage = context!.makeImage()!
         let myImage = UIImage(cgImage: quartzImage)
-        
+
         return myImage;
     }
     
@@ -198,7 +247,7 @@ class ViewController: UIViewController, MediaPlayerCallback, UITextFieldDelegate
                 return
             }
 
-            let myImage = self.makeImage(buffer: buffer, width: width, height: height, bytesPerRow:  bprow)
+            let myImage = self.makeImage(buffer: buffer, bufsize: bufsz, width: width, height: height, bytesPerRow:  bprow)
             
             free(buffer)
             DispatchQueue.main.async(execute: {() -> Void in
@@ -273,7 +322,7 @@ class ViewController: UIViewController, MediaPlayerCallback, UITextFieldDelegate
             print("Play url: " +  AddressLine.text!);
             
             self.mConfig.connectionUrl              = AddressLine.text;
-            self.mConfig.decodingType               = 1; // 1 - hardware, 0 - software
+            self.mConfig.decodingType               = 0; // 1 - hardware, 0 - software
             self.mConfig.synchroEnable              = 1; // syncronization enabled
             self.mConfig.synchroNeedDropVideoFrames = 1; // synchroNeedDropVideoFrames
             self.mConfig.aspectRatioMode            = 1;
@@ -342,7 +391,7 @@ class ViewController: UIViewController, MediaPlayerCallback, UITextFieldDelegate
             bp = brptr.pointee;
             bufsize = bsptr.pointee;
             
-            ScreenShotImageView.image = self.makeImage(buffer:  buffer, width: w, height: h, bytesPerRow: bp);
+            ScreenShotImageView.image = self.makeImage(buffer:  buffer, bufsize: bufsize, width: w, height: h, bytesPerRow: bp);
             buffer.deallocate();
         } else {
             ScreenShotView.isHidden = true;
