@@ -1,3 +1,5 @@
+<img src="https://www.videoexpertsgroup.com/wp-content/uploads/2019/05/Group-2.2.png" alt="VXGMobileSDK.iOS" width="300">
+
 # VXG Media SDK for iOS
 
 ## Disclaimer
