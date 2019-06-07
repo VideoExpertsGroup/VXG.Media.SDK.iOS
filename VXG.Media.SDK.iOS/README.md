@@ -5,9 +5,10 @@ This is a non-commercial version of VXG Media SDK for iOS. Playback is limited t
 Commercial use and access to extra features requires a license. Please learn more at https://www.videoexpertsgroup.com/player-sdk/
 
 ## About SDK
-SDK consists of two modules:
-- Media Player - for playback of media files and streams
-- Media Encoder - for live video broadcasting from mobile device
+SDK consists of three modules:
+- Player SDK - for playback of media files and streams
+- Encoder SDK - for live video broadcasting from mobile device
+- Cloud SDK - module for playback from or streaming to VXG Cloud / VXG Server
 
 SDK can be used for IPTV, iOS client of surveillance system, IP camera viewer, TV player, OTT clients and other kinds of applications 
 with video playback. Source code of samples can be provided.
