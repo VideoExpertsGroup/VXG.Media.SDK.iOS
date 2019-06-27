@@ -78,12 +78,13 @@
     [vxg_capture_cfg setAudioFormat: AUDIO_FORMAT_AAC];
     [vxg_capture_cfg setLicenseKey: @"insert llicense key here"];
     [vxg_capture_cfg setVideoConfig: 480 : 300 : 30 : 256*1024];
-    [vxg_capture_cfg setStreamType: STREAM_TYPE_RTMP_PUBLISH];
+    [vxg_capture_cfg setStreamType: STREAM_TYPE_RTSP_SERVER];
     [vxg_capture_cfg setRTSPport: 5540];
     if ([vxg_capture_cfg getStreamType] == STREAM_TYPE_RTSP_SERVER) {
         ip = [self GetOurIpAddress];
         
         tf_capture.text = [NSString stringWithFormat:@"RTSP: rtsp://%@:%d", ip,[vxg_capture_cfg getRTSPport]];
+        tf_player.text  = [NSString stringWithFormat:@"rtsp://%@:%d", ip,[vxg_capture_cfg getRTSPport]];
         //tf_capture.enabled = NO;
     }
     

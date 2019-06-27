@@ -229,9 +229,9 @@
         [test_conf setPreview: preview];
         [test_conf setAudioFormat:AUDIO_FORMAT_AAC];
         [test_conf setVideoFormat:VIDEO_FORMAT_H264];
-        //[test_conf setStreamType:STREAM_TYPE_RTSP_SERVER];
+        [test_conf setStreamType:STREAM_TYPE_RTSP_SERVER];
 
-        [test_conf setStreamType:STREAM_TYPE_RTMP_PUBLISH];
+        //[test_conf setStreamType:STREAM_TYPE_RTMP_PUBLISH];
         if ([test_conf getStreamType] == STREAM_TYPE_RTSP_SERVER) {
             int port = [streamurl.text intValue];
             if (port > 0) {
@@ -247,7 +247,7 @@
         
         [test_conf setLicenseKey:@"set license key here otherwise streams are limited by 2 minutes"];
 
-        [test_conf setVideoConfig: 480 : 360 :30: 256*1024 ];
+        [test_conf setVideoConfig: 640 : 480 :30: 256*1024 ];
 
         [test_conf setDeviceOrientation: Portrait];
         [portraitlandscapebtn setTitle: @"Portrait" forState: UIControlStateNormal];

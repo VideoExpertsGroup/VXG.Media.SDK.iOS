@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CE32CF4122C4E7880028D511 /* ffmpeg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE32CF4022C4E7870028D511 /* ffmpeg.framework */; };
+		CE32CF4222C4E78D0028D511 /* ffmpeg.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CE32CF4022C4E7870028D511 /* ffmpeg.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CE62AC8420D1124600C025F1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CE62AC8320D1124600C025F1 /* AppDelegate.m */; };
 		CE62AC8720D1124600C025F1 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE62AC8620D1124600C025F1 /* ViewController.m */; };
 		CE62AC8A20D1124600C025F1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE62AC8820D1124600C025F1 /* Main.storyboard */; };
@@ -15,9 +17,6 @@
 		CE62AC9220D1124900C025F1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CE62AC9120D1124900C025F1 /* main.m */; };
 		CE62AC9A20D1126B00C025F1 /* libMediaCaptureSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE62AC9920D1126B00C025F1 /* libMediaCaptureSDK.a */; };
 		CE62AC9C20D1127B00C025F1 /* libMediaPlayerSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE62AC9B20D1127B00C025F1 /* libMediaPlayerSDK.a */; };
-		CE62AC9E20D1128800C025F1 /* ffmpeg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE62AC9D20D1128800C025F1 /* ffmpeg.framework */; };
-		CE62AC9F20D1176A00C025F1 /* ffmpeg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE62AC9D20D1128800C025F1 /* ffmpeg.framework */; };
-		CE62ACA020D1176A00C025F1 /* ffmpeg.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CE62AC9D20D1128800C025F1 /* ffmpeg.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CED1D86921D10BC500247390 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CED1D86821D10BC400247390 /* libc++.tbd */; };
 /* End PBXBuildFile section */
 
@@ -28,7 +27,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				CE62ACA020D1176A00C025F1 /* ffmpeg.framework in Embed Frameworks */,
+				CE32CF4222C4E78D0028D511 /* ffmpeg.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -36,6 +35,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		CE32CF4022C4E7870028D511 /* ffmpeg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ffmpeg.framework; path = ../../../Frameworks/ffmpeg/applestore/ffmpeg.framework; sourceTree = "<group>"; };
 		CE62AC7F20D1124600C025F1 /* PlayerAndStreamer_test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlayerAndStreamer_test.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE62AC8220D1124600C025F1 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		CE62AC8320D1124600C025F1 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -48,7 +48,6 @@
 		CE62AC9120D1124900C025F1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		CE62AC9920D1126B00C025F1 /* libMediaCaptureSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMediaCaptureSDK.a; path = ../../lib/shared/libMediaCaptureSDK.a; sourceTree = "<group>"; };
 		CE62AC9B20D1127B00C025F1 /* libMediaPlayerSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMediaPlayerSDK.a; path = ../../../VXG.MediaPlayer.iOS/lib/shared.ffmpeg/libMediaPlayerSDK.a; sourceTree = "<group>"; };
-		CE62AC9D20D1128800C025F1 /* ffmpeg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ffmpeg.framework; path = ../../../Frameworks/ffmpeg/universal/ffmpeg.framework; sourceTree = "<group>"; };
 		CED1D86821D10BC400247390 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -57,9 +56,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE32CF4122C4E7880028D511 /* ffmpeg.framework in Frameworks */,
 				CED1D86921D10BC500247390 /* libc++.tbd in Frameworks */,
-				CE62AC9E20D1128800C025F1 /* ffmpeg.framework in Frameworks */,
-				CE62AC9F20D1176A00C025F1 /* ffmpeg.framework in Frameworks */,
 				CE62AC9C20D1127B00C025F1 /* libMediaPlayerSDK.a in Frameworks */,
 				CE62AC9A20D1126B00C025F1 /* libMediaCaptureSDK.a in Frameworks */,
 			);
@@ -104,8 +102,8 @@
 		CE62AC9820D1126A00C025F1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CE32CF4022C4E7870028D511 /* ffmpeg.framework */,
 				CED1D86821D10BC400247390 /* libc++.tbd */,
-				CE62AC9D20D1128800C025F1 /* ffmpeg.framework */,
 				CE62AC9B20D1127B00C025F1 /* libMediaPlayerSDK.a */,
 				CE62AC9920D1126B00C025F1 /* libMediaCaptureSDK.a */,
 			);

@@ -152,7 +152,7 @@ void LogElement(int loglevel, NSString* element, NSString *format, ... );
 @protocol MediaCaptureCallback <NSObject>
 - (int) Status: (NSString*) who : (int) arg;
 @optional
--(void) audioData: (void*) data withSize: (long long) datasize withTimestamp:(int64_t) pts andDuration:(int64_t) duration;
+-(void) audioData: (void*) data withSize: (long long) datasize withTimestamp:(int64_t) pts andDuration:(int64_t) duration peak: (float) peak;
 -(void) videoData: (CVImageBufferRef) data withTimestamp: (CMTime) pts andDuration: (CMTime) duration;
 -(int) fileCreated:(NSString*) filename fullpath: (NSString*) fullpath type: (NSString*) filetype;
 -(int) additionalInfo: (NSDictionary*) info;
