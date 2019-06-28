@@ -245,7 +245,7 @@
             }
         }
         
-        [test_conf setLicenseKey:@"set license key here otherwise streams are limited by 2 minutes"];
+        [test_conf setLicenseKey:@"setLicenseKeyHereOherwiseStreamsAreLimitedBy2Minutes"];
 
         [test_conf setVideoConfig: 640 : 480 :30: 256*1024 ];
 
