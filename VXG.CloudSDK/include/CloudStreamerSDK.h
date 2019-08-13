@@ -18,7 +18,7 @@ typedef NS_ENUM(int, CloudStreamerEvent) {
 
 typedef void (^CStreamerCallback)(CloudStreamerEvent status_code, NSString* info);
 
-@protocol ICloudStreamerCallback
+@protocol ICloudCStreamerCallback
 -(void) onStarted: (NSString*) url;
 -(void) onStopped;
 -(void) onError:(int) err;
@@ -30,7 +30,7 @@ typedef void (^CStreamerCallback)(CloudStreamerEvent status_code, NSString* info
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
--(instancetype)initWithParams: (id<ICloudStreamerCallback>) callbacks;
+-(instancetype)initWithParams: (id<ICloudCStreamerCallback>) callbacks;
 -(instancetype)initWithStatusCallback: (CStreamerCallback) callbacks;
 
 -(int) setSource: (NSString*) access_token;

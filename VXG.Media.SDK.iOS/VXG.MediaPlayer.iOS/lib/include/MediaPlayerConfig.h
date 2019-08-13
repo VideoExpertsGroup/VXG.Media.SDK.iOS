@@ -155,11 +155,19 @@
 @property (nonatomic) int       advancedConnectionNetworkProtocolPacketSize;  // should be > 0 but less 100000000, in bytes, default -1
 
 // iOS specific
-@property (nonatomic) int       enableInternalGestureRecognizers;	 // 0 - off, 1 - pinch(zoom), 2 - pan(move), 4 - single & double tap. Default: (1 | 2 | 4)
-@property (nonatomic) int       stateWillResignActive;               // 0 - close(not implemneted), 1 - pause, 2 - pause and flush. Default: 1
-@property (nonatomic) int       runDisplayLinkInMainQueue;           // 1 - run as is, 1 - force main queue. Default: 1
-@property (nonatomic) int       enableInternalAutoresizeToSuperview; // 0 - off, 1 - on. Default: 1
-@property (nonatomic) int       enableInternalAudioSessionConfigure; // 0 - don't touch AudioSession, 1 - own configure. Default: 1
+@property (nonatomic) int        enableInternalGestureRecognizers;	 // 0 - off, 1 - pinch(zoom), 2 - pan(move), 4 - single & double tap. Default: (1 | 2 | 4)
+@property (nonatomic) int        stateWillResignActive;               // 0 - continue playing, 1 - pause, 2 - pause and flush. Default: 1
+@property (nonatomic) int        runDisplayLinkInMainQueue;           // 1 - run as is, 1 - force main queue. Default: 1
+@property (nonatomic) int        enableInternalAutoresizeToSuperview; // 0 - off, 1 - on. Default: 1
+@property (nonatomic) int        enableInternalAudioSessionConfigure; // 0 - don't touch AudioSession, 1 - own configure. Default: 1
+// for customize our audio session
+@property (nonatomic) NSString*  internalAudioSessionMode;            // values from AVAudioSessionMode. Default: @"AVAudioSessionModeDefault"
+@property (nonatomic) NSString*  internalAudioSessionCategory;        // values from AVAudioSessionCategory. Default: @"AVAudioSessionCategoryPlayAndRecord"
+@property (nonatomic) NSUInteger internalAudioSessionCategoryOptions; // values from AVAudioSessionCategoryOptions.
+                                                                      // Default: AVAudioSessionCategoryOptionMixWithOthers |
+                                                                      //          AVAudioSessionCategoryOptionDefaultToSpeaker |
+                                                                      //          AVAudioSessionCategoryOptionAllowBluetooth |
+                                                                      //          AVAudioSessionCategoryOptionAllowBluetoothA2DP
 
 // log level
 + (void)setLogLevel:(MediaPlayerLogLevel)newValue;

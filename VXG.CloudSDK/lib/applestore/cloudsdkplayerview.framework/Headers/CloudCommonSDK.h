@@ -24,6 +24,21 @@ typedef NS_ENUM(int, CCRecordingMode)
     CCRecordingModeNoRecording = 2
 };
 
+typedef NS_OPTIONS(int, CTimelineScaleType)
+{
+    CTIMELINE_SCALE_MINUTE = 0,
+    CTIMELINE_SCALE_HOUR   = 1,
+    CTIMELINE_SCALE_12HOUR = 2,
+    CTIMELINE_SCALE_RANGE  = 3
+};
+
+typedef NS_OPTIONS(int, CTimelineControls)
+{
+    CTIMELINE_CONTROL_TORIGHT   = 1 << 0,
+    CTIMELINE_CONTROL_TOLEFT    = 1 << 1,
+    CTIMELINE_CONTROL_CALENDAR  = 1 << 2,
+    CTIMELINE_CONTROL_SCALE     = 1 << 3
+};
 
 @interface CTimelinePair : NSObject
 @property long long start;
@@ -34,6 +49,38 @@ typedef NS_ENUM(int, CCRecordingMode)
 @property long long start;
 @property long long end;
 @property NSArray<CTimelinePair*>* periods;
+@end
+
+@interface CTimelineStyle : NSObject
+@property(copy, nonatomic) UIColor *mainColor;
+@property(copy, nonatomic) UIColor *lineColor;
+@property(copy, nonatomic) UIColor *textColor;
+@property(copy, nonatomic) UIColor *textBackgroundColor;
+@property(copy, nonatomic) UIColor *trackColor;
+@property(copy, nonatomic) UIColor *knobColor;
+@property(copy, nonatomic) UIImage *knobImage;
+@property(copy, nonatomic) UIColor *strokeColor;
+@property(copy, nonatomic) UIColor *rangeColor;
+@property(nonatomic) float lineWidth;
+@property(nonatomic) float trackWidth;
+@property(copy, nonatomic) NSString* timeFormat;
+@property(copy, nonatomic) NSString* timeZone;
+@property(nonatomic) float strokeWidth;
+@property(nonatomic) float strokeStepWidth;
+@property(nonatomic) int   strokeTextNamingType; // 0 - for each, 1 - through one
+@property(nonatomic) int   strokeTextPositionType; // 0 - mixed, 1 - top only, 2 - bottom only
+@property(nonatomic) float scalePixelsPerSecond;
+
+// copy
++(CTimelineStyle*) makeCopy:(CTimelineStyle*)src;
+@end
+
+// config for timeline
+@interface CTimelineConfig : NSObject
+@property (nonatomic) CTimelineControls controls;
+
+// copy
++ (CTimelineConfig*) makeCopy:(CTimelineConfig*) src;
 @end
 
 @interface CPreviewImage : NSObject

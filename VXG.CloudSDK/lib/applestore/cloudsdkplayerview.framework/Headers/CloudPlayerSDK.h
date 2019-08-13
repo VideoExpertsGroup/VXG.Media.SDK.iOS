@@ -8,7 +8,7 @@
 #import "CloudCommonSDK.h"
 
 
-@protocol  ICloudObject
+@protocol  ICloudCObject
 - (Boolean) HasError;
 - (int) GetResultInt;
 - (NSString*) GetResultStr;
@@ -30,7 +30,10 @@ typedef NS_ENUM(int, CloudPlayerEvent) {
     SOURCE_UNREACHABLE = 19000,
     SOURCE_ONLINE      = 19001,
     SOURCE_OFFLINE     = 19002,
-    VIDEO_FIRST_FRAME  = 20000
+    VIDEO_FIRST_FRAME  = 20000,
+    RECORD_STARTED     = 20100,
+    RECORD_STOPPED     = 20101,
+    RECORD_CLOSED      = 20102
 };
 
 typedef NS_ENUM(int, CPlayerStates)
@@ -49,18 +52,10 @@ typedef NS_ENUM(int, CPlayerModes)
     CPlayerModePlayback = 1 << 1
 };
 
-typedef NS_OPTIONS(int, CTimelineScaleType)
-{
-    CTIMELINE_SCALE_MINUTE = 0,
-    CTIMELINE_SCALE_HOUR   = 1,
-    CTIMELINE_SCALE_12HOUR = 2,
-    CTIMELINE_SCALE_RANGE  = 3
-};
-
-typedef void (^CPlayerCallback)(CloudPlayerEvent status_code, id<ICloudObject> player);
+typedef void (^CPlayerCallback)(CloudPlayerEvent status_code, id<ICloudCObject> player);
 
 @protocol ICloudCPlayerCallback
--(void) Status: (CloudPlayerEvent) status_code object: (id<ICloudObject>) player;
+-(void) Status: (CloudPlayerEvent) status_code object: (id<ICloudCObject>) player;
 @end
 
 
@@ -88,9 +83,12 @@ typedef void (^CPlayerCallback)(CloudPlayerEvent status_code, id<ICloudObject> p
 - (void) setConnectionBufferingTime: (int) val;
 - (int) getConnectionBufferingTime;
 
+- (void) setPlayerType: (int) val;
+- (int) getPlayerType;
+
 @end
 
-@interface CloudPlayerSDK : NSObject<ICloudObject>
+@interface CloudPlayerSDK : NSObject<ICloudCObject>
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
@@ -102,8 +100,8 @@ typedef void (^CPlayerCallback)(CloudPlayerEvent status_code, id<ICloudObject> p
                        config:(CPlayerConfig *)config
             protocol_callback: (id<ICloudCPlayerCallback>)callbacks;
 
--(int) setSource: (NSString*) access_token;
--(int) setSource: (NSString*)access_token withPosition:(long long)position;
+-(int) setSource: (NSString*) source;
+-(int) setSource: (NSString*) source withPosition:(long long)position;
 -(int) setConfig: (CPlayerConfig*) config;
 -(CPlayerConfig*) getConfig;
 -(void) play;
@@ -122,7 +120,11 @@ typedef void (^CPlayerCallback)(CloudPlayerEvent status_code, id<ICloudObject> p
 
 -(void) showTimeline:(UIView*) vwTimeline;
 -(void) showTimeline:(UIView*)timelineContainer withCalendarContainer:(UIView*)calendarContainer;
+-(CTimelineConfig*) getTimelineConfig;
+-(void) applyTimelineConfig;
 -(void) setTimelineStyle:(UIColor*)main lineColor:(UIColor*)line textColor:(UIColor*)text textBackgroundColor:(UIColor*)textBackground trackColor:(UIColor*)track knobColor:(UIColor *)knob strokeColor:(UIColor*)stroke rangeColor:(UIColor*)range;
+-(void) setTimelineStyle:(CTimelineStyle*)style;
+-(CTimelineStyle*) getTimelineStyle;
 -(void) setTimelineScale:(CTimelineScaleType)scale;
 -(CTimelineScaleType) getTimelineScale;
 -(void) setRange: (int64_t) start_time end_time: (int64_t) end_time;
@@ -136,6 +138,11 @@ typedef void (^CPlayerCallback)(CloudPlayerEvent status_code, id<ICloudObject> p
 -(void) getPreviewURL:(void (^)(NSObject* obj, int status)) complete;
 -(CPreviewImage*) getPreviewImageSync;
 -(void) getPreviewImage:(void (^)(NSObject *, int))complete;
+-(int) getVideoShot: (void*)buffer
+        buffer_size: (int32_t*)buffer_size
+              width: (int32_t*)width
+             height: (int32_t*)height
+      bytes_per_row: (int32_t*)bytes_per_row;
 
 -(long long) getTimeLive;
 -(void) setTimeLive:(long long) utc_time;
@@ -147,6 +154,7 @@ typedef void (^CPlayerCallback)(CloudPlayerEvent status_code, id<ICloudObject> p
 -(Boolean) getPublic;
 -(void) setPublic: (Boolean) isPublic;
 -(Boolean) isOwner;
+
 -(CCRecordingMode) getRecordingMode;
 -(void) setRecordingMode:(CCRecordingMode) rec_mode;
 

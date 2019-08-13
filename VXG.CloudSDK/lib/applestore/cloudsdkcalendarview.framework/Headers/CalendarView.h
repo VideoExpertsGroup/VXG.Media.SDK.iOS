@@ -61,4 +61,7 @@ typedef NS_OPTIONS(int, CalendarViewControls)
 
 - (void) updateView;
 
+// cleanup
+-(void) clean;
+
 @end

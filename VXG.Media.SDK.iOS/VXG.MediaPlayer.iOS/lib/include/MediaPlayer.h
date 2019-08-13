@@ -414,6 +414,9 @@ videodecoder_videorenderer_num_frms:(int*)videodecoder_videorenderer_num_frms
                        withSize: (int32_t)size
                          andPts: (int64_t)pts;
 
+- (int) setRtspPlaybackScale: (double)scale;
+
+// WebRTC
 - (int) webrtcSetAnswer: (NSString*)answer;
 - (int) webrtcSetICECandidate: (NSString*)candidate
             withSDPMLineIndex: (int)index;
