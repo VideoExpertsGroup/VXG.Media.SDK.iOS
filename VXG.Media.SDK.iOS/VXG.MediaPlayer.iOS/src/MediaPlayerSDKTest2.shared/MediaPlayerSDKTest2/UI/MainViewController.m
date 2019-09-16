@@ -44,8 +44,8 @@
         _remoteMovies = [NSMutableArray array];
         
         // standard
-        [_remoteMovies addObject:[[Url alloc] initWithParam:@"BigBuckBunny from RTSP" url:@"rtsp://184.72.239.149/vod/mp4:BigBuckBunny_115k.mov"image:nil]];
-        [_remoteMovies addObject:[[Url alloc] initWithParam:@"BigBuckBunny from RTMP" url:@"rtmp://184.72.239.149/vod/BigBuckBunny_115k.mov" image:nil]];
+        [_remoteMovies addObject:[[Url alloc] initWithParam:@"BigBuckBunny from RTSP" url:@"rtsp://3.84.6.190/vod/mp4:BigBuckBunny_115k.mov"image:nil]];
+        [_remoteMovies addObject:[[Url alloc] initWithParam:@"BigBuckBunny from RTMP" url:@"rtmp://3.84.6.190/vod/BigBuckBunny_115k.mov" image:nil]];
         [_remoteMovies addObject:[[Url alloc] initWithParam:@"BipBop" url:@"http://devimages.apple.com/iphone/samples/bipbop/gear1/prog_index.m3u8" image:nil]];
 
         [_remoteMovies addObject:[[Url alloc] initWithParam:@"ElephantsDream from Google"
@@ -79,7 +79,7 @@
 
         // own
         MediaPlayerConfig* config1 = [[MediaPlayerConfig alloc] init];
-        config1.connectionUrl = @"rtsp://184.72.239.149/vod/mp4:BigBuckBunny_115k.mov";
+        config1.connectionUrl = @"rtsp://3.84.6.190/vod/mp4:BigBuckBunny_115k.mov";
         config1.contentProviderLibrary = 1;
         [_remoteMovies addObject:[[Url alloc] initWithConfig:@"BigBuckBunny using own RTSTM" config:config1]];
     }
