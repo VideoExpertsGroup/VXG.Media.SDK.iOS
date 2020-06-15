@@ -3,8 +3,8 @@
 # VXG Media SDK for iOS
 
 ## Disclaimer
-This is a non-commercial version of VXG Media SDK for iOS. Playback is limited to 2 minutes.
-Commercial use and access to extra features requires a license. Please learn more at https://www.videoexpertsgroup.com/mobile/
+This is a non-commercial version of VXG Media SDK for iOS.  Playback is limited to 2 minutes.
+Commercial use and access to extra features requires a license.  Please learn more at https://www.videoexpertsgroup.com/mobile/
 
 ## About SDK
 SDK consists of three modules:
