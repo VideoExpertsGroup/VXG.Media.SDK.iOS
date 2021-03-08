@@ -1,10 +1,10 @@
-<img src="https://www.videoexpertsgroup.com/wp-content/uploads/2019/05/Group-2.2.png" alt="VXGMobileSDK.iOS" width="300">
+
 
 # VXG Media SDK for iOS
 
 ## Disclaimer
 This is a non-commercial version of VXG Media SDK for iOS.  Playback is limited to 2 minutes.
-Commercial use and access to extra features requires a license.  Please learn more at https://www.videoexpertsgroup.com/mobile/
+Commercial use and access to extra features requires a license.  Learn more about <a href="www.videoexpertsgroup.com">VXG iOS RTSP SDK</a>
 
 ## About SDK
 SDK consists of three modules:
@@ -57,6 +57,8 @@ The full SDK documentation can be found here - https://dashboard.videoexpertsgro
    * RTSP tunneling over HTTPS, HTTP
    * Capturing raw video up to 30 FPS
    * Capturing raw audio (PCM format)
+
+Learn more about <a href="www.videoexpertsgroup.com">Cloud Video Surveillance</a>
    
 ## Demo screenshots
 <img src="http://www.videoexpertsgroup.com/git/iphone_rtsp.png" alt="RTSP Player sample" width="400">
