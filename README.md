@@ -4,7 +4,7 @@
 
 ## Disclaimer
 This is a non-commercial version of VXG Media SDK for iOS.  Playback is limited to 2 minutes.
-Commercial use and access to extra features requires a license.  Learn more about <a href="www.videoexpertsgroup.com">VXG iOS RTSP SDK</a>
+Commercial use and access to extra features requires a license.  Learn more about <a href="https://www.videoexpertsgroup.com">VXG iOS RTSP SDK</a>
 
 ## About SDK
 SDK consists of three modules:
