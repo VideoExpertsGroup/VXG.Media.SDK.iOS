@@ -1,5 +1,5 @@
 ### VXG.Mobile.SDK.iOS.2.0.76.210906
-- Player
+* Player
 1. Added time shift functionality
 2. Added ONVIF API for device discovery, based on VXG ONVIF library 
 3. Builded with latest OpenSSL
@@ -23,10 +23,10 @@
 18. Fixed possible crash for broken streams
 19. Added get version support
 
-- Encoder
+* Encoder
 1. Method setAudioSamplingRate is now public
 
-- CloudSDK
+* CloudSDK
 1. Added ScrubberView control
 2. Added SrcubberTimelineView control
 3. Added first version of PTZ control
