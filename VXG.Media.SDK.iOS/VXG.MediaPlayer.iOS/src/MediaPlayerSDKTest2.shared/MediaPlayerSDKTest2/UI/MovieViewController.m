@@ -612,7 +612,7 @@ static NSMutableDictionary * gHistory;
                                                object:[UIApplication sharedApplication]];
     config.connectionUrl = [_current_url getUrl];
     config.decodingType = hardware_decoder; // HW
-    config.connectionNetworkProtocol = -1;//-1;//
+    config.connectionNetworkProtocol = [_current_url getConfig].connectionNetworkProtocol;//-1;//
     config.numberOfCPUCores = 2;
     config.synchroEnable = 1;
     config.connectionBufferingTime = 3000;
@@ -620,6 +620,17 @@ static NSMutableDictionary * gHistory;
     config.startPreroll = 0;
     config.videoRotate = 0;
     config.enableInternalAudioSessionConfigure = 1;
+    
+    //config.workaroundFramePaddingZeroing = 1;
+    
+    //config.internalAudioSessionMode = @"AVAudioSessionModeVoiceChat";
+    //config.enableInternalAudioUnitVPIO = 1;
+//    config.playerMode = PP_MODE_RECORD;
+    //config.recordFlags |= RECORD_FRAG_CUSTOM;
+//    config.recordSplitSize = 0;
+//    config.recordSplitTime = 0;
+//    config.recordPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@""];
+//    config.recordPrefix = @"TestRecordOnly";
     
     // for background audio
     [remoteCommand open];
@@ -651,8 +662,8 @@ static NSMutableDictionary * gHistory;
 //        [config.connectionSegments addObject:segment];
 //    }
 
-    //config.aspectRatioMode = 1;
-//    config.aspectRatioMode = 4;
+//    config.aspectRatioMode = 4201;
+//    config.aspectRatioZoomModePercentMin = 10;
 //    config.aspectRatioZoomModePercentAsFloat = 354.1f;
 //    config.aspectRatioMoveModeXAsFloat = 0.0f;
 //    config.aspectRatioMoveModeYAsFloat = 81.1f;
@@ -665,8 +676,9 @@ static NSMutableDictionary * gHistory;
     //config.playbackSendPlayPauseToServer = 0;
     
     
-    //[player Open:config callback:self];
+    [self updateAspectText:config.aspectRatioMode];
     
+    //[player Open:config callback:self];
     
     NSString* ext = [[_current_url getUrl] pathExtension];
 
@@ -739,6 +751,7 @@ static NSMutableDictionary * gHistory;
     //[self testRemoveAllRects];
     for (int i = 0; i < actualPlayerCount; i++)
     {
+        [players[i] recordStop];
         [players[i] Close];
         LoggerStream(1, @"sample: viewWillDisappear: %@", players[i]);
     }
@@ -1155,59 +1168,59 @@ static NSMutableDictionary * gHistory;
     if (players[0] == nil)
         return;
     
-    MediaPlayerConfig* cfg = [players[0] getConfig];
-    cfg.aspectRatioMode++;
-    if (cfg.aspectRatioMode > 8)
-        cfg.aspectRatioMode = 0;
+    // 0 - stretch, 1 - fittoscreen with aspect ratio,
+    // 2 - crop(height) with aspect, 21 - crop(width) with aspect, 3 - 100% size,
+    // 4,43,5,53 - zoom/move mode with real size (100%)
+    // 6,40,7,50 - zoom/move mode with stretch
+    // 41,51 - zoom/move mode with aspect ratio
+    // 420,520 - zoom/move mode with crop(height) and aspect
+    // 421,521 - zoom/move mode with crop(width) and aspect
 
-    [scrollView setUserInteractionEnabled:YES];
-    switch (cfg.aspectRatioMode)
-    {
+    MediaPlayerConfig* cfg = [players[0] getConfig];
+//    cfg.aspectRatioMode++;
+//    if (cfg.aspectRatioMode > 8)
+//        cfg.aspectRatioMode = 0;
+
+    switch (cfg.aspectRatioMode) {
         case 0:
-            [_aspectInternalBtn setTitle:@"Stretch" forState:UIControlStateNormal];
+            cfg.aspectRatioMode = 1;
             break;
         case 1:
-            [_aspectInternalBtn setTitle:@"Fit to screen" forState:UIControlStateNormal];
+            cfg.aspectRatioMode = 2;
             break;
         case 2:
-            [_aspectInternalBtn setTitle:@"Crop" forState:UIControlStateNormal];
+            cfg.aspectRatioMode = 21;
+            break;
+        case 21:
+            cfg.aspectRatioMode = 3;
             break;
         case 3:
-            [_aspectInternalBtn setTitle:@"Original size" forState:UIControlStateNormal];
+            cfg.aspectRatioMode = 43;
             break;
-        case 4:
-            [_aspectInternalBtn setTitle:@"Zoom/Move1" forState:UIControlStateNormal];
+        case 4: case 5: case 43: case 53:
+            cfg.aspectRatioMode = 40;
             break;
-        case 5:
-            [_aspectInternalBtn setTitle:@"Zoom/Move2" forState:UIControlStateNormal];
+        case 6: case 7: case 40: case 50:
+            cfg.aspectRatioMode = 41;
             break;
-
-        case 6:
-            [_aspectInternalBtn setTitle:@"Zoom/Move3" forState:UIControlStateNormal];
+        case 41: case 51:
+            cfg.aspectRatioMode = 420;
             break;
-
-        case 7:
-            [_aspectInternalBtn setTitle:@"Zoom/Move4" forState:UIControlStateNormal];
+        case 420: case 520:
+            cfg.aspectRatioMode = 421;
             break;
-
-//        case 5:
-//        {
-//            MediaPlayerConfig* cfg = [players[0] getConfig];
-//            if (cfg.aspectRatioMode == 5)
-//            {
-//                cfg.aspectRatioMoveModeX = 50;
-//                cfg.aspectRatioMoveModeY = 50;
-//                for (int i = 0; i < actualPlayerCount; i++)
-//                {
-//                    [players[i] updateView];
-//                }
-//            }
-////            [scrollView setUserInteractionEnabled:NO];
-//            [_aspectInternalBtn setTitle:@"Zoom/Move" forState:UIControlStateNormal];
-//            break;
-//        }
+        case 421: case 521:
+            cfg.aspectRatioMode = 0;
+            break;
+        default:
+            cfg.aspectRatioMode = 0;
+            break;
     }
     
+    [scrollView setUserInteractionEnabled:YES];
+
+    [self updateAspectText:cfg.aspectRatioMode];
+
     for (int i = 0; i < actualPlayerCount; i++)
     {
         [players[i] updateView];
@@ -1281,6 +1294,9 @@ static NSMutableDictionary * gHistory;
     
  }
 
+//int aspectRatioZoomMax = 400;
+//int aspectRatioZoomMin = 50;
+
 - (void) speedDownDidTouch: (id) sender
 {
     
@@ -1288,11 +1304,12 @@ static NSMutableDictionary * gHistory;
 //    frameView.frame = CGRectMake( 0, 0, 500, 500 );
     
 //    MediaPlayerConfig* cfg = [players[0] getConfig];
-//    if (cfg.aspectRatioMode == 4)
-//    {
-//        cfg.aspectRatioZoomModePercent--;
-//        for (int i = 0; i < actualPlayerCount; i++)
-//        {
+//    if (cfg.aspectRatioMode >= 4) {
+//        cfg.aspectRatioZoomModePercent += 4;
+//        if (cfg.aspectRatioZoomModePercent >= aspectRatioZoomMax) {
+//            cfg.aspectRatioZoomModePercent = aspectRatioZoomMax;
+//        }
+//        for (int i = 0; i < actualPlayerCount; i++) {
 //            [players[i] updateView];
 //        }
 //        return;
@@ -1311,17 +1328,18 @@ static NSMutableDictionary * gHistory;
 //    frameView.frame = self.view.bounds;
 
 //    MediaPlayerConfig* cfg = [players[0] getConfig];
-//    if (cfg.aspectRatioMode == 4)
-//    {
-//        cfg.aspectRatioZoomModePercent++;
-//        for (int i = 0; i < actualPlayerCount; i++)
-//        {
+//    if (cfg.aspectRatioMode >= 4) {
+//        cfg.aspectRatioZoomModePercent -= 4;
+//        if (cfg.aspectRatioZoomModePercent <= aspectRatioZoomMin) {
+//            cfg.aspectRatioZoomModePercent = aspectRatioZoomMin;
+//        }
+//        for (int i = 0; i < actualPlayerCount; i++) {
 //            [players[i] updateView];
 //        }
 //        return;
 //    }
     
-    ff_rate = 3000;
+    ff_rate = 4000;
     for (int i = 0; i < actualPlayerCount; i++)
     {
         [players[i] setFFRate:ff_rate];
@@ -1632,12 +1650,24 @@ static NSMutableDictionary * gHistory;
     int64_t _last = 0;
     int64_t _duration = 0;
     int     _stream_type = 0;
+    int64_t _timeshift_first = 0;
+    int64_t _timeshift_current = 0;
+    int64_t _timeshift_last = 0;
+    int64_t _timeshift_duration = 0;
+    int     _timeshift_stream_type = 0;
+    int64_t _renderer = 0;
+
     [players[0] getLiveStreamPosition:&_first
-                          current:&_current
-                             last:&_last
-                         duration:&_duration
-                      stream_type:&_stream_type];
-    
+                              current:&_current
+                                 last:&_last
+                             duration:&_duration
+                          stream_type:&_stream_type
+                      timeshift_first:&_timeshift_first
+                    timeshift_current:&_timeshift_current
+                       timeshift_last:&_timeshift_last
+                   timeshift_duration:&_timeshift_duration
+                timeshift_stream_type:&_timeshift_stream_type];
+
     LoggerStream(1, @"position: %lld, %lld, %lld, %lld, %d", _first, _current, _last, _duration, _stream_type);
     
     CGFloat duration = _duration / 1000;
@@ -1688,6 +1718,49 @@ static NSMutableDictionary * gHistory;
                      }
                      completion:nil];
     
+}
+
+- (void) updateAspectText: (int) aspect {
+    // 0 - stretch, 1 - fittoscreen with aspect ratio,
+    // 2 - crop(height) with aspect, 21 - crop(width) with aspect, 3 - 100% size,
+    // 4,43,5,53 - zoom/move mode with real size (100%)
+    // 6,40,7,50 - zoom/move mode with stretch
+    // 41,51 - zoom/move mode with aspect ratio
+    // 420,520 - zoom/move mode with crop(height) and aspect
+    // 421,521 - zoom/move mode with crop(width) and aspect
+
+    switch (aspect) {
+        case 0:
+            [_aspectInternalBtn setTitle:@"Stretch" forState:UIControlStateNormal];
+            break;
+        case 1:
+            [_aspectInternalBtn setTitle:@"Fit to screen" forState:UIControlStateNormal];
+            break;
+        case 2:
+            [_aspectInternalBtn setTitle:@"Crop(Height)" forState:UIControlStateNormal];
+            break;
+        case 21:
+            [_aspectInternalBtn setTitle:@"Crop(Width)" forState:UIControlStateNormal];
+            break;
+        case 3:
+            [_aspectInternalBtn setTitle:@"Original size" forState:UIControlStateNormal];
+            break;
+        case 4: case 5: case 43: case 53:
+            [_aspectInternalBtn setTitle:@"Zoom/Move 100%" forState:UIControlStateNormal];
+            break;
+        case 6: case 7: case 40: case 50:
+            [_aspectInternalBtn setTitle:@"Zoom/Move Stretch" forState:UIControlStateNormal];
+            break;
+        case 41: case 51:
+            [_aspectInternalBtn setTitle:@"Zoom/Move Aspect" forState:UIControlStateNormal];
+            break;
+        case 420: case 520:
+            [_aspectInternalBtn setTitle:@"Zoom/Move Crop(Height)" forState:UIControlStateNormal];
+            break;
+        case 421: case 521:
+            [_aspectInternalBtn setTitle:@"Zoom/Move Crop(Width)" forState:UIControlStateNormal];
+            break;
+    }
 }
 
 - (int) Status: (MediaPlayer*)player1

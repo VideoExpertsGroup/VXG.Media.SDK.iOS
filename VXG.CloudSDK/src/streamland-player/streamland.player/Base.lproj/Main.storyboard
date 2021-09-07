@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -19,8 +17,8 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xiz-zk-RBz">
-                                <rect key="frame" x="8" y="28" width="359" height="631"/>
-                                <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <rect key="frame" x="8" y="8" width="359" height="651"/>
+                                <color key="backgroundColor" systemColor="darkTextColor"/>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c3d-Op-UrC">
                                 <rect key="frame" x="187.5" y="333.5" width="0.0" height="0.0"/>
@@ -28,7 +26,7 @@
                                 <color key="textColor" red="1" green="0.17100000000000001" blue="0.219" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="29L-0P-hI3">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="29L-0P-hI3">
                                 <rect key="frame" x="8" y="629" width="114.5" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="MHJ-6F-qxI"/>
@@ -38,14 +36,14 @@
                                     <action selector="PlayPauseBtn_click:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xZh-Uk-7mu"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8x4-Ks-3lM">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8x4-Ks-3lM">
                                 <rect key="frame" x="130.5" y="629" width="114" height="30"/>
                                 <state key="normal" title="Open"/>
                                 <connections>
                                     <action selector="OpenCloseBtn_click:" destination="BYZ-38-t0r" eventType="touchUpInside" id="hjk-Lt-PhN"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HKb-ob-1ju">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HKb-ob-1ju">
                                 <rect key="frame" x="252.5" y="629" width="114.5" height="30"/>
                                 <state key="normal" title="strtch"/>
                                 <connections>
@@ -53,16 +51,16 @@
                                 </connections>
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Input access_token here" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5wf-yi-9Or">
-                                <rect key="frame" x="8" y="28" width="359" height="30"/>
+                                <rect key="frame" x="8" y="8" width="359" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="Ay8-wh-WSJ"/>
                                 </constraints>
-                                <string key="text">eyJ0b2tlbiI6InNoYXJlLmV5SnphU0k2SURGOS41Yzg3MzdjN3QxMmNmZjc4MC5tWGZDaUJHQjYtYUM5Qkp4RTQ3cVpTYkcwcW8iLCJjYW1pZCI6MSwiY21uZ3JpZCI6MSwiYWNjZXNzIjoid2F0Y2giLCJhcGlfcCI6IjgzIiwiYXBpX3NwIjoiODYiLCJjYW0iOiIxMC4yMC4xNi40OCIsImNhbV9wIjoiODg4OCIsImNhbV9zcCI6Ijg4ODMiLCJzdmNwIjoiaHR0cDovLzEwLjIwLjE2LjQ4OjgzLyIsImFwaSI6IjEwLjIwLjE2LjQ4In0=</string>
-                                <nil key="textColor"/>
+                                <string key="text">eyJ0b2tlbiI6InNoYXJlLmV5SnphU0k2SURFNU1uMC42MTMwOGNjNHQxMmNmZjc4MC45UnlrOU8za1hPbW5nVGtYek1zUGNyejhpdlUiLCJjYW1pZCI6OTYsImNtbmdyaWQiOjk2LCJhY2Nlc3MiOiJhbGwiLCJhcGlfcCI6ODMsImFwaV9zcCI6ODYsImNhbSI6ImRlbW8udmFwbGF0Zm9ybS5ydSIsImNhbV9wIjo4ODg4LCJjYW1fc3AiOjg4ODMsInN2Y3AiOiJodHRwOi8vZGVtby52YXBsYXRmb3JtLnJ1OjgzLyIsImFwaSI6ImRlbW8udmFwbGF0Zm9ybS5ydSJ9</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                             </textField>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="HKb-ob-1ju" firstAttribute="height" secondItem="8x4-Ks-3lM" secondAttribute="height" id="0Sf-ic-dmU"/>
@@ -86,7 +84,6 @@
                             <constraint firstItem="HKb-ob-1ju" firstAttribute="leading" secondItem="8x4-Ks-3lM" secondAttribute="trailing" constant="8" id="s1W-B4-0HD"/>
                             <constraint firstItem="8x4-Ks-3lM" firstAttribute="width" secondItem="29L-0P-hI3" secondAttribute="width" id="uox-82-G9c"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
                         <outlet property="access_token_tf" destination="5wf-yi-9Or" id="VSG-tq-cxz"/>
@@ -102,4 +99,9 @@
             <point key="canvasLocation" x="117.59999999999999" y="118.29085457271366"/>
         </scene>
     </scenes>
+    <resources>
+        <systemColor name="darkTextColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>

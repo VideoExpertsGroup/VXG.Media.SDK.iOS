@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		508AA1AF26E668E000DD610F /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 508AA1AE26E668E000DD610F /* SDWebImage.framework */; };
+		508AA1B026E668EB00DD610F /* SDWebImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 508AA1AE26E668E000DD610F /* SDWebImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CE54D8F22018BDEA00299032 /* ffmpeg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE54D8F12018BDEA00299032 /* ffmpeg.framework */; };
 		CE54D8F42018BE0000299032 /* libMediaCaptureSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE54D8F32018BE0000299032 /* libMediaCaptureSDK.a */; };
 		CE54D8F52018BE3400299032 /* ffmpeg.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CE54D8F12018BDEA00299032 /* ffmpeg.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -32,6 +34,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				508AA1B026E668EB00DD610F /* SDWebImage.framework in Embed Frameworks */,
 				CEDFCF3022450FF000418C5F /* cloudsdkcalendarview.framework in Embed Frameworks */,
 				CEDFCF3122450FF000418C5F /* cloudsdkplayerview.framework in Embed Frameworks */,
 				CEDFCF3222450FF000418C5F /* cloudsdktimelineview.framework in Embed Frameworks */,
@@ -43,6 +46,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		508AA1AE26E668E000DD610F /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = ../../../VXG.Media.SDK.iOS/Frameworks/sdwebimage/universal/SDWebImage.framework; sourceTree = "<group>"; };
 		CE54D8F12018BDEA00299032 /* ffmpeg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ffmpeg.framework; path = ../../../VXG.Media.SDK.iOS/Frameworks/ffmpeg/universal/ffmpeg.framework; sourceTree = "<group>"; };
 		CE54D8F32018BE0000299032 /* libMediaCaptureSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMediaCaptureSDK.a; path = ../../../VXG.Media.SDK.iOS/VXG.MediaEncoder.iOS/lib/shared/libMediaCaptureSDK.a; sourceTree = "<group>"; };
 		CEDFCF2A22450FEB00418C5F /* cloudsdkplayerview.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = cloudsdkplayerview.framework; path = ../../lib/universal/cloudsdkplayerview.framework; sourceTree = "<group>"; };
@@ -66,6 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				508AA1AF26E668E000DD610F /* SDWebImage.framework in Frameworks */,
 				CEDFCF2D22450FEB00418C5F /* cloudsdkplayerview.framework in Frameworks */,
 				CEDFCF2E22450FEB00418C5F /* cloudsdkcalendarview.framework in Frameworks */,
 				CEDFCF2F22450FEB00418C5F /* cloudsdktimelineview.framework in Frameworks */,
@@ -114,6 +119,7 @@
 		CEE0A27620121AAA005D433B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				508AA1AE26E668E000DD610F /* SDWebImage.framework */,
 				CEDFCF2B22450FEB00418C5F /* cloudsdkcalendarview.framework */,
 				CEDFCF2A22450FEB00418C5F /* cloudsdkplayerview.framework */,
 				CEDFCF2C22450FEB00418C5F /* cloudsdktimelineview.framework */,
@@ -338,6 +344,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/../../../VXG.Media.SDK.iOS/Frameworks/ffmpeg/universal",
 					"$(PROJECT_DIR)/../../lib/universal/",
+					"$(PROJECT_DIR)/../../../VXG.Media.SDK.iOS/Frameworks/sdwebimage/universal",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/../../../VXG.Media.SDK.iOS/VXG.MediaEncoder.iOS/lib/include",
@@ -353,6 +360,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.vxg.streamland-streamer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_WORKSPACE = YES;
 			};
 			name = Debug;
 		};
@@ -366,6 +374,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/../../../VXG.Media.SDK.iOS/Frameworks/ffmpeg/universal",
 					"$(PROJECT_DIR)/../../lib/universal/",
+					"$(PROJECT_DIR)/../../../VXG.Media.SDK.iOS/Frameworks/sdwebimage/universal",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/../../../VXG.Media.SDK.iOS/VXG.MediaEncoder.iOS/lib/include",
@@ -381,6 +390,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.vxg.streamland-streamer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_WORKSPACE = YES;
 			};
 			name = Release;
 		};

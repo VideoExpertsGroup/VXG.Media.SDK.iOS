@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
+#import <AVFoundation/AVFoundation.h>
 
 @class MediaPlayer;
 
@@ -35,7 +36,9 @@ typedef NS_ENUM(int, MediaPlayerNotifyCodes)
     PLP_PLAY_STOP                   = 16,
 	  	
 	PLP_SEEK_COMPLETED              = 17,
-	  	
+    PLP_SEEK_FAILED                 = 18,
+    PLP_SEEK_STARTED                = 19,
+
 	CP_CONNECT_STARTING             = 101,
 	CP_CONNECT_SUCCESSFUL           = 102,
 	CP_CONNECT_FAILED               = 103,
@@ -62,6 +65,7 @@ typedef NS_ENUM(int, MediaPlayerNotifyCodes)
     CP_CONNECT_AUTH_SUCCESSFUL 		= 119,
     CP_CONNECT_AUTH_FAILED          = 120,
 	
+    CP_SOURCE_VIDEO_STREAMINFO_NOT_COMPLETE = 121,
 
 	VDP_STOPPED                     = 201,
 	VDP_INIT_FAILED                 = 202,
@@ -131,7 +135,8 @@ typedef NS_ENUM(int, MediaPlayerRecordFlags)
     RECORD_FAST_START         = 0x00000040,
     RECORD_FRAG_KEYFRAME      = 0x00000080,
     RECORD_SYSTEM_TIME_TO_PTS = 0x00000100,
-    RECORD_DEFINED_DURATION   = 0x00000200
+    RECORD_DEFINED_DURATION   = 0x00000200,
+    RECORD_FRAG_CUSTOM        = 0x00000480
 
 };
 
@@ -207,29 +212,46 @@ typedef NS_ENUM(int, MediaPlayerGraphicLayer)
 - (int) OnReceiveData: (MediaPlayer*)player
               buffer: (void*)buffer
                 size: (int)  size
-                 pts: (long) pts;
+                 pts: (long long) pts;
 
 // subtitle data
 @optional
 - (int) OnReceiveSubtitleString: (MediaPlayer*)player
                            data: (NSString*)data
                        duration: (uint64_t)duration;
+- (int) OnReceiveSubtitleBitmap: (MediaPlayer*)player
+                           data: (void*)data
+                           size: (int)  size
+                           left: (int)  left
+                            top: (int)  top
+                          width: (int)  width
+                         height: (int)  height
+                    video_width: (int)  video_width
+                   video_height: (int)  video_height
+                            pts: (long long) pts
+                       duration: (long long) duration;
+- (int) OnReceiveSubtitleBinary: (MediaPlayer*)player
+                           data: (void*)data
+                           size: (int)  size
+                            pts: (long long) pts
+                       duration: (long long) duration;
+- (int) OnReceiveSubtitleEventClear;
 
 // data from various parts of media pipeline
 @optional
 - (int) OnVideoSourceFrameAvailable: (MediaPlayer*)player
                              buffer: (void*)buffer
                                size: (int)  size
-                                pts: (long) pts
-                                dts: (long) dts
+                                pts: (long long) pts
+                                dts: (long long) dts
                        stream_index: (int)  stream_index
                              format: (int)  format;
 
 - (int) OnAudioSourceFrameAvailable: (MediaPlayer*)player
                              buffer: (void*)buffer
                                size: (int)  size
-                                pts: (long) pts
-                                dts: (long) dts
+                                pts: (long long) pts
+                                dts: (long long) dts
                        stream_index: (int)  stream_index
                              format: (int)  format;
 
@@ -241,8 +263,15 @@ typedef NS_ENUM(int, MediaPlayerGraphicLayer)
                                 width: (int)  width
                                height: (int)  height
                         bytes_per_row: (int)  bytes_per_row
-                                  pts: (long) pts
+                                  pts: (long long) pts
                             will_show: (int)  will_show;
+
+// data from various parts of media pipeline
+@optional
+- (int) OnAudioMicrophoneFrameAvailable: (MediaPlayer*) player
+                                  frame: (nonnull CMSampleBufferRef) frame
+                          averageLevels: (nullable float*) avrLevels
+                      averageLevelsSize: (size_t) avrLevelsSize;
 
 // webrtc callbacks
 @optional
@@ -253,6 +282,22 @@ typedef NS_ENUM(int, MediaPlayerGraphicLayer)
 - (int) OnWebRTCIceCandidateAvailable: (MediaPlayer*)player
                          iceCandidate: (NSString*)candidate
                         sdpMLineIndex: (int)index;
+
+//
+@optional
+- (int) OnVideoAspectsChanged: (MediaPlayer*)player
+              withOrientation: (int)orientation;
+
+// Timeshift
+@optional
+- (int) OnTimeshiftStartPrebufferng: (MediaPlayer*)player
+                          withValue: (long long)value;
+@optional
+- (int) OnTimeshiftProgressPrebufferng: (MediaPlayer*)player
+                             withValue: (long long)value;
+@optional
+- (int) OnTimeshiftEndPrebufferng: (MediaPlayer*)player
+                        withValue: (long long)value;
 
 @end
 
@@ -288,6 +333,7 @@ typedef NS_ENUM(int, MediaPlayerGraphicLayer)
 - (void) Play: (int)drawNumberOfFramesAndPause; // now supported only drawNumberOfFramesAndPause:1 - draw one frame and pause
 - (void) Pause;
 - (void) PauseWithFlush;
+- (void) PauseWithBuffering;
 - (void) Stop;
 
 - (void) setFFRate: (int)rate;
@@ -320,7 +366,12 @@ typedef NS_ENUM(int, MediaPlayerGraphicLayer)
                        current: (int64_t*)current
                           last: (int64_t*)last
                       duration: (int64_t*)duration
-                   stream_type: (int*)stream_type;
+                   stream_type: (int*)stream_type
+               timeshift_first: (int64_t*)timeshift_first
+             timeshift_current: (int64_t*)timeshift_current
+                timeshift_last: (int64_t*)timeshift_last
+            timeshift_duration: (int64_t*)timeshift_duration
+         timeshift_stream_type: (int*)timeshift_stream_type;
 
 - (void) toggleMute: (BOOL)mute;
 
@@ -438,6 +489,8 @@ videodecoder_videorenderer_num_frms:(int*)videodecoder_videorenderer_num_frms
 // Shraed media usage
 + (int) isMediaLibraryInited;
 + (void) setMediaLibraryInited:(Boolean) val;
+
++ (NSString*) getVersion;
 
 @end
 

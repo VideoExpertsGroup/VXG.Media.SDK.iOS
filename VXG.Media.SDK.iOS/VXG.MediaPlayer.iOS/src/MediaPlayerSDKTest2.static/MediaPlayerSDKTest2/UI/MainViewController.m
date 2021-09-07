@@ -5,7 +5,9 @@
 #import "MainViewController.h"
 #import "MovieViewController.h"
 #import <AssetsLibrary/AssetsLibrary.h>
+#import <MediaPlayer/MediaPlayer.h>
 #import "../Helpers/Url.h"
+#import <AVKit/AVKit.h>
 
 @interface MainViewController () {
     
@@ -43,6 +45,9 @@
         _localMovies = [NSMutableArray array];
         _remoteMovies = [NSMutableArray array];
         
+        // test
+        [_remoteMovies addObject:[[Url alloc] initWithParam:@"Test1" url:@"http://qthttp.apple.com.edgesuite.net/1010qwoeiuryfg/sl.m3u8"image:nil]];
+
         // standard
         [_remoteMovies addObject:[[Url alloc] initWithParam:@"BigBuckBunny from RTSP" url:@"rtsp://3.84.6.190/vod/mp4:BigBuckBunny_115k.mov"image:nil]];
         [_remoteMovies addObject:[[Url alloc] initWithParam:@"BigBuckBunny from RTMP" url:@"rtmp://3.84.6.190/vod/BigBuckBunny_115k.mov" image:nil]];
@@ -224,7 +229,7 @@
                         [ext isEqualToString:@"mpg"] ||
                         [ext isEqualToString:@"flv"] ||
                         [ext isEqualToString:@"vob"]) &&
-                        ([[path lastPathComponent] caseInsensitiveCompare:@"mic_record_temp.m4a"] != NSOrderedSame)){
+                        ([[path lastPathComponent] caseInsensitiveCompare:@"mic_record_temp.m4a"] != NSOrderedSame)) {
                         
 //                        [ma addObject:path];
                         [ma addObject:[[Url alloc] initWithParam:@"" url:path image:nil]];
@@ -252,7 +257,7 @@
 //    [ma sortedArrayUsingSelector:@selector(compare:)];
     
     //_localMovies = [ma copy];
-    
+
     [self updateAssetsLibrary];
     
 }
@@ -309,14 +314,20 @@ int exists(const char *fname)
                       NSString * fileNameWithDot = [NSString stringWithFormat:@"%@%@", @".", fileName];
                       
                       
-                      count_local_files++;
+                      self->count_local_files++;
                       NSLog(@"Video:%@ - %@",fileNameWithDot, moviePath1);
                       
                       NSString * tmpfile = [self writeVideoFileIntoTemp:fileName andAsset:asset];
                       NSLog(@"Saved video:%@ ", tmpfile);
                       
-                      [_localMovies addObject:[[Url alloc] initWithParam:@"" url:tmpfile image:nil]];
+                      Url* cur = [[Url alloc] initWithParam:@"" url:tmpfile image:nil];
+                      if (![self->_localMovies containsObject:cur]) {
+                          [self->_localMovies addObject:cur];
+                      }
                       
+                      [self->_localMovies sortUsingComparator:^NSComparisonResult(Url *s1, Url *s2) {
+                          return [[s1 getUrl] caseInsensitiveCompare:[s2 getUrl]];
+                      }];
                   }
               } ];
          }
@@ -336,11 +347,14 @@ int exists(const char *fname)
                      NSLog(@"Local file: %@", fileName);
                      
                      Url* cur = [[Url alloc] initWithParam:@"" url:fileName image:nil];
-                     if (![_localMovies containsObject:cur])
+                     if (![self->_localMovies containsObject:cur])
                      {
-                         [_localMovies addObject:cur];
+                         [self->_localMovies addObject:cur];
+
+                         [self->_localMovies sortUsingComparator:^NSComparisonResult(Url *s1, Url *s2) {
+                             return [[s1 getUrl] caseInsensitiveCompare:[s2 getUrl]];
+                         }];
                      }
-//                     [_localMovies addObject:fileName];
                  }
 
                  //NSString *path = [[NSBundle mainBundle] pathForResource:@"test" ofType:@"mp4"];
@@ -472,8 +486,10 @@ int exists(const char *fname)
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     switch (section) {
-        case 0:     return _remoteMovies.count;
-        case 1:     return _localMovies.count;
+        case 0:
+            return _remoteMovies.count;
+        case 1:
+            return _localMovies.count;
     }
     return 0;
 }
@@ -628,8 +644,8 @@ int exists(const char *fname)
                                                    message: nil
                                                   delegate: self
                                          cancelButtonTitle:@"Cancel"
-                                         otherButtonTitles:@"Select", @"Copy To Photos", nil];
-    
+                                         otherButtonTitles:@"Select", @"Copy To Photos", @"Play with AVPlay", nil];
+
 //    [alert addButtonWithTitle:[NSString stringWithFormat:@"1"]];
 //    [alert addButtonWithTitle:[NSString stringWithFormat:@"2"]];
 //    [alert addButtonWithTitle:[NSString stringWithFormat:@"3"]];
@@ -640,13 +656,13 @@ int exists(const char *fname)
 //    [alert addButtonWithTitle:[NSString stringWithFormat:@"8"]];
 
     alert.alertViewStyle = UIAlertViewStyleDefault;
-    
+
     //countryCodePickedView
     UIPickerView *countryCodePickedView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 0, 100, 80)];
     [countryCodePickedView setDataSource: self];
     [countryCodePickedView setDelegate: self];
     countryCodePickedView.showsSelectionIndicator = YES;
-    
+
     [alert setValue:countryCodePickedView forKey:@"accessoryView"];
     alert.tag = 111;
     [alert show];
@@ -730,6 +746,24 @@ int exists(const char *fname)
         UISaveVideoAtPathToSavedPhotosAlbum([_current_url getUrl], self, @selector(video:didFinishSavingWithError:contextInfo:), nil);
     }
 
+    if (alertView.tag == 111 && buttonIndex == 3)
+    {
+        //NSURL *videoURL = [NSURL URLWithString:@"https://dl.getdropbox.com/s/yxguhjdrtrz1msl/933b6f26-33f7-49cd-bf51-2463edac2279.m3u8"];
+        NSString* url = [_current_url getUrl];
+        NSURL *videoURL = [NSURL URLWithString:url];
+        if ([url localizedCaseInsensitiveContainsString:@"/private/var/mobile/Containers/Data/Application/"]) {
+            videoURL = [NSURL URLWithString:[@"file://" stringByAppendingString:url]];
+        }
+        LoggerStream(1, @"URL: %@", videoURL);
+
+        AVPlayer *player = [AVPlayer playerWithURL:videoURL];
+        AVPlayerViewController *playerViewController = [AVPlayerViewController new];
+        playerViewController.player = player;
+        [self presentViewController:playerViewController animated:YES completion:^{
+          [playerViewController.player play];
+        }];
+    }
+
     if (alertView.tag == 7834 && buttonIndex != 0)
     {
         LoggerStream(1, @"Graphic layer: %ld", (long)buttonIndex);
@@ -760,6 +794,7 @@ int exists(const char *fname)
                                                                layer:graphic_layer
                                                                   hw:(buttonIndex-1)
                                                       countInstances:countPlayers];
+        vc.modalPresentationStyle = UIModalPresentationFullScreen;
         [self presentViewController:vc animated:YES completion:nil];
         LoggerStream(1, @"Stream opened: %d", buttonIndex);
     }

@@ -34,7 +34,10 @@
 @property (nonatomic) int       decodingAudioType;          // 0 - soft, 1 - hardware
 
 @property (nonatomic) int       extraDataOnStart;           // 0 - no, 1 - add extradata before frame
-@property (nonatomic) int       decoderLatency;             // This setting is for s/w decoder, 1 - Low latency, frames are not buffered on decoder , 0 - frames are buffered in video decoder  by default
+@property (nonatomic) int       decoderLatency;             // This setting is for s/w decoder, bit mask:
+                                                            // 0 - default codec configuration
+                                                            // (1 << 0) - set "has B frames" flag to 0 (IP only)
+                                                            // (1 << 1) - set "force low delay" codec flag
 @property (nonatomic) int       rendererType;               // 0 - own,  1 - by hardware decoder
 @property (nonatomic) int       synchroEnable;              // enable audio video synchro
 @property (nonatomic) int       synchroNeedDropVideoFrames; // drop video frames if it late
@@ -42,16 +45,25 @@
 @property (nonatomic) int       videoRotate;                // 0 - default, 45, 90 ,135, 180, 225, 270 correct values
 @property (nonatomic) int       videoKeyframeOnly;          // 0 - default, 1 - I frame only
 
-@property (nonatomic) int       subRawData;                 // 1 - binary package, 0 - text data after decoder , text data by default
-
 @property (nonatomic) int       enableColorVideo;           // grayscale or color
 
-@property (nonatomic) int       aspectRatioMode;            // 0 - stretch, 1 - fittoscreen with aspect ratio, 2 - crop, 3 - 100% size, 4 - zoom mode, 5 - move mode
-@property (nonatomic) int       aspectRatioZoomModePercent; // value in percents
+@property (nonatomic) int       aspectRatioMode;            // 0 - stretch, 1 - fittoscreen with aspect ratio,
+                                                            // 2 - crop(height) with aspect, 21 - crop(width) with aspect, 3 - 100% size,
+                                                            // 4,43,5,53 - zoom/move mode with real size (100%)
+                                                            // 6,40,7,50 - zoom/move mode with stretch
+                                                            // 41,51 - zoom/move mode with aspect ratio
+                                                            // 420,520 - zoom/move mode with crop(height) and aspect
+                                                            // 421,521 - zoom/move mode with crop(width) and aspect
+                                                            // 4201 - zoom/move mode with crop(height), aspect and min zoom src width
+@property (nonatomic) int       aspectRatioZoomModePercent;    // value in percents
+@property (nonatomic) int       aspectRatioZoomModePercentMin; // min value in percents
+@property (nonatomic) int       aspectRatioZoomModePercentMax; // max value in percents
 @property (nonatomic) int       aspectRatioMoveModeX;       // -1 - center, range:0-100, 0 - left side, 100 - right side
 @property (nonatomic) int       aspectRatioMoveModeY;       // -1 - center, range:0-100, 0 - top side, 100 - bottom side
 
 @property (nonatomic) float     aspectRatioZoomModePercentAsFloat; // value in percents
+@property (nonatomic) float     aspectRatioZoomModePercentMinAsFloat; // min value in percents
+@property (nonatomic) float     aspectRatioZoomModePercentMaxAsFloat; // max value in percents
 @property (nonatomic) float     aspectRatioMoveModeXAsFloat;       // -1.0 - center, range:0.0-100.0, 0.0 - left side, 100.0 - right side
 @property (nonatomic) float     aspectRatioMoveModeYAsFloat;       // -1.0 - center, range:0.0-100.0, 0.0 - top side,  100.0 - bottom side
 
@@ -63,7 +75,7 @@
 @property (nonatomic) NSString* sslKey;
 @property (nonatomic) int       extStream;                  // Index of stream
 
-@property (nonatomic) uint64_t  startOffest;                // MEDIA_NOPTS_VALUE
+@property (nonatomic) uint64_t  startOffset;                // MEDIA_NOPTS_VALUE
 @property (nonatomic) int       startPreroll;               // 0 - start immediatly, 1 - start - play 1 frame - pause
 @property (nonatomic) NSString* startPath;
 @property (nonatomic) NSString* startCookies;
@@ -92,8 +104,13 @@
 @property (nonatomic) int               selectAudio;        // audio select
 @property (nonatomic) int               selectSubtitle;     // subtitle. default off
 @property (nonatomic) NSMutableArray*   subtitlePaths;
+// subtitile options
+@property (nonatomic) int       subtitleAsRawData;                 // 1 - binary package, 0 - text data after decoder , text data by default
+@property (nonatomic) int       subtitleEnableClosedCaptions;      // default: 0
 
 @property (nonatomic) MediaPlayerModes  playerMode;
+
+
 
 // adaptive bitrate mode
 @property (nonatomic) int       enableABR;                      // adaptive bitrate
@@ -150,13 +167,25 @@
 // Backward audio
 @property (nonatomic) int       backwardAudio;                  //0: off; 1: on.
 
+// Timeshift params
+@property (nonatomic) int       timeshiftEnable;                // enable
+@property (nonatomic) int       timeshiftSize;                  // time shift size. in seconds. 0 is unlimited, default is 5 min
+@property (nonatomic) int       timeshiftPrebufferingSize;      // in milliseconds
+@property (nonatomic) int       timeshiftDeleteOldSegments;     // 1 - delete
+@property (nonatomic) int       timeshiftDeleteOnExit;          // delete all files on terminate
+@property (nonatomic) NSString* timeshiftOutputUrl;
+
 // Advanced settings for previuos sections
 @property (nonatomic) int       advancedConnectionNetworkProtocolBufferSize;  // should be > 0 but less 100000000, in bytes, default -1
 @property (nonatomic) int       advancedConnectionNetworkProtocolPacketSize;  // should be > 0 but less 100000000, in bytes, default -1
+@property (nonatomic) int       advancedSourceAsyncGetPacket;                 // 0 - off, 1 - for all, 2 - for non interruptable protocols
+@property (nonatomic) int       advancedSourceUseAsyncGetAddrInfo;            // 0 - off, 1 - on, default 1
+@property (nonatomic) int       advancedDecoderVideoHardwareReadyFrameQueueMin; // min frame count in queue after decoder
+@property (nonatomic) int       advancedDecoderVideoHardwareReadyFrameQueueMax; // max frame count in queue after decoder
 
 // iOS specific
-@property (nonatomic) int        enableInternalGestureRecognizers;	 // 0 - off, 1 - pinch(zoom), 2 - pan(move), 4 - single & double tap. Default: (1 | 2 | 4)
-@property (nonatomic) int        stateWillResignActive;               // 0 - continue playing, 1 - pause, 2 - pause and flush. Default: 1
+@property (nonatomic) int        enableInternalGestureRecognizers;	 // 0 - off, 1 - pinch(zoom), 2 - pan(move), 4 - single, 8 - double tap. Default: (1 | 2 | 4 | 8)
+@property (nonatomic) int        stateWillResignActive;               // 0 - continue playing, 1 - pause, 2 - pause and flush, 3 - pause and continue buffering. Default: 1
 @property (nonatomic) int        runDisplayLinkInMainQueue;           // 1 - run as is, 1 - force main queue. Default: 1
 @property (nonatomic) int        enableInternalAutoresizeToSuperview; // 0 - off, 1 - on. Default: 1
 @property (nonatomic) int        enableInternalAudioSessionConfigure; // 0 - don't touch AudioSession, 1 - own configure. Default: 1
@@ -168,6 +197,28 @@
                                                                       //          AVAudioSessionCategoryOptionDefaultToSpeaker |
                                                                       //          AVAudioSessionCategoryOptionAllowBluetooth |
                                                                       //          AVAudioSessionCategoryOptionAllowBluetoothA2DP
+@property (nonatomic) int        enableInternalAudioUnitVPIO;                   // 1 - enable kAudioUnitSubType_VoiceProcessingIO. Default: 0
+@property (nonatomic) int        internalAudioUnitAverageLevelCalculate;        // 1 - enable. Default: 0
+@property (nonatomic) int        internalAudioUnitVPIOBypassVoiceProcessing;    // 1 - disable voice processing. Default: 0
+@property (nonatomic) int        internalAudioUnitVPIOVoiceProcessingEnableAGC; // 1 - enable Automatical Gain Control. Default: 1
+@property (nonatomic) int        internalAudioUnitVPIOMuteOutput;               // 1 - mute microphone. Default: 0
+
+// internal buffers settings
+@property (nonatomic) int        internalBufferSourceVideodecoderType;
+@property (nonatomic) int        internalBufferSourceVideodecoderSize;
+@property (nonatomic) int        internalBufferVideodecoderVideorendererType;
+@property (nonatomic) int        internalBufferVideodecoderVideorendererSize;
+@property (nonatomic) int        internalBufferSourceAudiodecoderType;
+@property (nonatomic) int        internalBufferSourceAudiodecoderSize;
+@property (nonatomic) int        internalBufferAudiodecoderAudiorendererType;
+@property (nonatomic) int        internalBufferAudiodecoderAudiorendererSize;
+
+// workarounds iOS
+@property (nonatomic) int        workaroundFramePaddingZeroing;       // 0 - don't touch IDR frame,
+                                                                      // 1 - padding zeroing(XR specific). Default: 1
+@property (nonatomic) int        workaroundSourceStreamInfoFromExtradata; // 1 - if stream info not detected,
+                                                                          // we try get it form extradata directly. Default: 1
+@property (nonatomic) int        workaroundRemoveUnrecognizedNALUs;       // 0 - off, 1 - on
 
 // log level
 + (void)setLogLevel:(MediaPlayerLogLevel)newValue;

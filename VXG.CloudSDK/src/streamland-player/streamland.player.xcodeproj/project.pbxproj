@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		508AA1AB26E6676300DD610F /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 508AA1AA26E6676300DD610F /* SDWebImage.framework */; };
+		508AA1AD26E667D300DD610F /* SDWebImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 508AA1AA26E6676300DD610F /* SDWebImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CE23C9102018578C007A1684 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CE23C90F2018578C007A1684 /* AppDelegate.m */; };
 		CE23C9132018578C007A1684 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE23C9122018578C007A1684 /* ViewController.m */; };
 		CE23C9162018578C007A1684 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE23C9142018578C007A1684 /* Main.storyboard */; };
@@ -31,6 +33,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				508AA1AD26E667D300DD610F /* SDWebImage.framework in Embed Frameworks */,
 				CEDFCF2822450E8900418C5F /* cloudsdkcalendarview.framework in Embed Frameworks */,
 				CEDFCF2922450E8900418C5F /* cloudsdkplayerview.framework in Embed Frameworks */,
 				CEFB87CD206BC93E00410158 /* cloudsdktimelineview.framework in Embed Frameworks */,
@@ -42,6 +45,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		508AA1AA26E6676300DD610F /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = ../../../VXG.Media.SDK.iOS/Frameworks/sdwebimage/universal/SDWebImage.framework; sourceTree = "<group>"; };
 		CE23C90B2018578B007A1684 /* streamland.player.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = streamland.player.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE23C90E2018578C007A1684 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		CE23C90F2018578C007A1684 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -64,6 +68,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				508AA1AB26E6676300DD610F /* SDWebImage.framework in Frameworks */,
 				CEDFCF2622450E7500418C5F /* cloudsdkplayerview.framework in Frameworks */,
 				CEDFCF2722450E7500418C5F /* cloudsdkcalendarview.framework in Frameworks */,
 				CEFB87CC206BC93900410158 /* cloudsdktimelineview.framework in Frameworks */,
@@ -111,6 +116,7 @@
 		CE23C924201857C5007A1684 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				508AA1AA26E6676300DD610F /* SDWebImage.framework */,
 				CEDFCF2522450E7500418C5F /* cloudsdkcalendarview.framework */,
 				CEDFCF2422450E7400418C5F /* cloudsdkplayerview.framework */,
 				CEFB87CB206BC93900410158 /* cloudsdktimelineview.framework */,
@@ -333,6 +339,7 @@
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/../../../VXG.Media.SDK.iOS/Frameworks/ffmpeg/universal",
+					"$(PROJECT_DIR)/../../../VXG.Media.SDK.iOS/Frameworks/sdwebimage/universal",
 					"$(PROJECT_DIR)/../../lib/universal/",
 				);
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../../include";
@@ -343,6 +350,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.vxg.streamland-player";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_WORKSPACE = YES;
 			};
 			name = Debug;
 		};
@@ -355,6 +363,7 @@
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/../../../VXG.Media.SDK.iOS/Frameworks/ffmpeg/universal",
+					"$(PROJECT_DIR)/../../../VXG.Media.SDK.iOS/Frameworks/sdwebimage/universal",
 					"$(PROJECT_DIR)/../../lib/universal/",
 				);
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../../include";
@@ -365,6 +374,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.vxg.streamland-player";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_WORKSPACE = YES;
 			};
 			name = Release;
 		};

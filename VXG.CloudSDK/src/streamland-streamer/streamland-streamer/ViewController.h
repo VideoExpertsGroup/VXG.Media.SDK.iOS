@@ -11,7 +11,7 @@
 #import "CloudStreamerSDK.h"
 #import "MediaCaptureSDK.h"
 
-@interface ViewController : UIViewController<ICloudStreamerCallback, MediaCaptureCallback, UITextFieldDelegate>
+@interface ViewController : UIViewController<ICloudCStreamerCallback, MediaCaptureCallback, UITextFieldDelegate>
 
 
 @end

@@ -63,8 +63,9 @@
 
 -(BOOL)isEqual:(id)otherObj {
     Url *other = (Url*)otherObj;
-    return ([[self getUrl] isEqualToString: [other getUrl]]) &&
-    ([[self getName] isEqualToString: [other getName]]);
+    Boolean first = [[self getUrl] isEqualToString: [other getUrl]];
+    Boolean second = [[self getName] isEqualToString: [other getName]];
+    return (first && second);
 }
 
 @end

@@ -49,12 +49,19 @@ typedef NS_OPTIONS(int, TimelineControls)
 @property NSArray<TimelinePair*>* periods;
 @end
 
-@protocol TimelineDelegate<NSObject>
+@protocol TimelineViewDelegate<NSObject>
 
 // override it for provide data for
 @optional
 - (Timeline*) OnTimelineDataRequest:(long long) start
                                 end:(long long) end;
+
+@optional
+-(int) OnTimelinePositionChanged:(long long)position
+                    withDuration:(long long)duration
+                  withRangeStart:(long long)rangeStart
+                    withRangeEnd:(long long)rangeEnd;
+
 @end
 
 @interface TimelineView : UIView
@@ -64,14 +71,16 @@ typedef NS_OPTIONS(int, TimelineControls)
 
 // color scheme
 @property (nonatomic) UIColor* mainColor;
-@property (nonatomic) UIColor* trackColour;
-@property (nonatomic) UIColor* knobColour;
+@property (nonatomic) UIColor* trackColor;
+@property (nonatomic) UIColor* knobColor;
 @property (nonatomic) UIImage* knobImage;
-@property (nonatomic) UIColor* lineColour;
-@property (nonatomic) UIColor* strokeColour;
-@property (nonatomic) UIColor* textColour;
-@property (nonatomic) UIColor* textBackgroundColour;
-@property (nonatomic) UIColor* rangeColour;
+@property (nonatomic) UIColor* lineColor;
+@property (nonatomic) UIColor* strokeColor;
+@property (nonatomic) UIColor* textColor;
+@property (nonatomic) UIColor* textBackgroundColor;
+@property (nonatomic) UIColor* rangeColor;
+@property (nonatomic) UIColor* scaleColor;
+@property (nonatomic) UIColor* scaleSelectedColor;
 @property (nonatomic) float trackWidth;
 @property (nonatomic) float lineWidth;
 @property (nonatomic) NSString* timeFormat;
@@ -82,13 +91,16 @@ typedef NS_OPTIONS(int, TimelineControls)
 @property (nonatomic) int strokeTextPositionType; // 0 - mixed, 1 - top only, 2 - bottom only
 @property (nonatomic) float scalePixelsPerSecond;
 
+// modes
+@property (nonatomic) int trackFillMode; // 0 - from records segments, 1 - from current position
+
 // config
 -(TimelineConfig*) getConfig;
 -(void) applyConfig;
 
 // common approach
--(void) setDelegate: (id<TimelineDelegate>) delegate;
--(id<TimelineDelegate>) getDelegate;
+-(void) setDelegate: (id<TimelineViewDelegate>) delegate;
+-(id<TimelineViewDelegate>) getDelegate;
 
 // player approach
 -(void) setPlayer: (CloudPlayer*) player;
@@ -106,6 +118,7 @@ typedef NS_OPTIONS(int, TimelineControls)
 
 -(void) setPosition:(int64_t)time;
 -(void) setTrackingMode:(BOOL)on;
+-(void) setEnsureVisible:(bool)on;
 
 -(void) setCalendarContainer:(UIView*)view;
 -(UIView*) getCalendarContainer;
@@ -120,5 +133,7 @@ typedef NS_OPTIONS(int, TimelineControls)
 
 // cleanup
 -(void) clean;
+
++(NSString*) getVersion;
 
 @end

@@ -44,7 +44,7 @@
     [playPause_btn setEnabled: NO];
     [aspect_btn  setEnabled: NO];
     
-    ccplayer = [[CloudPlayerSDK alloc] initWithParams: videoView config: conf callback:^( CloudPlayerEvent status_code, id<ICloudObject> player) {
+    ccplayer = [[CloudPlayerSDK alloc] initWithParams: videoView config: conf callback:^( CloudPlayerEvent status_code, id<ICloudCObject> player) {
         switch (status_code) {
             case SOURCE_CHANGED: {
                 

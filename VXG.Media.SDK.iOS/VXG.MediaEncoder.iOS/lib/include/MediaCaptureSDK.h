@@ -24,7 +24,7 @@ typedef NS_ENUM(int, AudioFormat){
     AUDIO_FORMAT_AAC = 0,
     AUDIO_FORMAT_ULAW = 1,
     AUDIO_FORMAT_ALAW = 2,
-    AUDIO_FORMAT_NONE = 3
+    AUDIO_FORMAT_NONE = 4
 };
 
 typedef NS_ENUM(int, CaptureNotifyCodes){
@@ -60,7 +60,11 @@ typedef NS_ENUM(int, CaptureNotifyCodes){
     RENDER_STARTED          = 29,
     RENDER_STOPED           = 30,
     RENDER_CLOSED           = 31,
-    FULL_CLOSE              = 32
+    FULL_CLOSE              = 32,
+
+    // advanced
+    MUXREC_VIDEO_FIRSTFRAME_RECORDED = 1000,
+    MUXREC_AUDIO_FIRSTFRAME_RECORDED = 1001
 };
 
 typedef NS_ENUM(int, LogLevels){
@@ -94,6 +98,7 @@ extern NSDictionary* VXG_CaptureSDK_LogFilter;
 extern int VXG_CaptureSDK_ffmpeg_inited;
 
 void LogElement(int loglevel, NSString* element, NSString *format, ... );
+typedef void (^MediaCaptureExternalAudioSourceDataProviderBlock)(CMSampleBufferRef frame, float* avrLevels, size_t avrLevelsSize);
 
 @protocol MediaCaptureCallback;
 
@@ -130,7 +135,10 @@ void LogElement(int loglevel, NSString* element, NSString *format, ... );
 
 - (enum AudioFormat) getAudioFormat;
 - (int) setAudioFormat: (enum AudioFormat) format;
-
+- (void) setAudioSamplingRate:(int64_t)sample_rate;
+- (int64_t) getAudioSamplingRate;
+- (UInt32) getAACEncodeBitrate;
+- (int) setAACEncodeBitrate: (UInt32) bitrate;
 
 -(void) setLicenseKey: (NSString*) license_key;
 
@@ -147,6 +155,31 @@ void LogElement(int loglevel, NSString* element, NSString *format, ... );
 -(int) getRecordFileLength;
 -(void) freeDiskSpaceLimit: (uint64_t) megabytes;
 -(uint64_t) getFreeDiskSpaceLimit;
+
+-(void) setUsesApplicationAudioSession: (BOOL) enable; // Default: YES
+-(BOOL) getUsesApplicationAudioSession;
+
+-(void) setAutomaticallyConfiguresApplicationAudioSession: (BOOL) enable; // Default: YES
+-(BOOL) getAutomaticallyConfiguresApplicationAudioSession;
+
+// advanced
+-(void) setStreamerAudioMuxerInputBufferSize: (int) size;
+-(int) getStreamerAudioMuxerInputBufferSize;
+
+-(void) setStreamerVideoMuxerInputBufferSize: (int) size;
+-(int) getStreamerVideoMuxerInputBufferSize;
+
+-(void) setStreamerMuxerReorderByPtsBufferSize: (int) size
+                           andStartReorderSize: (int) start_size;
+-(void) getStreamerMuxerReorderByPtsBufferSize: (int*) size
+                           andStartReorderSize: (int*) start_size;
+
+// external audio source, for example microphone callback on user side
+-(void) setUseExternalAudioSource: (BOOL) use; // Default: NO
+-(BOOL) isExternalAudioSourceUsed;
+-(void) setExternalAudioSourceStreamBasicDescription:(AudioStreamBasicDescription*)desc;
+-(AudioStreamBasicDescription*) getExternalAudioSourceStreamBasicDescription;
+
 @end
 
 @protocol MediaCaptureCallback <NSObject>
@@ -159,6 +192,9 @@ void LogElement(int loglevel, NSString* element, NSString *format, ... );
 @end
 
 @interface MediaRecorder : NSObject<MediaCaptureCallback>
+
+@property (nonatomic, copy) MediaCaptureExternalAudioSourceDataProviderBlock externalAudioSourceDataProviderBlock;
+
 - (id) init;
 - (int) Open:(MediaCaptureConfig*)cfg callback:(id<MediaCaptureCallback>) cbk;
 - (void) Close;
@@ -177,9 +213,13 @@ void LogElement(int loglevel, NSString* element, NSString *format, ... );
 -(void) changeCaptureOrientation;
 
 + (NSArray<NSDictionary*>*) getFormats;
--(int) changeEncoderBitrate: (int) bitPerSec;
++ (NSArray<NSDictionary*>*) getFormatsForFront: (Boolean)isFront andBack:(Boolean)isBack;
+-(int) changeVideoEncoderBitrate: (int) bitPerSec;
 
 -(void) MuteMicrophone: (Boolean) isMute;
+
++ (NSString*) getVersion;
+
 @end
 
 typedef MediaRecorder MediaCapture;

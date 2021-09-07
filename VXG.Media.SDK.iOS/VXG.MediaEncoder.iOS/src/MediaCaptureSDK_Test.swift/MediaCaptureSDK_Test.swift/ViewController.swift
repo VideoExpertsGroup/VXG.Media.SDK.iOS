@@ -26,7 +26,7 @@ class ViewController: UIViewController, MediaCaptureCallback {
         VXG_CaptureSDK_LogLevel = LogLevels.LL_DEBUG.rawValue;
         
         OperationQueue.main.addOperation {
-            self.mMediaCaptureConfig.setVideo(640, 480, 30, 256*1024);
+            self.mMediaCaptureConfig.setVideo(640, 480, 30, 256);
             self.mMediaCaptureConfig.setPreview(self.v_preview);
             self.mMediaCaptureConfig.setStreamType(StreamType.STREAM_TYPE_RTSP_SERVER);
             self.mMediaCaptureConfig.setVideoFormat(VideoFormat.VIDEO_FORMAT_H264);

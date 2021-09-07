@@ -8,6 +8,15 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+@protocol CloudProxyNetworkRequests<NSObject>
+@optional
+-(void) executeGetRequest:  (NSString*) endpoint headers: (NSDictionary*) headers complete: (void (^)(NSObject* obj, int status)) complete;
+-(void) executePostRequest: (NSString*) endpoint headers: (NSDictionary*) headers data: (NSDictionary*) data complete: (void (^)(NSObject* obj, int status)) complete;
+-(void) executePutRequest:  (NSString*) endpoint headers: (NSDictionary*) headers data: (NSDictionary*) data complete: (void (^)(NSObject* obj, int status)) complete;
+-(void) executeDeleteRequest:(NSString*) endpoint headers: (NSDictionary*) headers complete: (void (^)(NSObject* obj, int status)) complete;
+@end
+
+
 typedef NS_ENUM(int, CCStatus)
 {
     CCStatusActive = 0,
@@ -15,6 +24,11 @@ typedef NS_ENUM(int, CCStatus)
     CCStatusInactive = 2,
     CCStatusInactiveByScheduler = 3,
     CCStatusOffline = 4
+};
+
+typedef NS_ENUM(int, CCPrivacyMode) {
+    CCPrivacyModeOn = 0,
+    CCPrivacyModeOff = 1
 };
 
 typedef NS_ENUM(int, CCRecordingMode)
@@ -61,6 +75,8 @@ typedef NS_OPTIONS(int, CTimelineControls)
 @property(copy, nonatomic) UIImage *knobImage;
 @property(copy, nonatomic) UIColor *strokeColor;
 @property(copy, nonatomic) UIColor *rangeColor;
+@property(copy, nonatomic) UIColor *scaleColor;
+@property(copy, nonatomic) UIColor *scaleSelectedColor;
 @property(nonatomic) float lineWidth;
 @property(nonatomic) float trackWidth;
 @property(copy, nonatomic) NSString* timeFormat;
@@ -70,6 +86,9 @@ typedef NS_OPTIONS(int, CTimelineControls)
 @property(nonatomic) int   strokeTextNamingType; // 0 - for each, 1 - through one
 @property(nonatomic) int   strokeTextPositionType; // 0 - mixed, 1 - top only, 2 - bottom only
 @property(nonatomic) float scalePixelsPerSecond;
+@property(nonatomic) int   trackFillMode; // 0 - from records segments, 1 - from current position
+
+-(void) updateFrom:(CTimelineStyle*)src;
 
 // copy
 +(CTimelineStyle*) makeCopy:(CTimelineStyle*)src;

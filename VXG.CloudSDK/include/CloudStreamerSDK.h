@@ -18,11 +18,13 @@ typedef NS_ENUM(int, CloudStreamerEvent) {
 
 typedef void (^CStreamerCallback)(CloudStreamerEvent status_code, NSString* info);
 
-@protocol ICloudCStreamerCallback
+@protocol ICloudCStreamerCallback<NSObject>
+@optional
 -(void) onStarted: (NSString*) url;
 -(void) onStopped;
 -(void) onError:(int) err;
 -(void) onCameraConnected;
+-(void) onConfigured: (NSString*) sid pwd: (NSString*) pwd;
 -(void) onAdditionalInfo: (NSDictionary*) info;
 @end;
 
@@ -41,6 +43,8 @@ typedef void (^CStreamerCallback)(CloudStreamerEvent status_code, NSString* info
 
 -(void) Start;
 -(void) Stop;
+
+-(void) setSid: (NSString*) sid andPwd: (NSString*) pwd;
 
 -(long long) getID;
 -(NSString*) getPreviewURLSync;

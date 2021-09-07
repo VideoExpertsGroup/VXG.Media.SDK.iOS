@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5059942024FE1CA800B73D47 /* ffmpeg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5059941F24FE1CA800B73D47 /* ffmpeg.framework */; };
+		5059942124FE1CA800B73D47 /* ffmpeg.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5059941F24FE1CA800B73D47 /* ffmpeg.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CE76773F1F615BAD008BC3CC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE76773E1F615BAD008BC3CC /* AppDelegate.swift */; };
 		CE7677411F615BAD008BC3CC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7677401F615BAD008BC3CC /* ViewController.swift */; };
 		CE7677441F615BAD008BC3CC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE7677421F615BAD008BC3CC /* Main.storyboard */; };
@@ -22,9 +24,7 @@
 		CE7677721F6166F3008BC3CC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE7677711F6166F3008BC3CC /* AudioToolbox.framework */; };
 		CE7677741F616706008BC3CC /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE7677731F616706008BC3CC /* AVFoundation.framework */; };
 		CE7677761F616717008BC3CC /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CE7677751F616717008BC3CC /* libstdc++.tbd */; };
-		CE7677781F626D80008BC3CC /* ffmpeg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE7677771F626D80008BC3CC /* ffmpeg.framework */; };
 		CE76777A1F627EAE008BC3CC /* libMediaPlayerSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE7677791F627EAE008BC3CC /* libMediaPlayerSDK.a */; };
-		CE76777B1F627F74008BC3CC /* ffmpeg.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CE7677771F626D80008BC3CC /* ffmpeg.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -34,7 +34,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				CE76777B1F627F74008BC3CC /* ffmpeg.framework in Embed Frameworks */,
+				5059942124FE1CA800B73D47 /* ffmpeg.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -42,6 +42,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5059941F24FE1CA800B73D47 /* ffmpeg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ffmpeg.framework; path = ../../../Frameworks/ffmpeg/universal/ffmpeg.framework; sourceTree = "<group>"; };
 		CE76773B1F615BAC008BC3CC /* MediaPlayerSDKTest.swift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MediaPlayerSDKTest.swift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE76773E1F615BAD008BC3CC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE7677401F615BAD008BC3CC /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -60,7 +61,6 @@
 		CE7677711F6166F3008BC3CC /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		CE7677731F616706008BC3CC /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		CE7677751F616717008BC3CC /* libstdc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.tbd"; path = "usr/lib/libstdc++.tbd"; sourceTree = SDKROOT; };
-		CE7677771F626D80008BC3CC /* ffmpeg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ffmpeg.framework; path = ../../../../builds/framework/universal/ffmpeg.framework; sourceTree = "<group>"; };
 		CE7677791F627EAE008BC3CC /* libMediaPlayerSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMediaPlayerSDK.a; path = ../../../../builds/library/lib/shared/libMediaPlayerSDK.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -70,7 +70,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE76777A1F627EAE008BC3CC /* libMediaPlayerSDK.a in Frameworks */,
-				CE7677781F626D80008BC3CC /* ffmpeg.framework in Frameworks */,
 				CE7677761F616717008BC3CC /* libstdc++.tbd in Frameworks */,
 				CE7677741F616706008BC3CC /* AVFoundation.framework in Frameworks */,
 				CE7677721F6166F3008BC3CC /* AudioToolbox.framework in Frameworks */,
@@ -80,6 +79,7 @@
 				CE76776A1F6166C6008BC3CC /* libz.tbd in Frameworks */,
 				CE7677681F6166C1008BC3CC /* libbz2.tbd in Frameworks */,
 				CE7677661F6166BB008BC3CC /* libiconv.tbd in Frameworks */,
+				5059942024FE1CA800B73D47 /* ffmpeg.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -121,8 +121,8 @@
 		CE7677531F615CEF008BC3CC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5059941F24FE1CA800B73D47 /* ffmpeg.framework */,
 				CE7677791F627EAE008BC3CC /* libMediaPlayerSDK.a */,
-				CE7677771F626D80008BC3CC /* ffmpeg.framework */,
 				CE7677751F616717008BC3CC /* libstdc++.tbd */,
 				CE7677731F616706008BC3CC /* AVFoundation.framework */,
 				CE7677711F6166F3008BC3CC /* AudioToolbox.framework */,
@@ -356,11 +356,17 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 37TMES8PKP;
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../../../../builds/framework/universal";
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../../../builds/library/include";
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../../../frameworks/ffmpeg/universal";
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../../../builds/library/include",
+					"$(SRCROOT)/../../lib/include",
+				);
 				INFOPLIST_FILE = MediaPlayerSDKTest.swift/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../../../../builds/library/lib/shared";
+				LIBRARY_SEARCH_PATHS = (
+					"$(SRCROOT)/../../../../builds/library/lib/shared",
+					"$(SRCROOT)/../../lib/shared.ffmpeg",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.veg.MediaPlayerSDKTest-swift";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Bridge-header.h";
@@ -374,11 +380,17 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 37TMES8PKP;
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../../../../builds/framework/universal";
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../../../builds/library/include";
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../../../frameworks/ffmpeg/universal";
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../../../builds/library/include",
+					"$(SRCROOT)/../../lib/include",
+				);
 				INFOPLIST_FILE = MediaPlayerSDKTest.swift/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../../../../builds/library/lib/shared";
+				LIBRARY_SEARCH_PATHS = (
+					"$(SRCROOT)/../../../../builds/library/lib/shared",
+					"$(SRCROOT)/../../lib/shared.ffmpeg",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.veg.MediaPlayerSDKTest-swift";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Bridge-header.h";

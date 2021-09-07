@@ -145,60 +145,43 @@ class ViewController: UIViewController, MediaPlayerCallback {
         
     }
 
+    func getVideoShot(block: @escaping (UIImage) -> Void) {
+        var width: Int32 = -1;
+        var height: Int32 = -1;
+        var bufferSize: Int32 = 5000 * 5000 * 4;
+        let buffer = UnsafeMutableRawPointer.allocate(byteCount: Int(bufferSize), alignment: 0);
+        var bytesPerRow: Int32 = 0;
+
+        let ret = self.mPlayer?.getVideoShot(buffer, buffer_size: &bufferSize, width: &width, height: &height, bytes_per_row: &bytesPerRow)
+        if (ret == -2) {
+            buffer.deallocate();
+            return;
+        } else if (ret == -1) {
+            buffer.deallocate();
+            return;
+        }
+        
+        let releaseForShotCreateDataCallback: CGDataProviderReleaseDataCallback = {
+            (_ pixelPtr: UnsafeMutableRawPointer?, _ data: UnsafeRawPointer, _ size: Int) in
+                data.deallocate();
+        }
+        let provider = CGDataProvider.init(dataInfo: nil, data: buffer, size: Int(bufferSize), releaseData: releaseForShotCreateDataCallback)!
+        let colorSpaceRef = CGColorSpaceCreateDeviceRGB();
+        let bitmapinfo = CGBitmapInfo(rawValue: CGBitmapInfo.byteOrder32Little.rawValue | CGImageAlphaInfo.noneSkipFirst.rawValue);
+        let renderingIntent = CGColorRenderingIntent.defaultIntent;
+        let imageRef: CGImage = CGImage.init(width: Int(width), height: Int(height), bitsPerComponent: 8, bitsPerPixel: 32, bytesPerRow: Int(bytesPerRow), space: colorSpaceRef, bitmapInfo: bitmapinfo, provider: provider, decode: nil, shouldInterpolate: false, intent: renderingIntent)!;
+
+        block(UIImage.init(cgImage: imageRef))
+    }
+
     @IBAction func ScreenShotBtn_click(_ sender: Any) {
         if (ScreenShotView.isHidden) {
             ScreenShotView.isHidden = false;
             ScrenshotBtn.setTitle("Hide screen", for: UIControl.State.normal);
             
-            var bufsize: Int32 = 1920*1080*4+8;
-            var bufsize_initial = bufsize;
-            let buffer = UnsafeMutableRawPointer.allocate(byteCount: Int(bufsize), alignment: 0);
-            
-            let wptr  : UnsafeMutablePointer<Int32>  = UnsafeMutablePointer<Int32>.allocate(capacity: 1);
-            let hptr  : UnsafeMutablePointer<Int32>  = UnsafeMutablePointer<Int32>.allocate(capacity: 1);
-            let bsptr : UnsafeMutablePointer<Int32>  = UnsafeMutablePointer<Int32>.allocate(capacity: 1);
-            let brptr : UnsafeMutablePointer<Int32>  = UnsafeMutablePointer<Int32>.allocate(capacity: 1);
-            
-            var w : Int32 = -1;
-            var h : Int32 = -1;
-            var bp : Int32 = -1;
-            
-            wptr.initialize(to: Int32(w));
-            hptr.initialize(to: Int32(h));
-            bsptr.initialize(to: bufsize);
-            brptr.initialize(to: Int32(bp));
-            
-            let rc = self.mPlayer?.getVideoShot(buffer, buffer_size: bsptr, width: wptr, height: hptr, bytes_per_row: brptr);
-            
-            if (rc == -2) {
-                print("Not enough buffer space");
-                buffer.deallocate();
-                return;
-            } else if (rc == -1) {
-                print(" Error in mediaPlayer")
-                buffer.deallocate();
-                return;
+            getVideoShot { (image) in
+                self.ScreenShotImageView.image = image;
             }
-            
-            w = wptr.pointee;
-            h = hptr.pointee;
-            bp = brptr.pointee;
-            bufsize = bsptr.pointee;
-            
-            let releaseMaskImagePixelData : CGDataProviderReleaseDataCallback = {( info: UnsafeMutableRawPointer?, data: UnsafeRawPointer, size: Int) -> () in return }
-            
-            let provider : CGDataProvider = CGDataProvider.init(dataInfo: nil, data: buffer, size: Int(bufsize), releaseData: releaseMaskImagePixelData)!
-            let bytesPerRow: Int = Int(bp);
-            let colorSpaceRef: CGColorSpace? = CGColorSpaceCreateDeviceRGB();
-            let bitmapinfo : CGBitmapInfo = CGBitmapInfo(rawValue: CGBitmapInfo.byteOrder32Little.rawValue | CGImageAlphaInfo.noneSkipFirst.rawValue);//CGBitmapInfo.byteOrder32Little ;
-            
-            let renderingIntent = CGColorRenderingIntent.defaultIntent;
-            
-            let imageRef: CGImage = CGImage.init(width: Int(w), height: Int(h), bitsPerComponent: 8, bitsPerPixel: 32, bytesPerRow: bytesPerRow, space: colorSpaceRef!, bitmapInfo: bitmapinfo, provider: provider, decode: nil, shouldInterpolate: true, intent: renderingIntent)!;
-            
-            ScreenShotImageView.image = UIImage.init(cgImage: imageRef);
-            buffer.deallocate();
-            
         } else {
             ScreenShotView.isHidden = true;
             ScrenshotBtn.setTitle("Screenshot", for: UIControl.State.normal);

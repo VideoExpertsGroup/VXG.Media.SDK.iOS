@@ -16,6 +16,7 @@
 		502F08D822BCF88200EAAC6D /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 502F08D722BCF88200EAAC6D /* Utils.m */; };
 		505344BA1D5C8D6D0001E25B /* libMediaPlayerSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 505344B91D5C8D6D0001E25B /* libMediaPlayerSDK.a */; };
 		50714DB322099E5D000F4690 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 50714DB222099E5D000F4690 /* libresolv.tbd */; };
+		508E7E2124076F0700D7CC04 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 508E7E2024076F0600D7CC04 /* AVKit.framework */; };
 		50B7EC5B1AC2C0CC00758BAD /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 50B7EC5A1AC2C0CC00758BAD /* libc++.dylib */; };
 		50D295CB1ACBF83E004EBFC9 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50D295C91ACBF83E004EBFC9 /* CoreVideo.framework */; };
 		50D295CC1ACBF83E004EBFC9 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50D295CA1ACBF83E004EBFC9 /* VideoToolbox.framework */; };
@@ -76,6 +77,7 @@
 		502F08D722BCF88200EAAC6D /* Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
 		505344B91D5C8D6D0001E25B /* libMediaPlayerSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMediaPlayerSDK.a; path = libs/mediaplayersdk/libMediaPlayerSDK.a; sourceTree = "<group>"; };
 		50714DB222099E5D000F4690 /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
+		508E7E2024076F0600D7CC04 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		50B7EC5A1AC2C0CC00758BAD /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.2.sdk/usr/lib/libc++.dylib"; sourceTree = DEVELOPER_DIR; };
 		50D295C91ACBF83E004EBFC9 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.2.sdk/System/Library/Frameworks/CoreVideo.framework; sourceTree = DEVELOPER_DIR; };
 		50D295CA1ACBF83E004EBFC9 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.2.sdk/System/Library/Frameworks/VideoToolbox.framework; sourceTree = DEVELOPER_DIR; };
@@ -109,6 +111,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				508E7E2124076F0700D7CC04 /* AVKit.framework in Frameworks */,
 				50714DB322099E5D000F4690 /* libresolv.tbd in Frameworks */,
 				505344BA1D5C8D6D0001E25B /* libMediaPlayerSDK.a in Frameworks */,
 				50D295CE1ACBF860004EBFC9 /* CoreMedia.framework in Frameworks */,
@@ -197,6 +200,7 @@
 		87E793FB16390F6D000A0848 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				508E7E2024076F0600D7CC04 /* AVKit.framework */,
 				50714DB222099E5D000F4690 /* libresolv.tbd */,
 				505344B91D5C8D6D0001E25B /* libMediaPlayerSDK.a */,
 				50E8D9F21B159C7100AD96CE /* libCompuwareUEM.a */,
@@ -264,7 +268,7 @@
 		87E793ED16390F10000A0848 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1000;
+				LastUpgradeCheck = 1100;
 				TargetAttributes = {
 					87E793F716390F6D000A0848 = {
 						DevelopmentTeam = 37TMES8PKP;
@@ -330,6 +334,7 @@
 		87E793F216390F10000A0848 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
@@ -370,6 +375,7 @@
 		87E793F316390F10000A0848 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
@@ -459,8 +465,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/libs/**",
-					"$(PROJECT_DIR)/../../lib/**",
+					"$(PROJECT_DIR)/libs",
+					"$(PROJECT_DIR)/../../lib",
 					"$(PROJECT_DIR)/../../lib/static.ffmpeg/**",
 					"$(PROJECT_DIR)/../../bin/library/lib/static.ffmpeg/**",
 					"$(PROJECT_DIR)/../../../builds/library/lib/static",
@@ -522,8 +528,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/libs/**",
-					"$(PROJECT_DIR)/../../lib/**",
+					"$(PROJECT_DIR)/libs",
+					"$(PROJECT_DIR)/../../lib",
 					"$(PROJECT_DIR)/../../lib/static.ffmpeg/**",
 					"$(PROJECT_DIR)/../../bin/library/lib/static.ffmpeg/**",
 					"$(PROJECT_DIR)/../../../builds/library/lib/static",

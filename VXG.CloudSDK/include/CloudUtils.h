@@ -28,15 +28,30 @@ extern int CSDK_LogLevel;
 
 @end
 
+@interface CloudLock : NSObject
+    - (void) wait;
+    - (void) signal;
+@end
 
 @interface CloudHelpers : NSObject
-+(long long)  currentTimestampUTC;
-+(long long)  parseUTCtime: (NSString*) time;
-+(NSString*)  formatTime: (long long) utc;
-+(NSString*)  formatTimeHHMMSS:(long long)utc;
-+(NSString *) encodeURLParam: (NSString *)param;
-+(NSString*)  prepareHttpGetQuery:(NSArray *)pParams;
++(long long) currentTimestampUTC;
++(long long) parseUTCtime: (NSString*) time;
++(NSString*) formatTime: (long long)utc;
++(NSString*) formatTime: (long long)utc withFormat:(NSString *)format withTimezone:(NSString *)zone;
++(NSString*) formatTimeHHMMSS:(long long)utc;
++(NSString*) formatTimeHHMM_AMPM:(long long)utc;
++(NSString*) formatTimeHHMM_AMPM:(long long)utc withTimezone:(NSString *)zone;
++(NSString*) formatTime_AMPM:(long long)utc withFormat:(NSString *)format withTimezone:(NSString *)zone;
++(NSString*) encodeURLParam: (NSString *)param;
++(NSString*) prepareHttpGetQuery:(NSArray *)pParams;
 +(NSString*) formatTime_forMediaFileUploading: (long long) utc;
 +(NSString*) formatTimeWithSSS:(long long)utc;
++(NSDate*) convertTimeIntoDate:(NSString*)time withFormat:(NSString *)format withTimezone:(NSTimeZone*)zone;
+
+
 +(long long) cameraIdByToken: (NSString*) token;
+
++(void) runOnMainQueue:(void (^)(void)) block;
+
 @end
+
