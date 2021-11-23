@@ -1,1 +1,7 @@
+SDWebImage filter=lfs diff=lfs merge=lfs -text
+ffmpeg.bitcode filter=lfs diff=lfs merge=lfs -text
+ffmpeg filter=lfs diff=lfs merge=lfs -text
+openssl.bitcode filter=lfs diff=lfs merge=lfs -text
+openssl filter=lfs diff=lfs merge=lfs -text
 libMediaPlayerSDK.a filter=lfs diff=lfs merge=lfs -text
+libMediaCaptureSDK.bitcode.a filter=lfs diff=lfs merge=lfs -text
