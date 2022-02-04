@@ -137,6 +137,10 @@ typedef NS_ENUM(int, CalendarEventFilterType) {
 - (void) calendarCloseDidTap;
 
 - (void) calendarTimeValueChanged:(long long)value;
+
+@optional
+-(int) onSharedTokenWillExpireIn:(long long)deltaTimeInMs;
+
 @end
 
 @protocol CalendarDataSourceDelegate<NSObject>

@@ -62,6 +62,9 @@ typedef NS_OPTIONS(int, TimelineControls)
                   withRangeStart:(long long)rangeStart
                     withRangeEnd:(long long)rangeEnd;
 
+@optional
+-(int) onSharedTokenWillExpireIn:(long long)deltaTimeInMs;
+
 @end
 
 @interface TimelineView : UIView

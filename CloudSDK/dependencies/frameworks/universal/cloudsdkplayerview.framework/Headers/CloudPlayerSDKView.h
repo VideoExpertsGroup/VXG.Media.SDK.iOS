@@ -143,6 +143,9 @@ typedef NS_OPTIONS(int, CloudPlayerSDKViewModes)
                           averageLevels: (nullable float*)avrLevels
                       averageLevelsSize: (size_t)avrLevelsSize;
 
+@optional
+-(int) onSharedTokenWillExpireIn:(long long)deltaTimeInMs;
+
 @end
 
 

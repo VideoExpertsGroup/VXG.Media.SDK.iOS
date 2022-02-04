@@ -155,6 +155,8 @@ typedef NS_ENUM(int, ScrubberState) {
                                         newPosition:(long long)position;
 -(long long) OnScrubberGetCurrentPositionForPlayingEvent:(ScrubberEvent*)event;
 
+@optional
+-(int) onSharedTokenWillExpireIn:(long long)deltaTimeInMs;
 
 @end
 

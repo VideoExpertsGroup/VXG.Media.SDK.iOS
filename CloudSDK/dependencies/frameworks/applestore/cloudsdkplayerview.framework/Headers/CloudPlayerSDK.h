@@ -94,6 +94,7 @@ typedef void (^CPlayerCallback)(CloudPlayerEvent status_code, id<ICloudCObject> 
                    withDuration:(long long)duration
                  withRangeStart:(long long)rangeStart
                    withRangeEnd:(long long)rangeEnd;
+-(int) onSharedTokenWillExpireIn:(long long)deltaTimeInMs;
 
 @end
 
@@ -160,6 +161,9 @@ typedef void (^CPlayerCallback)(CloudPlayerEvent status_code, id<ICloudCObject> 
 -(void) setWorkaroundWaitWhileRecordsUploaded: (int) valueInMs;
 -(int) getWorkaroundWaitWhileRecordsUploaded;
 
+-(void) setAdvancedOptionReconnectOnHttpError: (NSString*) codes;
+-(NSString*) getAdvancedOptionReconnectOnHttpError;
+
 -(void) setCloudApiPort: (int) port;
 -(int) getCloudApiPort;
 
@@ -167,6 +171,12 @@ typedef void (^CPlayerCallback)(CloudPlayerEvent status_code, id<ICloudCObject> 
 -(CCloudApiProtocolType) getCloudApiProtocolType;
 
 -(void) setCloudApiProtocolDefaults: (CCloudApiProtocolDefaults) type;
+
+-(void) setShareTokenExpireCheckingTickRate: (long long) rateInMs;
+-(long long) getShareTokenExpireCheckingTickRate;
+
+-(void) setShareTokenExpireNotificationDeltaTimeGuard: (long long) deltaTimeGuardInMs;
+-(long long) getShareTokenExpireNotificationDeltaTimeGuard;
 
 + (void)setLogLevel:(int)newValue;
 + (void)setMediaPlayerLogLevelForObjcPart:(int)objcValue forNativePart:(int)nativeValue forMediaPart:(int)mediaValue;

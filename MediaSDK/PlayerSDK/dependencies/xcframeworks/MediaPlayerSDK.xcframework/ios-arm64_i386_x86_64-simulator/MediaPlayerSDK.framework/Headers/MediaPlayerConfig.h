@@ -47,7 +47,8 @@
 
 @property (nonatomic) int       enableColorVideo;           // grayscale or color
 
-@property (nonatomic) int       aspectRatioMode;            // 0 - stretch, 1 - fittoscreen with aspect ratio,
+@property (nonatomic) int       aspectRatioMode;            // 0 - stretch,
+                                                            // 1 - fit to screen with aspect ratio,
                                                             // 2 - crop(height) with aspect, 21 - crop(width) with aspect, 3 - 100% size,
                                                             // 4,43,5,53 - zoom/move mode with real size (100%)
                                                             // 6,40,7,50 - zoom/move mode with stretch
@@ -182,6 +183,7 @@
 @property (nonatomic) int       advancedSourceUseAsyncGetAddrInfo;            // 0 - off, 1 - on, default 1
 @property (nonatomic) int       advancedDecoderVideoHardwareReadyFrameQueueMin; // min frame count in queue after decoder
 @property (nonatomic) int       advancedDecoderVideoHardwareReadyFrameQueueMax; // max frame count in queue after decoder
+@property (nonatomic) NSString* advancedSourceOptionHttpReconnectOnHttpError; // reconnect on error from string with codes separated by ",". For example: "404,405"
 
 // iOS specific
 @property (nonatomic) int        enableInternalGestureRecognizers;	 // 0 - off, 1 - pinch(zoom), 2 - pan(move), 4 - single, 8 - double tap. Default: (1 | 2 | 4 | 8)
@@ -218,6 +220,7 @@
                                                                       // 1 - padding zeroing(XR specific). Default: 1
 @property (nonatomic) int        workaroundSourceStreamInfoFromExtradata; // 1 - if stream info not detected,
                                                                           // we try get it form extradata directly. Default: 1
+@property (nonatomic) int        workaroundAACAudioSpecificConfigGenerateFromStreamInfo; // 1 - generate ASC config from stream params. Default: 0
 @property (nonatomic) int        workaroundRemoveUnrecognizedNALUs;       // 0 - off, 1 - on
 
 // log level
