@@ -16,6 +16,7 @@ class ViewController: UIViewController, MediaPlayerCallback {
     
     @IBOutlet weak var ConnectBtn: UIButton!
     @IBOutlet weak var ScrenshotBtn: UIButton!
+    @IBOutlet weak var RecordBtn: UIButton!
     @IBOutlet weak var StatusLine: UILabel!
     @IBOutlet weak var AddressLine: UITextField!
     @IBOutlet weak var ScreenShotImageView: UIImageView!
@@ -23,6 +24,7 @@ class ViewController: UIViewController, MediaPlayerCallback {
     @IBOutlet weak var ScreenShotView: UIView!
 
     private var isOpened : Bool = false;
+    private var isRecording : Bool = false;
     private var mPlayer: MediaPlayer? = nil;
     private let mConfig : MediaPlayerConfig = MediaPlayerConfig();
     
@@ -47,6 +49,29 @@ class ViewController: UIViewController, MediaPlayerCallback {
         case .PLP_BUILD_SUCCESSFUL :
             print ( player.getStreamInfo());
             break;
+            
+        case .CP_RECORD_STARTED:
+            OperationQueue.main.addOperation({
+                self.RecordBtn.setTitleColor(.red, for: .normal)
+                self.isRecording = true
+            });
+            print("Record started!");
+            break;
+            
+        case .CP_RECORD_STOPPED:
+            isRecording = false
+            let file = mPlayer!.recordGetFileName(0)
+            let duration = TimeInterval(mPlayer!.recordGet(.RECORD_STAT_DURATION_TOTAL))
+            print("Record ready: file: \(file ?? ""), duration: \(duration)");
+            break;
+            
+        case .CP_RECORD_CLOSED:
+            OperationQueue.main.addOperation({
+                self.RecordBtn.setTitleColor(self.RecordBtn.tintColor, for: .normal)
+                self.isRecording = false
+            });
+            print("Record closed!");
+
         default:
             break;
         }
@@ -103,6 +128,10 @@ class ViewController: UIViewController, MediaPlayerCallback {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    func getDocumentsDirectory() throws -> URL {
+         return try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+    }
 
     @IBAction func ConnectBtn_click(_ sender: Any) {
         if ( (AddressLine.text?.isEmpty == true) || (self.mPlayer == nil) ) {
@@ -120,28 +149,27 @@ class ViewController: UIViewController, MediaPlayerCallback {
             self.mConfig.connectionUrl              = AddressLine.text;
             self.mConfig.decodingType               = 1; // 1 - hardware, 0 - software
             self.mConfig.synchroEnable              = 1; // syncronization enabled
-            self.mConfig.synchroNeedDropVideoFrames = 1; // synchroNeedDropVideoFrames
+            self.mConfig.synchroNeedDropVideoFrames = 0; // synchroNeedDropVideoFrames
             self.mConfig.aspectRatioMode            = 1;
             self.mConfig.connectionNetworkProtocol  = -1; // // 0 - udp, 1 - tcp, 2 - http, 3 - https, -1 - AUTO
             self.mConfig.connectionDetectionTime    = 1000 // in milliseconds
             self.mConfig.connectionTimeout          = 60000;
-            self.mConfig.decoderLatency             = 0;
-            
-            
-            self.mConfig.synchroNeedDropVideoFrames = 0;
             self.mConfig.dataReceiveTimeout         = 60*1000;
-            self.mConfig.numberOfCPUCores           = 1;
             
             self.mPlayer!.open(self.mConfig, callback: self)
             
             ConnectBtn.setTitle("Disconnect", for: UIControl.State.normal);
             
             isOpened = true;
+            
         } else {
+            //self.mPlayer!.recordStop()
             self.mPlayer!.close();
             
             ConnectBtn.setTitle("Disconnect", for: UIControl.State.normal);
             isOpened = false;
+            isRecording = false;
+            
         }
         
     }
@@ -179,7 +207,7 @@ class ViewController: UIViewController, MediaPlayerCallback {
         if (ScreenShotView.isHidden) {
             ScreenShotView.isHidden = false;
             ScrenshotBtn.setTitle("Hide screen", for: UIControl.State.normal);
-            
+
             getVideoShot { (image) in
                 self.ScreenShotImageView.image = image;
             }
@@ -188,7 +216,19 @@ class ViewController: UIViewController, MediaPlayerCallback {
             ScrenshotBtn.setTitle("Screenshot", for: UIControl.State.normal);
         }
     }
-    
+
+    @IBAction func RecordBtn_click(_ sender: Any) {
+        if (!isOpened) {
+            return;
+        }
+        
+        if (isRecording) {
+            self.mPlayer!.recordStop()
+        } else {
+            self.mPlayer!.recordSetup(try! getDocumentsDirectory().path, flags: MediaPlayerRecordFlags.RECORD_NO_START, splitTime: 0, splitSize: 0, prefix: "test-record")
+            self.mPlayer!.recordStart()
+        }
+    }
     
 }
 
