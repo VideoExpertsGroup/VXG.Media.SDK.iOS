@@ -88,16 +88,20 @@ class ViewController: UIViewController, MediaPlayerCallback {
     {
         return 0
     }
-    @objc func onAudioSourceFrameAvailable(_ player: MediaPlayer!, buffer: UnsafeMutableRawPointer!, size: Int32, pts: Int, dts: Int, stream_index: Int32, format: Int32) -> Int32 {
-        return 0;
-    }
-    @objc func onVideoSourceFrameAvailable(_ player: MediaPlayer!, buffer: UnsafeMutableRawPointer!, size: Int32, pts: Int, dts: Int, stream_index: Int32, format: Int32) -> Int32 {
-        return 0;
-    }
-    @objc func onVideoRendererFrameAvailable(_ player: MediaPlayer!, buffer: UnsafeMutableRawPointer!, size: Int32, format_fourcc: UnsafeMutablePointer<Int8>!, width: Int32, height: Int32, bytes_per_row: Int32, pts: Int, will_show: Int32) -> Int32 {
-        return 0;
-    }
     
+    @objc func onAudioSourceFrameAvailable(_ player: MediaPlayer!, buffer: UnsafeMutableRawPointer!, size: Int32, pts: Int64, dts: Int64, stream_index: Int32, format: Int32) -> Int32 {
+        return 0;
+    }
+    @objc func onVideoSourceFrameAvailable(_ player: MediaPlayer!, buffer: UnsafeMutableRawPointer!, size: Int32, pts: Int64, dts: Int64, stream_index: Int32, format: Int32) -> Int32 {
+        return 0;
+    }
+    @objc func onVideoRendererFrameAvailable(_ player: MediaPlayer!, buffer: UnsafeMutableRawPointer!, size: Int32, format_fourcc: UnsafeMutablePointer<Int8>!, width: Int32, height: Int32, bytes_per_row: Int32, pts: Int64, will_show: Int32) -> Int32 {
+        return 0;
+    }
+    @objc func onAudioRendererFrameAvailable(_ player: MediaPlayer!, buffer: UnsafeMutableRawPointer!, size: Int32, format: AudioStreamBasicDescription, pts: Int64) -> Int32 {
+        print("onAudioRendererFrameAvailable: buffer: \(buffer), size: \(size), mSampleRate: \(format.mSampleRate), pts: \(pts) ");
+        return 0;
+    }
     
     func initPlayer(){
         self.mPlayer = MediaPlayer(CGRect(x: 0, y: 0, width: 320, height: 240));

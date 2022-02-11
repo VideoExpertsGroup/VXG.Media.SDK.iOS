@@ -25,6 +25,7 @@
 @property (nonatomic) int       connectionBufferingTime;    // in milliseconds
 @property (nonatomic) int       connectionBufferingSize;    // in bytes
 @property (nonatomic) int       connectionTimeout;          // Intteruprt source if connection is not passed timeout
+@property (nonatomic) int       seekTimeout;
 @property (nonatomic) int       dataReceiveTimeout;
 
 @property (nonatomic) int       enableInterruptOnClose;		// 1 - inturrupt connection and close, 0 - do not set a interuption close operation  stream and send TEARDOWN command

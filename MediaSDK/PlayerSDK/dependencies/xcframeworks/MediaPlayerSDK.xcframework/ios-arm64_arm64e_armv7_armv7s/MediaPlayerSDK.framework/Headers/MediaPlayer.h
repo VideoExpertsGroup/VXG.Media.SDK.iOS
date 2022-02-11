@@ -265,6 +265,12 @@ typedef NS_ENUM(int, MediaPlayerGraphicLayer)
                         bytes_per_row: (int)  bytes_per_row
                                   pts: (long long) pts
                             will_show: (int)  will_show;
+- (int) OnAudioRendererFrameAvailable: (MediaPlayer*) player
+                               buffer: (void*) buffer
+                                 size: (int) size
+                               format: (AudioStreamBasicDescription) format
+                                  pts: (long long) pts;
+
 
 // data from various parts of media pipeline
 @optional
