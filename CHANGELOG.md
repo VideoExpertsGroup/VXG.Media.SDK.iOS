@@ -1,5 +1,18 @@
 # VXG Mobile SDK iOS
 
+### MobileSDK 2.0.83.220215
+
+ CloudSDK
+Version 2.0.83_20220215:
+- added local record API for cloud streams
+
+ PlayerSDK
+Version 2.0.20220211:
+- added onAudioRendererFrameAvailable callback
+
+ EncoderSDK
+Version 2.0.20220110:
+
 ### MobileSDK 2.0.82.220204
 
  CloudSDK

@@ -43,6 +43,13 @@
                                     <action selector="OpenCloseBtn_click:" destination="BYZ-38-t0r" eventType="touchUpInside" id="hjk-Lt-PhN"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xaJ-nX-bcc" userLabel="record">
+                                <rect key="frame" x="270" y="48" width="87" height="30"/>
+                                <state key="normal" title="Start Record"/>
+                                <connections>
+                                    <action selector="RecordBtn_click:" destination="BYZ-38-t0r" eventType="touchUpInside" id="O5F-xe-Ncd"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HKb-ob-1ju">
                                 <rect key="frame" x="252.5" y="629" width="114.5" height="30"/>
                                 <state key="normal" title="strtch"/>
@@ -55,7 +62,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="Ay8-wh-WSJ"/>
                                 </constraints>
-                                <string key="text">eyJhY2Nlc3MiOiAid2F0Y2giLCAidG9rZW4iOiAic2hhcmUuZXlKemFTSTZJREl6TWpJMU9YMC42MTk1NWYzZnRiYzFmYWIwMC5ROG15cmtvNUpvTDZSY0ViRjJOV2pIcFZ2QlkiLCAiY2FtaWQiOiAyNDY5MzAsICJjbW5ncmlkIjogMjQ3MzY3LCAiYXBpIjogIndlYi5za3l2ci52aWRlb2V4cGVydHNncm91cC5jb20ifQ==</string>
+                                <string key="text">eyJhY2Nlc3MiOiAid2F0Y2giLCAidG9rZW4iOiAic2hhcmUuZXlKemFTSTZJREkxTXpZNE5YMC42MjA2ODM1NXRiYzFmYWIwMC5PbTJxMHltWENoMkhPUUE3RHRIWEFLS3lGSzAiLCAiY2FtaWQiOiAyNTcxMTYsICJjbW5ncmlkIjogMjU3NTUzLCAiYXBpIjogIndlYi5za3l2ci52aWRlb2V4cGVydHNncm91cC5jb20ifQ==</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                             </textField>
@@ -74,11 +81,13 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="HKb-ob-1ju" secondAttribute="trailing" constant="8" id="TgO-gT-iSH"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="5wf-yi-9Or" secondAttribute="trailing" constant="8" id="U8y-9E-PwB"/>
                             <constraint firstItem="c3d-Op-UrC" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ZJc-yP-mSe"/>
+                            <constraint firstItem="xaJ-nX-bcc" firstAttribute="trailing" secondItem="Xiz-zk-RBz" secondAttribute="trailing" constant="-10" id="b2s-50-J43"/>
                             <constraint firstItem="HKb-ob-1ju" firstAttribute="width" secondItem="8x4-Ks-3lM" secondAttribute="width" id="e05-Rw-mVO"/>
                             <constraint firstItem="c3d-Op-UrC" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="eH8-GZ-Czu"/>
                             <constraint firstItem="8x4-Ks-3lM" firstAttribute="height" secondItem="29L-0P-hI3" secondAttribute="height" id="f7k-XN-Taq"/>
                             <constraint firstItem="Xiz-zk-RBz" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="8" id="iUy-Wx-LP0"/>
                             <constraint firstItem="29L-0P-hI3" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="kyp-aM-Mca"/>
+                            <constraint firstItem="xaJ-nX-bcc" firstAttribute="top" secondItem="5wf-yi-9Or" secondAttribute="bottom" constant="10" id="mwQ-GX-WeI"/>
                             <constraint firstItem="5wf-yi-9Or" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="8" id="oNc-ZE-FZo"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="29L-0P-hI3" secondAttribute="bottom" constant="8" id="rjZ-Vh-ZrH"/>
                             <constraint firstItem="HKb-ob-1ju" firstAttribute="leading" secondItem="8x4-Ks-3lM" secondAttribute="trailing" constant="8" id="s1W-B4-0HD"/>
@@ -91,6 +100,7 @@
                         <outlet property="error_lbl" destination="c3d-Op-UrC" id="Ktp-pj-2p2"/>
                         <outlet property="openClose_btn" destination="8x4-Ks-3lM" id="hfH-aQ-W3R"/>
                         <outlet property="playPause_btn" destination="29L-0P-hI3" id="grc-fr-MoX"/>
+                        <outlet property="record_btn" destination="xaJ-nX-bcc" id="Exr-lB-BLA"/>
                         <outlet property="videoView" destination="Xiz-zk-RBz" id="2HN-CG-mx1"/>
                     </connections>
                 </viewController>

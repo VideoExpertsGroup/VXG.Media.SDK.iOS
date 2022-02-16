@@ -58,6 +58,31 @@ typedef NS_ENUM(int, CPlayerModes)
     CPlayerModePlayback = 1 << 1
 };
 
+typedef NS_ENUM(int, CPlayerLocalRecordFlags)
+{
+    CPlayerLocalRecordFlagsNoSart = 0x00000000,
+    CPlayerLocalRecordFlagsAutoStart = 0x00000001,
+    CPlayerLocalRecordFlagsSplitByTime = 0x00000002,
+    CPlayerLocalRecordFlagsSplitBySize = 0x00000004,
+    CPlayerLocalRecordFlagsDisableVideo = 0x00000008,
+    CPlayerLocalRecordFlagsDisableAudio = 0x00000010,
+    CPlayerLocalRecordFlagsPtsCorrection = 0x00000020,
+    CPlayerLocalRecordFlagsFastStart = 0x00000040,
+    CPlayerLocalRecordFlagsFragKeyframe = 0x00000080,
+    CPlayerLocalRecordFlagsSystemTimeToPts = 0x00000100,
+    CPlayerLocalRecordFlagsDefinedDuration = 0x00000200,
+    CPlayerLocalRecordFlagsFragCustom = 0x00000480
+};
+
+typedef NS_ENUM(int, CPlayerLocalRecordStats)
+{
+    CPlayerLocalRecordStatsLastError = 0, //last error
+    CPlayerLocalRecordStatsDuration = 1, //in msec
+    CPlayerLocalRecordStatsSize = 2, //in bytes
+    CPlayerLocalRecordStatsDurationTotal = 3, //in msec
+    CPlayerLocalRecordStatsSizeTotal = 4  //in bytes
+};
+
 typedef NS_ENUM(int, CCloudApiProtocolDefaults) {
     CCloudApiProtocolDefaultsUNSECURE = 0,
     CCloudApiProtocolDefaultsSECURE = 1
@@ -178,6 +203,31 @@ typedef void (^CPlayerCallback)(CloudPlayerEvent status_code, id<ICloudCObject> 
 -(void) setShareTokenExpireNotificationDeltaTimeGuard: (long long) deltaTimeGuardInMs;
 -(long long) getShareTokenExpireNotificationDeltaTimeGuard;
 
+// local record config
+-(NSString*) getLocalRecordPath;
+-(void) setLocalRecordPath: (NSString*)path;
+
+-(CPlayerLocalRecordFlags) getLocalRecordFlags;         // 0: stopped. 1: autostart rec. see PlayerRecordFlags
+-(void) setLocalRecordFlags: (CPlayerLocalRecordFlags)flags;
+
+-(uint64_t) getLocalRecordFrameDuration; // duration in ms , workaround for some server that provide wrong PTS
+-(void) setLocalRecordFrameDuration: (uint64_t)duration;
+
+-(uint64_t) getLocalRecordSplitTime;     // seconds. in case PP_RECORD_SPLIT_BY_TIME
+-(void) setLocalRecordSplitTime: (uint64_t)time;
+
+-(uint64_t) getLocalRecordSplitSize;     // MB.   in case PP_RECORD_SPLIT_BY_SIZE
+-(void) setLocalRecordSplitSize: (uint64_t)size;
+
+-(NSString*) getLocalRecordPrefix;
+-(void) setLocalRecordPrefix: (NSString*)prefix;
+
+-(int64_t) getLocalRecordTrimPosStart;  // in ms. (-1) not set, all duration.
+-(void) setLocalRecordTrimPosStart: (int64_t)startPos;
+
+-(int64_t) getLocalRecordTrimPosEnd;    // in ms. (-1) not set, all duration.
+-(void) setLocalRecordTrimPosEnd: (int64_t)endPos;
+
 + (void)setLogLevel:(int)newValue;
 + (void)setMediaPlayerLogLevelForObjcPart:(int)objcValue forNativePart:(int)nativeValue forMediaPart:(int)mediaValue;
 
@@ -268,6 +318,17 @@ typedef void (^CPlayerCallback)(CloudPlayerEvent status_code, id<ICloudCObject> 
 
 -(CCRecordingMode) getRecordingMode;
 -(void) setRecordingMode:(CCRecordingMode) rec_mode;
+
+- (void) localRecordSetup: (NSString*)path
+                    flags: (CPlayerLocalRecordFlags)flags
+                splitTime: (int32_t)splitTime
+                splitSize: (int32_t)splitSize
+                   prefix: (NSString*)prefix;
+-(Boolean) isLocalRecordStarted;
+-(void) localRecordStart;
+-(void) localRecordStop;
+-(int64_t) localRecordGetStat: (CPlayerLocalRecordStats)param;
+-(NSString*) localRecordGetFileName: (int32_t)param;
 
 -(CCPrivacyMode) getPrivacyMode;
 -(void) setPrivacyMode: (CCPrivacyMode) mode;

@@ -18,11 +18,14 @@
     __weak IBOutlet UIButton *playPause_btn;
     __weak IBOutlet UIButton *openClose_btn;
     __weak IBOutlet UIButton *aspect_btn;
+    __weak IBOutlet UIButton *record_btn;
     __weak IBOutlet UITextField *access_token_tf;
     __weak IBOutlet UILabel *error_lbl;
     
     CloudPlayerSDK* ccplayer;
     CPlayerConfig* conf;
+
+    Boolean isRecording;
 }
 
 -(BOOL) textFieldShouldReturn:(UITextField *)textField {
@@ -35,12 +38,29 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     CSDK_LogLevel = CSDK_LOG_LEVEL_ERROR;
+    isRecording = false;
     
     access_token_tf.delegate = self;
     
     conf = [[CPlayerConfig alloc] init];
+    [conf setConnectionDetectionTime:1000];
+    [conf setConnectionBufferingTime:500];
     //[conf setLicenseKey:@"trial"]; //input license key if you have, otherwise playtime is limited to 2 minutes
     
+    // setup record using config if you want auto start record
+    //NSString* tmpfile = [NSTemporaryDirectory() stringByAppendingPathComponent:@""];
+    //[conf setLocalRecordPath:tmpfile];
+    
+    // if you want auto start record
+    //[conf setLocalRecordFlags:(CPlayerLocalRecordFlagsAutoStart)];
+    
+    //[conf setLocalRecordPrefix:@"ConfigTestRecord"];
+    //[conf setLocalRecordSplitSize:0];
+    //[conf setLocalRecordSplitTime:0];
+    //[conf setLocalRecordFrameDuration:0];
+    //[conf setLocalRecordTrimPosEnd:-1];
+    //[conf setLocalRecordTrimPosStart:-1];
+
     [playPause_btn setEnabled: NO];
     [aspect_btn  setEnabled: NO];
     
@@ -130,13 +150,54 @@
             case TRIAL_VERSION: {
                 NSLog(@"  == = = TRIAL VERSION LIMITATION = = ===\n");
             } break;
+            case RECORD_STARTED: {
+                NSLog(@"RECORD_STARTED: \n");
+                isRecording = true;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [record_btn setTitle:@"Stop Recording" forState: UIControlStateNormal];
+                });
+
+            } break;
+            case RECORD_STOPPED: {
+                isRecording = false;
+                NSString* filename = [ccplayer localRecordGetFileName:0];
+                int64_t duration = [ccplayer localRecordGetStat:CPlayerLocalRecordStatsDurationTotal];
+                NSLog(@"RECORD_STOPPED: filename: %@, duration: %lld\n", filename, duration);
+            } break;
+            case RECORD_CLOSED: {
+                isRecording = false;
+                NSLog(@"RECORD_CLOSED: \n");
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [record_btn setTitle:@"Start Recording" forState: UIControlStateNormal];
+                });
+            } break;
         }
         
     }];
    
+    [ccplayer setDelegate:self];
+  
 }
 
+-(int) onSharedTokenWillExpireIn:(long long)deltaTimeInMs {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSLog(@"onSharedTokenExpiredIn: %lld", deltaTimeInMs);
+        NSString* token = @"";
+        int rc = [ccplayer setSource: token ];
+        if (rc < 0) {
+            NSString* error = [ccplayer GetResultStr];
+            if (error == nil || error.length <= 0) {
+                error = @"Get access_token from videoexpertsgroup.com dashboard and type here";
+            }
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Check expire error"
+                                                                           message:error preferredStyle:UIAlertControllerStyleAlert];
+            [alert addAction: [UIAlertAction actionWithTitle:@"Close" style:UIAlertActionStyleDefault handler: nil]];
+            [self presentViewController:alert animated:YES completion: nil];
+        }
+    });
 
+    return 0;
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -145,11 +206,15 @@
 
 - (IBAction)OpenCloseBtn_click:(UIButton *)sender {
     if (sender.tag == 0) {
-
-        int rc = [ccplayer setSource: access_token_tf.text ];
+        NSString* token = access_token_tf.text;
+        int rc = [ccplayer setSource: token ];
         if (rc < 0) {
+            NSString* error = [ccplayer GetResultStr];
+            if (error == nil || error.length <= 0) {
+                error = @"Get access_token from videoexpertsgroup.com dashboard and type here";
+            }
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Error"
-                                                                           message:@"Get access_token from videoexpertsgroup.com dashboard and type here" preferredStyle:UIAlertControllerStyleAlert];
+                                                                           message:error preferredStyle:UIAlertControllerStyleAlert];
             [alert addAction: [UIAlertAction actionWithTitle:@"Close" style:UIAlertActionStyleDefault handler: nil]];
             [self presentViewController:alert animated:YES completion: nil];
         }
@@ -199,6 +264,21 @@
             [conf aspectRatio: 0];
             [ccplayer setConfig: conf];
         } break;
+    }
+}
+
+- (IBAction)RecordBtn_click:(UIButton *)sender {
+    if (isRecording) {
+        [ccplayer localRecordStop];
+    } else {
+        NSString* tmpfile = [NSTemporaryDirectory() stringByAppendingPathComponent:@""];
+        // setup continues recording
+        [ccplayer localRecordSetup:tmpfile flags:(CPlayerLocalRecordFlagsNoSart) splitTime:0 splitSize:0 prefix:@"TestRecord"];
+        // setup record splitted by time
+        //[ccplayer localRecordSetup:tmpfile flags:(CPlayerLocalRecordFlagsNoSart | CPlayerLocalRecordFlagsSplitByTime) splitTime:30 splitSize:0 prefix:@"TestRecord"];
+        // setup record splitter by size
+        //[ccplayer localRecordSetup:tmpfile flags:(CPlayerLocalRecordFlagsNoSart | CPlayerLocalRecordFlagsSplitBySize) splitTime:0 splitSize:1 prefix:@"TestRecord"];
+        [ccplayer localRecordStart];
     }
 }
 

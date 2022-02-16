@@ -11,7 +11,7 @@
 #import "CloudPlayerSDK.h"
 #import "CloudUtils.h"
 
-@interface ViewController : UIViewController<UITextFieldDelegate>
+@interface ViewController : UIViewController<UITextFieldDelegate, CloudPlayerSDKDelegate>
 
 
 @end
