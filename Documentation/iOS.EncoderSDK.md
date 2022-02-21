@@ -33,12 +33,25 @@ VXG Mobile SDK structure:
 | Development environments | XCode |
 
 ## SDK structure
-The SDK package consists of the following files and folders:
+The SDK package consists of following files and folders:
+* dependencies/libraries    (Library files to be linked to the application and headers files)
+    - include/MediaCaptureSDK.h 
+    - libMediaCaptureSDK.a
+* dependencies/xcframeworks    (XCFrameworks files to be linked to the application)
+    - MediaCaptureSDK.xcframework 
+* docs	(Programmer’s Guide for VXG Encoder SDK)
+* src 	(Sample projects to test VXG Encoder SDK)
 
-* lib (Library files to be linked to the application)
-    - MediaCaptureSDK.h 
-    - libMediaCaptureSDK.a 
-* src (Sample project to test the SDK)
+The SDK also uses modules from a common folder for the all SDKs with next structure:
+* VXG.Media.SDK.iOS/dependencies/frameworks/universal    (Frameworks containing all platforms including emulator)
+    - ffmpeg.framework
+    - openssl.framework
+* VXG.Media.SDK.iOS/dependencies/frameworks/applestore    (Frameworks containing only platforms for real devices)
+    - ffmpeg.framework
+    - openssl.framework
+* VXG.Media.SDK.iOS/dependencies/xcframeworks    (XCFrameworks containing all supported platforms)
+    - ffmpeg.xcframework 
+    - openssl.xcframework 
 
 ## Block diagram
 

@@ -11,6 +11,7 @@ SDK consists of three modules:
 - Player SDK - for playback of media files and streams
 - Encoder SDK - for live video broadcasting from mobile device
 - Cloud SDK - module for playback from or streaming to VXG Cloud / VXG Server
+- Dependencies - common part for all SDKs. Contains reusable modules such as ffmpeg, openssl etc.
 
 Player module can be used for IPTV, iOS client of surveillance system, IP camera viewer, TV player, OTT clients and other kinds of applications with video playback. 
 Encoding module can be used for any kind of mobile video broadcasting: home surveillance, social networks, etc.

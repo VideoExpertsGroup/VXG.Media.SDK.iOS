@@ -22,6 +22,43 @@ Cloud-Server Player is a tool for live and recorded video playback.
 
 IMPORTANT: Access token from the Dashboard should be used here
 
+## SDK structure
+The SDK package consists of following files and folders:
+* dependencies/libraries    (Library files to be linked to the application and headers files)
+    - include/CloudCommonSDK.h 
+    - include/CloudPlayerSDK.h
+    - include/CloudStreamerSDK.h
+    - include/CloudUtils.h
+    - libcloudsdk.a
+* dependencies/frameworks/universal    (Frameworks containing all platforms including emulator)
+    - cloudsdkcalendarview.framework
+    - cloudsdkplayerview.framework
+    - cloudsdktimelineview.framework
+* dependencies/frameworks/applestore    (Frameworks containing only platforms for real devices)
+    - cloudsdkcalendarview.framework
+    - cloudsdkplayerview.framework
+    - cloudsdktimelineview.framework
+* dependencies/xcframeworks    (XCFrameworks files to be linked to the application)
+    - cloudsdk.xcframework 
+    - cloudsdkcalendarview.xcframework 
+    - cloudsdkplayerview.xcframework 
+    - cloudsdktimelineview.xcframework 
+* src 	(Sample projects to test VXG Cloud SDK)
+
+The SDK also uses modules from a common folder for the all SDKs with next structure:
+* VXG.Media.SDK.iOS/dependencies/frameworks/universal    (Frameworks containing all platforms including emulator)
+    - SDWebImage.framework
+    - ffmpeg.framework
+    - openssl.framework
+* VXG.Media.SDK.iOS/dependencies/frameworks/applestore    (Frameworks containing only platforms for real devices)
+    - SDWebImage.framework
+    - ffmpeg.framework
+    - openssl.framework
+* VXG.Media.SDK.iOS/dependencies/xcframeworks    (XCFrameworks containing all supported platforms)
+    - SDWebImage.framework
+    - ffmpeg.xcframework 
+    - openssl.xcframework 
+
 #### Key features
 
 * Playback of live streams

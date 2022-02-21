@@ -34,16 +34,31 @@ VXG Mobile SDK structure:
 
 ## SDK structure
 The SDK package consists of following files and folders:
-
-* bin 	(Sample application package)
-* libs 	(Library files to be linked to the application and headers files)
-    - libMediaPlayerSDK.a
+* dependencies/libraries    (Library files to be linked to the application and headers files)
     - include/M3U8.h 
     - include/MediaPlayer.h 
     - include/MediaPlayerConfig.h 
+    - include/MediaPlayerPlaySegment.h 
+    - include/ONVIFDevice.h
+    - include/ONVIFDeviceManager.h
     - include/Thumbnailer.h 
     - include/ThumbnailerConfig.h
-* src 	(Sample project to test VXG Player SDK)
+    - libMediaPlayerSDK.a
+* dependencies/xcframeworks    (XCFrameworks files to be linked to the application)
+    - MediaPlayerSDK.xcframework 
+* docs	(Programmer’s Guide for VXG Player SDK)
+* src 	(Sample projects to test VXG Player SDK)
+
+The SDK also uses modules from a common folder for the all SDKs with next structure:
+* VXG.Media.SDK.iOS/dependencies/frameworks/universal    (Frameworks containing all platforms including emulator)
+    - ffmpeg.framework
+    - openssl.framework
+* VXG.Media.SDK.iOS/dependencies/frameworks/applestore    (Frameworks containing only platforms for real devices)
+    - ffmpeg.framework
+    - openssl.framework
+* VXG.Media.SDK.iOS/dependencies/xcframeworks    (XCFrameworks containing all supported platforms)
+    - ffmpeg.xcframework 
+    - openssl.xcframework 
 
 ## How to apply license key
 
