@@ -6,13 +6,17 @@ Commercial use and access to extra features requires a license. Please learn mor
 
 ## About SDK
 SDK consists of two modules:
-- Media Player - for playback of media files and streams
-- Media Encoder - for live video broadcasting from mobile device
+- Player SDK - for playback of media files and streams
+- Encoder SDK - for live video broadcasting from mobile device
 
-SDK can be used for IPTV, iOS client of surveillance system, IP camera viewer, TV player, OTT clients and other kinds of applications 
-with video playback. Source code of samples can be provided.
+Player module can be used for IPTV, iOS client of surveillance system, IP camera viewer, TV player, OTT clients and other kinds of applications with video playback. 
+Encoding module can be used for any kind of mobile video broadcasting: home surveillance, social networks, etc.
+Source code of samples can be provided.
 
-## Media Player
+## Documentation 
+The full SDK documentation can be found here - https://github.com/VideoExpertsGroup/VXG.Media.SDK.iOS/tree/master/Documentation. 
+
+## Player SDK
    Main features:
    * **Low latency for network streams** – Special API controls playback latency and buffering in every module.
    * **Multi-channel support** – Support of simultaneous connection to several video sources.
@@ -24,6 +28,7 @@ with video playback. Source code of samples can be provided.
    * **Smooth change position** - Support of quick position change with audio fade in a short time
    * **Record during Playback** - Support of record from live video source to mp4 file compatible with all social networks
    * **Real time statistics** - Statistics are calculated in real time: bitrate, latency in video and audio flow, number of frames in video flow
+   * **Trimming** - Support of cutting local files on several segments 
    
    Additional features:
    * **Smart thumbnails** – Quick and simple API gets thumbnails for local files and live streams.
@@ -40,7 +45,7 @@ with video playback. Source code of samples can be provided.
    Supported subtitles:
    * DVD subtitles (codec dvd_subtitle), Closed Caption (EIA-608 / CEA-708) Decoder (codec eia_608), PJS subtitle, RealText subtitle, SSA (SubStation Alpha) subtitle, SubRip subtitle, Raw text subtitle, WebVTT subtitle
    
-## Media Encoder
+## Encoder SDK
    Main Features:
    * RTSP server (in local network) / RTMP in public network
    * H.264 encoding up to 4K resolution  

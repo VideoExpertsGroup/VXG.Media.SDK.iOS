@@ -12,8 +12,9 @@ SDK consists of three modules:
 - Encoder SDK - for live video broadcasting from mobile device
 - Cloud SDK - module for playback from or streaming to VXG Cloud / VXG Server
 
-SDK can be used for IPTV, iOS client of surveillance system, IP camera viewer, TV player, OTT clients and other kinds of applications 
-with video playback. Source code of samples can be provided.
+Player module can be used for IPTV, iOS client of surveillance system, IP camera viewer, TV player, OTT clients and other kinds of applications with video playback. 
+Encoding module can be used for any kind of mobile video broadcasting: home surveillance, social networks, etc.
+Source code of samples can be provided.
 
 ## Documentation 
 [Player SDK](Documentation/iOS.PlayerSDK.md)
@@ -34,6 +35,7 @@ with video playback. Source code of samples can be provided.
    * **Smooth change position** - Support of quick position change with audio fade in a short time
    * **Record during Playback** - Support of record from live video source to mp4 file compatible with all social networks
    * **Real time statistics** - Statistics are calculated in real time: bitrate, latency in video and audio flow, number of frames in video flow
+   * **Trimming** - Support of cutting local files on several segments 
    
    Additional features:
    * **Smart thumbnails** – Quick and simple API gets thumbnails for local files and live streams.
