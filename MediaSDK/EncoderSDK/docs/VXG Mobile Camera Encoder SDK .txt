@@ -1,0 +1,1 @@
+https://github.com/VideoExpertsGroup/VXG.Media.SDK.iOS/blob/master/Documentation/iOS.EncoderSDK.md
