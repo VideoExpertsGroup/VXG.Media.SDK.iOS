@@ -1,5 +1,18 @@
 # VXG Mobile SDK iOS
 
+### MobileSDK 2.0.84.220222
+
+ CloudSDK
+Version 2.0.84_20220222:
+- fixed retain cycle issue in CloudPlayerSDK
+
+ PlayerSDK
+Version 2.0.20220211:
+- added onAudioRendererFrameAvailable callback
+
+ EncoderSDK
+Version 2.0.20220110:
+
 ### MobileSDK 2.0.83.220215
 
  CloudSDK
