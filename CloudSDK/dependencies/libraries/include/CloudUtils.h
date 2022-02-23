@@ -13,10 +13,16 @@
 
 extern int CSDK_LogLevel;
 
+#define CSDK_LOG_TAG(level, TAG, fmt, ...)  \
+    if (level <= CSDK_LogLevel)             \
+    {                                       \
+        NSLog(@"%@: %@", TAG, [NSString stringWithFormat:fmt, ##__VA_ARGS__]);     \
+    }                                       \
+
 #define CSDK_LOG(level, fmt, ...)           \
     if (level <= CSDK_LogLevel)             \
     {                                       \
-        NSLog(@"%@: %@", [[self class] description], [NSString stringWithFormat:fmt, ##__VA_ARGS__]);     \
+        NSLog(@"%@", [NSString stringWithFormat:fmt, ##__VA_ARGS__]);     \
     }                                       \
 
 @interface ParamsPair: NSObject
