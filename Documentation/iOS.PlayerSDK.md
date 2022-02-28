@@ -2,7 +2,7 @@
 
 VXG Mobile SDK structure:
 
-        |-- VXGMobileSDK.iOS
+     |-- VXGMobileSDK.iOS
         |-- MediaSDK
             |-- PlayerSDK
             |-- EncoderSDK
