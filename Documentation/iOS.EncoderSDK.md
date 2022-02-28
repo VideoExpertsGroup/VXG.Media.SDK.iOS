@@ -1,12 +1,14 @@
 # Overview
 
 VXG Mobile SDK structure: 
+
     |-- VXGMobileSDK.iOS
         |-- MediaSDK
             |-- PlayerSDK
             |-- EncoderSDK
         |-- CloudSDK
         
+	
 **Encoder SDK** is a part of **VXG Mobile SDK** responsible for capture video from built-in camera, encoding and streaming video. 
 
 
@@ -55,7 +57,8 @@ The SDK also uses modules from a common folder for the all SDKs with next struct
 
 ## Block diagram
 
-![Screenshot](img/iOS.Encoder.png)
+![Screenshot](https://user-images.githubusercontent.com/11888021/156013116-30cafc93-22b8-442d-a5e2-7552da935d87.png)
+
 
 ## How to apply license key
 
