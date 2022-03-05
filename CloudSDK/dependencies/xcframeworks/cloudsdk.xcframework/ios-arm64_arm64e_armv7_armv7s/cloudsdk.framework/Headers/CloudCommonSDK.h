@@ -54,15 +54,15 @@ typedef NS_OPTIONS(int, CTimelineControls)
     CTIMELINE_CONTROL_SCALE     = 1 << 3
 };
 
-@interface CTimelinePair : NSObject
-@property long long start;
-@property long long end;
+@protocol CTimelinePair<NSObject>
+@property(nonatomic) long long start;
+@property(nonatomic) long long end;
 @end
 
 @interface CTimeline : NSObject
-@property long long start;
-@property long long end;
-@property NSArray<CTimelinePair*>* periods;
+@property(nonatomic) long long start;
+@property(nonatomic) long long end;
+@property NSArray<CTimelinePair> *periods;
 @end
 
 @interface CTimelineStyle : NSObject

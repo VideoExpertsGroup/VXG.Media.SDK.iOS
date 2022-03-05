@@ -77,7 +77,7 @@
                         
                         NSLog(@"Timeline period: [%@ ~ %@] segments: %lu \n", [CloudHelpers formatTime: timeline.start ], [CloudHelpers formatTime: timeline.end], [[timeline periods] count] );
                         for (NSUInteger i=0; i< [[timeline periods] count]; i ++) {
-                            CTimelinePair* period = [[timeline periods] objectAtIndex: i];
+                            id<CTimelinePair> period = [[timeline periods] objectAtIndex: i];
                             NSLog(@"segment %lu: [%@ ~ %@]\n", i, [CloudHelpers formatTime: period.start ], [CloudHelpers formatTime: period.end]);
                         }
                         
