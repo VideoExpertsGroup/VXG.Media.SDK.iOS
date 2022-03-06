@@ -3,7 +3,7 @@
 ### MobileSDK 2.0.86.220306
 
  CloudSDK
-Version 2.0.86.20220306:
+Version 2.0.86_20220306:
 - Fixed problem with Swift bridging for getTimeline method
 
  PlayerSDK
@@ -15,7 +15,7 @@ Version 2.0.20220110:
 ### MobileSDK 2.0.85.220223
 
  CloudSDK
-Version 2.0.85.20220223:
+Version 2.0.85_20220223:
 - Fixed a lot of potential retain cycles
 
  PlayerSDK
