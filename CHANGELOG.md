@@ -1,5 +1,17 @@
 # VXG Mobile SDK iOS
 
+### MobileSDK 2.0.87.220310
+
+ CloudSDK
+Version 2.0.87_20220310:
+- Fixed problems with playing records in the selected range
+
+ PlayerSDK
+Version 2.0.20220211:
+
+ EncoderSDK
+Version 2.0.20220110:
+
 ### MobileSDK 2.0.86.220306
 
  CloudSDK
