@@ -22,7 +22,7 @@ Source code of samples can be provided.
 
 [Encoder SDK](Documentation/iOS.EncoderSDK.md)
 
-[Cloud SDK](Documentation/iOS.StreamingSDK.md)
+[Cloud SDK](Documentation/iOS.CloudSDK.md)
 
 ## Media Player
    Main features:
