@@ -1,5 +1,23 @@
 # VXG Mobile SDK iOS
 
+### MobileSDK 2.0.88.220317
+
+ CloudSDK
+Version 2.0.88_20220317:
+- updated versions of used SDK: 
+  PlayerSDK: 2.0.20220317,
+  EncoderSDK: 2.0.20220317
+
+ PlayerSDK
+Version 2.0.20220317:
+- migrated to OpenSSL version 1.1.1n with fixed latest critical CVE
+- fixed HLS support for ffmpeg 4.4.1
+- fixed audio session deactivation when enableInternalAudioSessionConfigure is off
+
+ EncoderSDK
+Version 2.0.20220317:
+- migrated to OpenSSL version 1.1.1n with fixed latest critical CVE
+
 ### MobileSDK 2.0.87.220310
 
  CloudSDK
