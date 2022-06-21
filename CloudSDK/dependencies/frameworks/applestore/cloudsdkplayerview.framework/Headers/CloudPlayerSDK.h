@@ -151,6 +151,8 @@ typedef void (^CPlayerCallback)(CloudPlayerEvent status_code, id<ICloudCObject> 
 -(void) setFFRate: (int) rate;
 -(int) getFFRate;
 
+-(void) setEnableInternalGestureRecognizers: (int) values;
+-(int) getEnableInternalGestureRecognizers;
 -(void) setEnableInternalAudioSessionConfigure: (int) enable;
 -(int) getEnableInternalAudioSessionConfigure;
 -(void) setInternalAudioSessionMode: (NSString*) mode;

@@ -187,7 +187,9 @@
 @property (nonatomic) NSString* advancedSourceOptionHttpReconnectOnHttpError; // reconnect on error from string with codes separated by ",". For example: "404,405"
 
 // iOS specific
-@property (nonatomic) int        enableInternalGestureRecognizers;	 // 0 - off, 1 - pinch(zoom), 2 - pan(move), 4 - single, 8 - double tap. Default: (1 | 2 | 4 | 8)
+@property (nonatomic) int        enableInternalGestureRecognizers;	  // Main:     0 - off, 0x01 - pinch(zoom), 0x02 - pan(move), 0x04 - single, 0x08 - double tap
+                                                                      // Advanced: 0x80 - continues double taps switched aspects between 100% <-> last zoom/moved
+                                                                      // Default:  (0x01 | 0x02 | 0x04 | 0x08 | 0x80)
 @property (nonatomic) int        stateWillResignActive;               // 0 - continue playing, 1 - pause, 2 - pause and flush, 3 - pause and continue buffering. Default: 1
 @property (nonatomic) int        runDisplayLinkInMainQueue;           // 1 - run as is, 1 - force main queue. Default: 1
 @property (nonatomic) int        enableInternalAutoresizeToSuperview; // 0 - off, 1 - on. Default: 1

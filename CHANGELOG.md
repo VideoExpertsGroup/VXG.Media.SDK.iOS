@@ -1,5 +1,22 @@
 # VXG Mobile SDK iOS
 
+### MobileSDK 2.0.89.220621
+
+ CloudSDK
+Version 2.0.89_20220621:
+- updated versions of used SDK: 
+  PlayerSDK: 2.0.20220621
+- added new setting for configure internal player gestures support
+
+ PlayerSDK
+Version 2.0.20220621:
+- added support double tap gesture for all aspect ratio zoom/move modes
+- added advanced config for double tap sequence behavour
+- fixed video flickering issue with vertical pan gesture
+
+ EncoderSDK
+Version 2.0.20220317:
+
 ### MobileSDK 2.0.88.220317
 
  CloudSDK
