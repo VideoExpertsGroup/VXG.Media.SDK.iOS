@@ -1,5 +1,17 @@
 # VXG Mobile SDK iOS
 
+### MobileSDK 2.0.90.220627
+
+ CloudSDK
+Version 2.0.90_20220627:
+- fixed possible issues with uninterruptible CloudAPI synchronous commands
+
+ PlayerSDK
+Version 2.0.20220621:
+
+ EncoderSDK
+Version 2.0.20220317:
+
 ### MobileSDK 2.0.89.220621
 
  CloudSDK
