@@ -6,7 +6,7 @@
 #define CONFIG_THIS_YEAR 2021
 #define FFMPEG_DATADIR "/Volumes/WorkDisc/Users/max/Documents/Projects/Work/GIT/VXG/Mobile/iOS/MediaSDK/ffmpeg/ffmpeg/thin.libs/iossim_arm64/share/ffmpeg"
 #define AVCONV_DATADIR "/Volumes/WorkDisc/Users/max/Documents/Projects/Work/GIT/VXG/Mobile/iOS/MediaSDK/ffmpeg/ffmpeg/thin.libs/iossim_arm64/share/ffmpeg"
-#define CC_IDENT "Apple clang version 12.0.0 (clang-1200.0.32.29)"
+#define CC_IDENT "Apple clang version 13.1.6 (clang-1316.0.21.2)"
 #define OS_NAME darwin
 #define av_restrict restrict
 #define EXTERN_PREFIX "_"
