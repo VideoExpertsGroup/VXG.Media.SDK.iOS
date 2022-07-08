@@ -1,5 +1,23 @@
 # VXG Mobile SDK iOS
 
+### MobileSDK 2.0.92.220707
+
+ CloudSDK
+Version 2.0.92_20220707:
+- updated versions of used SDK: 
+  PlayerSDK: 2.0.20220707,
+  EncoderSDK: 2.0.20220707
+
+ PlayerSDK
+Version 2.0.20220707:
+- switched to openssl version 1.1.1q
+- bump version to 2.0.20220707
+
+ EncoderSDK
+Version 2.0.20220707:
+- switched to openssl version 1.1.1q
+- bump version to 2.0.20220707
+
 ### MobileSDK 2.0.91.220705
 
  CloudSDK
